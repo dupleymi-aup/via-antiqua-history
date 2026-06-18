@@ -32,7 +32,7 @@ export function QuizSection() {
 
   // Calculate correct answers count
   const correctCount = React.useMemo(() => {
-    return answers.reduce(
+    return answers.reduce<number>(
       (acc, answer, index) => acc + (answer === quizQuestions[index].correct ? 1 : 0),
       0
     )
