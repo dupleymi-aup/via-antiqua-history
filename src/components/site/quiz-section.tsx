@@ -1,0 +1,335 @@
+'use client'
+
+import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Brain, CheckCircle2, XCircle, RotateCcw, Trophy } from 'lucide-react'
+import { quizQuestions } from '@/lib/history-data'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Progress } from '@/components/ui/progress'
+
+const regionColors: Record<string, string> = {
+  greece: 'oklch(0.55 0.13 70)',
+  rome: 'oklch(0.55 0.13 35)',
+  mesopotamia: 'oklch(0.55 0.13 50)',
+  kuban: 'oklch(0.5 0.11 145)',
+}
+
+const regionLabels: Record<string, string> = {
+  greece: 'Греция',
+  rome: 'Рим',
+  mesopotamia: 'Месопотамия',
+  kuban: 'Кубань',
+}
+
+export function QuizSection() {
+  const [current, setCurrent] = React.useState(0)
+  const [selected, setSelected] = React.useState<number | null>(null)
+  const [answers, setAnswers] = React.useState<(number | null)[]>(
+    Array(quizQuestions.length).fill(null)
+  )
+  const [finished, setFinished] = React.useState(false)
+
+  const q = quizQuestions[current]
+  const isAnswered = selected !== null
+  const isCorrect = selected === q.correct
+
+  const select = (i: number) => {
+    if (isAnswered) return
+    setSelected(i)
+    const next = [...answers]
+    next[current] = i
+    setAnswers(next)
+  }
+
+  const next = () => {
+    if (current + 1 >= quizQuestions.length) {
+      setFinished(true)
+    } else {
+      setCurrent((c) => c + 1)
+      setSelected(answers[current + 1])
+    }
+  }
+
+  const prev = () => {
+    if (current > 0) {
+      setCurrent((c) => c - 1)
+      setSelected(answers[current - 1])
+    }
+  }
+
+  // Keyboard navigation: 1-4 to answer, Enter/ArrowRight for next, ArrowLeft for prev
+  React.useEffect(() => {
+    if (finished) return
+    const onKey = (e: KeyboardEvent) => {
+      const active = document.activeElement
+      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return
+      if (e.key >= '1' && e.key <= '4') {
+        const idx = parseInt(e.key, 10) - 1
+        if (idx < q.options.length && !isAnswered) {
+          e.preventDefault()
+          select(idx)
+        }
+      } else if (e.key === 'Enter' || e.key === 'ArrowRight') {
+        if (isAnswered) {
+          e.preventDefault()
+          next()
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (current > 0) {
+          e.preventDefault()
+          prev()
+        }
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [current, isAnswered, finished, q, answers])
+
+  const reset = () => {
+    setCurrent(0)
+    setSelected(null)
+    setAnswers(Array(quizQuestions.length).fill(null))
+    setFinished(false)
+  }
+
+  const correctCount = answers.filter(
+    (a, i) => a === quizQuestions[i].correct
+  ).length
+  const progress = ((current + (isAnswered ? 1 : 0)) / quizQuestions.length) * 100
+
+  if (finished) {
+    const percent = Math.round((correctCount / quizQuestions.length) * 100)
+    return (
+      <section
+        id="quiz"
+        className="py-20 md:py-28 scroll-mt-20"
+        style={{
+          background:
+            'linear-gradient(180deg, oklch(0.55 0.1 60 / 0.04) 0%, transparent 100%)',
+        }}
+      >
+        <div className="container mx-auto max-w-2xl px-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="rounded-xl border border-border bg-card p-8 md:p-12 text-center"
+          >
+            <Trophy className="h-16 w-16 mx-auto mb-4 text-primary" />
+            <h3 className="font-display text-3xl font-semibold mb-3">
+              Квиз пройден!
+            </h3>
+            <p className="text-lg text-muted-foreground mb-6">
+              Вы ответили правильно на
+            </p>
+            <div className="font-display text-6xl font-bold gold-text mb-2">
+              {correctCount} / {quizQuestions.length}
+            </div>
+            <p className="text-2xl font-semibold mb-8">{percent}%</p>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+              {(['greece', 'rome', 'mesopotamia', 'kuban'] as const).map(
+                (key) => {
+                  const qs = quizQuestions.filter((q) => q.region === key)
+                  const correct = qs.filter(
+                    (_, i) => answers[quizQuestions.indexOf(qs[i])] === qs[i].correct
+                  ).length
+                  return (
+                    <div
+                      key={key}
+                      className="rounded-lg border border-border p-3"
+                      style={{
+                        backgroundColor: `${regionColors[key].replace(')', ' / 0.08)')}`,
+                      }}
+                    >
+                      <div
+                        className="text-xs font-medium mb-1"
+                        style={{ color: regionColors[key] }}
+                      >
+                        {regionLabels[key]}
+                      </div>
+                      <div className="text-lg font-bold">
+                        {correct}/{qs.length}
+                      </div>
+                    </div>
+                  )
+                }
+              )}
+            </div>
+
+            <Button onClick={reset} size="lg">
+              <RotateCcw className="h-4 w-4 mr-2" />
+              Пройти заново
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <section
+      id="quiz"
+      className="py-20 md:py-28 scroll-mt-20"
+      style={{
+        background:
+          'linear-gradient(180deg, oklch(0.55 0.1 60 / 0.04) 0%, transparent 100%)',
+      }}
+    >
+      <div className="container mx-auto max-w-3xl px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
+          className="mb-8 text-center"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-4">
+            <Brain className="h-3.5 w-3.5 text-primary" />
+            <span className="text-xs uppercase tracking-widest font-medium">
+              Проверка знаний
+            </span>
+          </div>
+          <h2 className="font-display text-3xl md:text-5xl font-semibold mb-4">
+            Исторический квиз
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            {quizQuestions.length} вопросов о Греции, Риме, Месопотамии и
+            Кубани. Проверьте, насколько хорошо вы усвоили материал.
+          </p>
+        </motion.div>
+
+        {/* Прогресс */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between text-sm mb-2">
+            <span className="text-muted-foreground">
+              Вопрос {current + 1} из {quizQuestions.length}
+            </span>
+            <span className="font-medium">
+              Правильно: {correctCount}
+            </span>
+          </div>
+          <Progress value={progress} className="h-2" />
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="rounded-xl border border-border bg-card p-6 md:p-8"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <span
+                className="text-xs uppercase tracking-widest font-medium px-2 py-1 rounded-full"
+                style={{
+                  backgroundColor: `${regionColors[q.region].replace(')', ' / 0.12)')}`,
+                  color: regionColors[q.region],
+                }}
+              >
+                {regionLabels[q.region]}
+              </span>
+            </div>
+
+            <h3 className="font-display text-xl md:text-2xl font-semibold mb-6 leading-snug">
+              {q.question}
+            </h3>
+
+            <div className="space-y-2">
+              {q.options.map((opt, i) => {
+                const showAsCorrect = isAnswered && i === q.correct
+                const showAsWrong = isAnswered && i === selected && i !== q.correct
+                return (
+                  <button
+                    key={i}
+                    onClick={() => select(i)}
+                    disabled={isAnswered}
+                    className={cn(
+                      'w-full text-left p-4 rounded-lg border transition-all flex items-center gap-3',
+                      !isAnswered &&
+                        'border-border hover:border-primary hover:bg-accent/5 cursor-pointer',
+                      showAsCorrect &&
+                        'border-green-500 bg-green-50 dark:bg-green-950/30',
+                      showAsWrong &&
+                        'border-red-500 bg-red-50 dark:bg-red-950/30',
+                      isAnswered &&
+                        !showAsCorrect &&
+                        !showAsWrong &&
+                        'border-border opacity-60'
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        'flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold border-2',
+                        !isAnswered && 'border-border',
+                        showAsCorrect && 'border-green-500 bg-green-500 text-white',
+                        showAsWrong && 'border-red-500 bg-red-500 text-white',
+                        isAnswered &&
+                          !showAsCorrect &&
+                          !showAsWrong &&
+                          'border-border'
+                      )}
+                    >
+                      {showAsCorrect ? (
+                        <CheckCircle2 className="h-4 w-4" />
+                      ) : showAsWrong ? (
+                        <XCircle className="h-4 w-4" />
+                      ) : (
+                        String.fromCharCode(65 + i)
+                      )}
+                    </span>
+                    <span className="text-sm md:text-base flex-1">{opt}</span>
+                  </button>
+                )
+              })}
+            </div>
+
+            {isAnswered && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={cn(
+                  'mt-4 p-4 rounded-lg border',
+                  isCorrect
+                    ? 'border-green-500/40 bg-green-50 dark:bg-green-950/30'
+                    : 'border-amber-500/40 bg-amber-50 dark:bg-amber-950/30'
+                )}
+              >
+                <p
+                  className={cn(
+                    'text-sm font-semibold mb-1',
+                    isCorrect ? 'text-green-700 dark:text-green-400' : 'text-amber-700 dark:text-amber-400'
+                  )}
+                >
+                  {isCorrect ? '✓ Верно!' : '✗ Не совсем так'}
+                </p>
+                <p className="text-sm text-foreground/85 leading-relaxed">
+                  {q.explanation}
+                </p>
+              </motion.div>
+            )}
+
+            <div className="mt-6 flex justify-between gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={prev}
+                disabled={current === 0}
+              >
+                Назад
+              </Button>
+              <Button onClick={next} disabled={!isAnswered} size="sm">
+                {current + 1 >= quizQuestions.length
+                  ? 'Завершить'
+                  : 'Следующий вопрос'}
+              </Button>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </section>
+  )
+}
