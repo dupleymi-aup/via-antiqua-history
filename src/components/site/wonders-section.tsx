@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { BookmarkButton } from '@/components/site/bookmarks'
 
 const regionColors: Record<string, string> = {
   greece: 'oklch(0.55 0.13 70)',
@@ -154,6 +155,18 @@ export function WondersSection() {
                   </p>
                 )}
               </div>
+              {active && (
+                <BookmarkButton
+                  item={{
+                    id: `wonder:${active.id}`,
+                    type: 'wonder',
+                    title: active.name,
+                    subtitle: `${active.location} · ${active.built}`,
+                    href: '#wonders',
+                    region: active.region,
+                  }}
+                />
+              )}
             </div>
             <DialogDescription className="text-base">
               {active?.shortDesc}

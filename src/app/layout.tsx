@@ -17,6 +17,7 @@ const bodyFont = EB_Garamond({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app'),
   title: {
     default: "История Древнего Пути — Интерактивный исторический лабиринт",
     template: "%s | История Древнего Пути"
@@ -61,6 +62,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ru_RU",
     siteName: "История Древнего Пути",
+    images: [
+      {
+        url: "/logo.svg",
+        width: 512,
+        height: 512,
+        alt: "История Древнего Пути",
+      },
+    ],
   },
   verification: {
     // Можно добавить Яндекс/Google верификацию
@@ -73,6 +82,7 @@ export const metadata: Metadata = {
     icon: "/logo.svg",
     apple: "/logo.svg",
   },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({

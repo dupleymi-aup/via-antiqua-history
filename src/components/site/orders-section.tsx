@@ -13,6 +13,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { BookmarkButton } from '@/components/site/bookmarks'
 
 // SVG-схемы капителей для каждого ордера
 function DoricCapital() {
@@ -190,12 +191,28 @@ export function OrdersSection() {
       <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden">
           <DialogHeader>
-            <DialogTitle className="font-display text-2xl md:text-3xl">
-              {active?.name}
-            </DialogTitle>
-            <DialogDescription className="text-base">
-              {active?.originalName} · {active?.period}
-            </DialogDescription>
+            <div className="flex items-start justify-between gap-3 pr-8">
+              <div>
+                <DialogTitle className="font-display text-2xl md:text-3xl">
+                  {active?.name}
+                </DialogTitle>
+                <DialogDescription className="text-base">
+                  {active?.originalName} · {active?.period}
+                </DialogDescription>
+              </div>
+              {active && (
+                <BookmarkButton
+                  item={{
+                    id: `order:${active.id}`,
+                    type: 'term',
+                    title: active.name,
+                    subtitle: `${active.originalName} · ${active.period}`,
+                    href: '#orders',
+                    region: 'general',
+                  }}
+                />
+              )}
+            </div>
           </DialogHeader>
 
           <ScrollArea className="max-h-[60vh] pr-4">

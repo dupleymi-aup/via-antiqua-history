@@ -1,14 +1,10 @@
-import type { Metadata } from 'next'
+import type { MetadataRoute } from 'next'
 import { allRegions } from '@/lib/history-data'
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: '/',
-  },
-}
+export const dynamic = 'force-static'
 
-export default function sitemap() {
-  const baseUrl = 'https://via-antiqua-history.vercel.app'
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app'
 
   const cityUrls = allRegions.flatMap((region) =>
     region.cities.map((city) => ({

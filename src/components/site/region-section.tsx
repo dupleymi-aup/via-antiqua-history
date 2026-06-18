@@ -134,6 +134,16 @@ export function RegionSection({ region }: { region: Region }) {
                         </span>
                       </div>
                     </div>
+                    <BookmarkButton
+                      item={{
+                        id: `city:${activeCity.id}`,
+                        type: 'city',
+                        title: activeCity.name,
+                        subtitle: `${activeCity.region} — ${activeCity.era}`,
+                        href: `#${region.id}`,
+                        region: region.id,
+                      }}
+                    />
                   </div>
 
                   <p className="text-base md:text-lg leading-relaxed text-foreground/90 mb-6 italic border-l-4 pl-4"
