@@ -23,7 +23,18 @@ import {
   BookmarksFloatingButton,
   BookmarksDialog,
 } from '@/components/site/bookmarks'
-import { greece, rome, mesopotamia, kuban } from '@/lib/history-data'
+import { greece, rome, mesopotamia, kuban, timeline, persons } from '@/lib/history-data'
+import { Building2, Landmark, Calendar, Users } from 'lucide-react'
+
+// Precompute static data outside component for performance
+const citiesCount = [greece, rome, mesopotamia, kuban].reduce(
+  (acc, r) => acc + r.cities.length,
+  0
+)
+const landmarksCount = [greece, rome, mesopotamia, kuban].reduce(
+  (acc, r) => acc + r.cities.reduce((a, c) => a + c.landmarks.length, 0),
+  0
+)
 
 // JSON-LD structured data for SEO
 const jsonLd = {
@@ -46,6 +57,13 @@ const jsonLd = {
 };
 
 export default function Home() {
+  const stats = [
+    { icon: <Building2 className="h-4 w-4" />, value: citiesCount, label: 'городов' },
+    { icon: <Landmark className="h-4 w-4" />, value: landmarksCount, label: 'памятников' },
+    { icon: <Calendar className="h-4 w-4" />, value: timeline.length, label: 'событий' },
+    { icon: <Users className="h-4 w-4" />, value: persons.length, label: 'персоналий' },
+  ]
+
   return (
     <BookmarksProvider>
       <div className="min-h-screen flex flex-col bg-background font-body">
@@ -55,7 +73,7 @@ export default function Home() {
         />
         <ReadingProgress />
         <Navbar />
-        <main id="main-content" className="flex-1">
+        <main id="main-content" role="main" className="flex-1">
           <Hero />
 
           {/* Раздел: Древняя Греция */}

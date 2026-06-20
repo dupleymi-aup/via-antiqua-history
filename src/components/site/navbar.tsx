@@ -31,26 +31,42 @@ export function Navbar() {
   const [searchOpen, setSearchOpen] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState('')
   const { theme, setTheme } = useTheme()
-  const [mounted] = React.useState(true)
+  const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  React.useEffect(() => {
+    let rafId: number | null = null
+    let ticking = false
+
     const onScroll = () => {
-      setScrolled(window.scrollY > 24)
-      
-      // Determine active section based on scroll position
-      const sections = navItems.map(item => item.href.substring(1))
-      const scrollPosition = window.scrollY + 100
-      
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i])
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i])
-          break
-        }
+      if (!ticking) {
+        rafId = requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 24)
+          
+          // Determine active section based on scroll position
+          const sections = navItems.map(item => item.href.substring(1))
+          const scrollPosition = window.scrollY + 100
+          
+          for (let i = sections.length - 1; i >= 0; i--) {
+            const section = document.getElementById(sections[i])
+            if (section && section.offsetTop <= scrollPosition) {
+              setActiveSection(sections[i])
+              break
+            }
+          }
+          ticking = false
+        })
+        ticking = true
       }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [])
 
   // Global hotkeys: Ctrl/Cmd+K → search; Esc → close

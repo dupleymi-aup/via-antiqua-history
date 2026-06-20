@@ -49,17 +49,20 @@ export function useBookmarks() {
 }
 
 export function BookmarksProvider({ children }: { children: React.ReactNode }) {
-  const [bookmarks, setBookmarks] = React.useState<BookmarkItem[]>(() => {
+  const [bookmarks, setBookmarks] = React.useState<BookmarkItem[]>([])
+  const [hydrated, setHydrated] = React.useState(false)
+
+  React.useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
       if (raw) {
-        return JSON.parse(raw)
+        setBookmarks(JSON.parse(raw))
       }
     } catch {
       // ignore
     }
-    return []
-  })
+    setHydrated(true)
+  }, [])
 
   React.useEffect(() => {
     try {
