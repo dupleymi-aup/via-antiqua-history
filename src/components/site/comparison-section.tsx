@@ -5,12 +5,13 @@ import { motion } from 'framer-motion'
 import { GitCompareArrows } from 'lucide-react'
 import { comparisonRows } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
+import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 
 const columns = [
-  { key: 'greece', label: 'Греция', color: 'oklch(0.55 0.13 70)' },
-  { key: 'rome', label: 'Рим', color: 'oklch(0.55 0.13 35)' },
-  { key: 'mesopotamia', label: 'Месопотамия', color: 'oklch(0.55 0.13 50)' },
-  { key: 'kuban', label: 'Кубань', color: 'oklch(0.5 0.11 145)' },
+  { key: 'greece', label: REGION_LABELS.greece, color: REGION_COLORS.greece },
+  { key: 'rome', label: REGION_LABELS.rome, color: REGION_COLORS.rome },
+  { key: 'mesopotamia', label: REGION_LABELS.mesopotamia, color: REGION_COLORS.mesopotamia },
+  { key: 'kuban', label: REGION_LABELS.kuban, color: REGION_COLORS.kuban },
 ] as const
 
 export function ComparisonSection() {

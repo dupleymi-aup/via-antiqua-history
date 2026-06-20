@@ -17,7 +17,7 @@ import {
   mapRegions,
 } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
-import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
+import { REGION_COLORS } from '@/lib/constants'
 
 type SearchResult = {
   type: 'city' | 'landmark' | 'term' | 'person' | 'map-city'
@@ -36,7 +36,8 @@ const typeLabels: Record<SearchResult['type'], string> = {
   'map-city': 'На карте',
 }
 
-function buildIndex(): SearchResult[] {
+// Build index once at module level (outside component)
+const buildIndex = (): SearchResult[] => {
   const items: SearchResult[] = []
 
   allRegions.forEach((r) => {
@@ -108,7 +109,7 @@ export function SearchDialog({
   const [query, setQuery] = React.useState('')
   const [activeIdx, setActiveIdx] = React.useState(0)
 
-  const [index] = React.useState<SearchResult[]>(() => buildIndex())
+  const index = React.useMemo(() => buildIndex(), [])
 
   const results = React.useMemo(() => {
     if (!query.trim()) return []
