@@ -22,6 +22,10 @@ export function Navbar() {
   }, [])
 
   React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  React.useEffect(() => {
     let rafId: number | null = null
     let ticking = false
 

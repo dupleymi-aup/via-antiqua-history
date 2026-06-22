@@ -66,12 +66,13 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   React.useEffect(() => {
+    if (!hydrated) return
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks))
     } catch {
       // ignore
     }
-  }, [bookmarks])
+  }, [bookmarks, hydrated])
 
   const isBookmarked = React.useCallback(
     (id: string) => bookmarks.some((b) => b.id === id),

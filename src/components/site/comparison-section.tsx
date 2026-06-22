@@ -55,13 +55,15 @@ export function ComparisonSection() {
           {/* Desktop: table */}
           <div className="hidden md:block overflow-x-auto custom-scroll">
             <table className="w-full text-sm">
+              <caption className="sr-only">Сравнение четырёх цивилизаций: Греция, Рим, Месопотамия и Кубань по восьми ключевым параметрам</caption>
               <thead>
                 <tr className="border-b border-border">
-                  <th className="text-left p-4 font-display font-semibold sticky left-0 bg-card z-10 min-w-[160px]">
+                  <th scope="col" className="text-left p-4 font-display font-semibold sticky left-0 bg-card z-10 min-w-[160px]">
                     Критерий
                   </th>
                   {columns.map((col) => (
                     <th
+                      scope="col"
                       key={col.key}
                       onMouseEnter={() => setActiveCol(col.key)}
                       onMouseLeave={() => setActiveCol(null)}
