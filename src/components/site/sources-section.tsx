@@ -85,14 +85,16 @@ export function SourcesSection() {
                   {meta.label}
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-3">
-                  {items.map((src, idx) => (
-                    <div
+                  {items.map((src, idx) => {
+                    const Wrapper = src.url ? 'a' : 'div'
+                    return (
+                    <Wrapper
                       key={src.title + idx}
+                      {...(src.url ? { href: src.url, target: '_blank', rel: 'noopener noreferrer' } : {})}
                       className={cn(
                         'rounded-lg border border-border bg-card p-4 transition-shadow hover:shadow-sm',
                         src.url && 'cursor-pointer'
                       )}
-                      onClick={() => src.url && window.open(src.url, '_blank', 'noopener')}
                     >
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <h4 className="font-display font-semibold leading-tight">
@@ -110,8 +112,8 @@ export function SourcesSection() {
                       <p className="text-sm text-foreground/75 leading-relaxed">
                         {src.description}
                       </p>
-                    </div>
-                  ))}
+                    </Wrapper>
+                  )})}
                 </div>
               </motion.div>
             )

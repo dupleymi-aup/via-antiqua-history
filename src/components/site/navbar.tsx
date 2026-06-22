@@ -31,7 +31,11 @@ export function Navbar() {
   const [searchOpen, setSearchOpen] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState('')
   const { theme, setTheme } = useTheme()
-  const [mounted] = React.useState(true)
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
   React.useEffect(() => {
     const onScroll = () => {

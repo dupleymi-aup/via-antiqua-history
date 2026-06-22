@@ -29,7 +29,7 @@ export function RegionSection({ region }: { region: Region }) {
   const [activeLandmark, setActiveLandmark] = React.useState<Landmark | null>(
     null
   )
-  const activeCity = region.cities.find((c) => c.id === activeCityId)!
+  const activeCity = region.cities.find((c) => c.id === activeCityId) ?? region.cities[0]
 
   return (
     <section
