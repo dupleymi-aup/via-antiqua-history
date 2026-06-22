@@ -1,7 +1,3 @@
-'use client'
-
-'use client'
-
 import { Landmark, Feather, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { FOOTER_NAV } from '@/lib/constants'
