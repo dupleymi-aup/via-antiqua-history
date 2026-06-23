@@ -127,10 +127,10 @@ This project is the intellectual property of Dupley Maxim Igorevich. Terms of us
 
 <div align="center">
 
-**История Древнего Пути** — © 2025 Дуплей Максим Игоревич / Dupley Maxim Igorevich
-
 > `Per aspera ad astra` — известное латинское изречение, означающее «через трудности к великой цели», «сквозь препятствия — к звёздам». *Является популярной крылатой фразой, используемой для выражения идеи преодоления трудностей на пути к успеху.*
 
 *Per aspera ad astra*
+
+**История Древнего Пути** — © 2025 - 2026 `Дуплей Максим Игоревич` / `Dupley Maxim Igorevich`
 
 </div>
