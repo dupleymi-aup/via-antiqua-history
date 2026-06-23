@@ -131,6 +131,6 @@ This project is the intellectual property of Dupley Maxim Igorevich. Terms of us
 
 *Per aspera ad astra*
 
-**История Древнего Пути** — © 2025 - 2026 `Дуплей Максим Игоревич` / `Dupley Maxim Igorevich`
+**История Древнего Пути** — © 2025 - 2026
 
 </div>
