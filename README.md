@@ -150,6 +150,8 @@ This project is the intellectual property of Dupley Maxim Igorevich. Terms of us
 [<img width="210" height="400" alt="image" src="https://github.com/user-attachments/assets/974feb1d-70eb-40f6-ab32-eaa00afbc0a4" />]
 (https://ortox.ru/icons/ikona-bogoroditsy-afonskaya-igumenya-afona-igumenya-svyatoy-gory/)
 
+<img width="983" height="768" alt="image" src="https://github.com/user-attachments/assets/50236547-2e33-4ba7-ae1d-ed723b251d48" />
+
 ---
 
 <div align="center">
