@@ -10,10 +10,15 @@ export function useAnimatedCounter(target: number, duration = 1200) {
   const [value, setValue] = React.useState(0)
   const rafRef = React.useRef<number | null>(null)
   const startRef = React.useRef<number | null>(null)
+  const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
-    if (target <= 0) {
-      setValue(0)
+    setMounted(true)
+  }, [])
+
+  React.useEffect(() => {
+    if (!mounted || target <= 0) {
+      if (target <= 0) setValue(0)
       return
     }
 

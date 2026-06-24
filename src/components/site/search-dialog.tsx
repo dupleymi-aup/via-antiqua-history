@@ -17,6 +17,7 @@ import {
   mapRegions,
 } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
+import { REGION_COLORS } from '@/lib/constants'
 
 type SearchResult = {
   type: 'city' | 'landmark' | 'term' | 'person' | 'map-city'
@@ -27,26 +28,18 @@ type SearchResult = {
   icon: React.ReactNode
 }
 
-const regionColors: Record<string, string> = {
-  greece: 'oklch(0.55 0.13 70)',
-  rome: 'oklch(0.55 0.13 35)',
-  mesopotamia: 'oklch(0.55 0.13 50)',
-  kuban: 'oklch(0.5 0.11 145)',
-  general: 'oklch(0.5 0.05 60)',
+const typeLabels: Record<SearchResult['type'], string> = {
+  city: 'Город',
+  landmark: 'Памятник',
+  term: 'Термин',
+  person: 'Персоналия',
+  'map-city': 'На карте',
 }
 
-const regionLabels: Record<string, string> = {
-  greece: 'Греция',
-  rome: 'Рим',
-  mesopotamia: 'Месопотамия',
-  kuban: 'Кубань',
-  general: 'Общее',
-}
-
-function buildIndex(): SearchResult[] {
+// Build index once at module level (outside component)
+const buildIndex = (): SearchResult[] => {
   const items: SearchResult[] = []
 
-  // Cities
   allRegions.forEach((r) => {
     r.cities.forEach((c) => {
       items.push({
@@ -57,7 +50,6 @@ function buildIndex(): SearchResult[] {
         href: `#${r.id}`,
         icon: <MapPin className="h-4 w-4" />,
       })
-      // Landmarks
       c.landmarks.forEach((l) => {
         items.push({
           type: 'landmark',
@@ -71,7 +63,6 @@ function buildIndex(): SearchResult[] {
     })
   })
 
-  // Glossary terms
   glossary.forEach((t) => {
     items.push({
       type: 'term',
@@ -83,7 +74,6 @@ function buildIndex(): SearchResult[] {
     })
   })
 
-  // Persons
   persons.forEach((p) => {
     items.push({
       type: 'person',
@@ -95,7 +85,6 @@ function buildIndex(): SearchResult[] {
     })
   })
 
-  // Map cities
   mapRegions.forEach((m) => {
     items.push({
       type: 'map-city',
@@ -110,14 +99,6 @@ function buildIndex(): SearchResult[] {
   return items
 }
 
-const typeLabels: Record<SearchResult['type'], string> = {
-  city: 'Город',
-  landmark: 'Памятник',
-  term: 'Термин',
-  person: 'Персоналия',
-  'map-city': 'На карте',
-}
-
 export function SearchDialog({
   open,
   onOpenChange,
@@ -128,15 +109,7 @@ export function SearchDialog({
   const [query, setQuery] = React.useState('')
   const [activeIdx, setActiveIdx] = React.useState(0)
 
-  // Reset active index when query changes (without useEffect)
-  React.useEffect(() => {
-    let cancelled = false
-    if (cancelled) return
-    // Defer state update to next microtask
-    const id = setTimeout(() => setActiveIdx(0), 0)
-    return () => clearTimeout(id)
-  }, [query])
-  const [index] = React.useState<SearchResult[]>(() => buildIndex())
+  const index = React.useMemo(() => buildIndex(), [])
 
   const results = React.useMemo(() => {
     if (!query.trim()) return []
@@ -232,7 +205,7 @@ export function SearchDialog({
                   Найдено результатов: {results.length}
                 </div>
                 {results.map((r, i) => {
-                  const color = regionColors[r.region] || regionColors.general
+                  const color = REGION_COLORS[r.region] || REGION_COLORS.general
                   return (
                     <button
                       key={i}

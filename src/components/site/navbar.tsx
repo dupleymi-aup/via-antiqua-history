@@ -7,23 +7,7 @@ import { Menu, X, Sun, Moon, Landmark, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { SearchDialog } from '@/components/site/search-dialog'
-
-const navItems = [
-  { href: '#greece', label: 'Греция' },
-  { href: '#rome', label: 'Рим' },
-  { href: '#mesopotamia', label: 'Месопотамия' },
-  { href: '#kuban', label: 'Кубань' },
-  { href: '#persons', label: 'Персоналии' },
-  { href: '#wonders', label: 'Чудеса' },
-  { href: '#orders', label: 'Ордера' },
-  { href: '#epochs', label: 'Эпохи' },
-  { href: '#timeline', label: 'Хронология' },
-  { href: '#map', label: 'Карта' },
-  { href: '#comparison', label: 'Сравнение' },
-  { href: '#analysis', label: 'Анализ' },
-  { href: '#glossary', label: 'Глоссарий' },
-  { href: '#quiz', label: 'Квиз' },
-]
+import { SITE_NAV } from '@/lib/constants'
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false)
@@ -31,26 +15,46 @@ export function Navbar() {
   const [searchOpen, setSearchOpen] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState('')
   const { theme, setTheme } = useTheme()
-  const [mounted] = React.useState(true)
+  const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  React.useEffect(() => {
+    let rafId: number | null = null
+    let ticking = false
+
     const onScroll = () => {
-      setScrolled(window.scrollY > 24)
-      
-      // Determine active section based on scroll position
-      const sections = navItems.map(item => item.href.substring(1))
-      const scrollPosition = window.scrollY + 100
-      
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i])
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i])
-          break
-        }
+      if (!ticking) {
+        rafId = requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 24)
+          
+          // Determine active section based on scroll position
+          const sections = SITE_NAV.map(item => item.href.substring(1))
+          const scrollPosition = window.scrollY + 100
+          
+          for (let i = sections.length - 1; i >= 0; i--) {
+            const section = document.getElementById(sections[i])
+            if (section && section.offsetTop <= scrollPosition) {
+              setActiveSection(sections[i])
+              break
+            }
+          }
+          ticking = false
+        })
+        ticking = true
       }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [])
 
   // Global hotkeys: Ctrl/Cmd+K → search; Esc → close
@@ -94,7 +98,7 @@ export function Navbar() {
           </Link>
 
           <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
-            {navItems.map((item) => (
+            {SITE_NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -159,9 +163,9 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-md">
+          <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-md">
           <div className="container mx-auto max-w-7xl px-4 py-3 flex flex-col gap-1">
-            {navItems.map((item) => (
+            {SITE_NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
