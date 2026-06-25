@@ -4,7 +4,6 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { Columns3 } from 'lucide-react'
 import { architecturalOrders, type ArchitecturalOrder } from '@/lib/history-data'
-import { cn } from '@/lib/utils'
 import {
   Dialog,
   DialogContent,

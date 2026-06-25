@@ -2,17 +2,11 @@
 
 import * as React from 'react'
 import { ArrowUp } from 'lucide-react'
-import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
+import { motion, AnimatePresence, useScroll } from 'framer-motion'
 
 export function ScrollToTop() {
   const { scrollYProgress } = useScroll()
   const [visible, setVisible] = React.useState(false)
-
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  })
 
   React.useEffect(() => {
     return scrollYProgress.on('change', (latest) => {

@@ -60,5 +60,4 @@ export const FOOTER_NAV = [
   { href: '#sources', label: 'Источники' },
 ] as const
 
-// Префикс для скролл-индикатора (должен быть выше navbar z-50)
-export const SCROLL_INDICATOR_Z_INDEX = 51
+

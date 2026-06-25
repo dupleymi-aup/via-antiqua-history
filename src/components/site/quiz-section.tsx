@@ -32,12 +32,12 @@ export function QuizSection() {
   const select = (i: number) => {
     if (isAnswered) return
     setSelected(i)
-    const next = [...answers]
-    next[current] = i
-    setAnswers(next)
+    const updated = [...answers]
+    updated[current] = i
+    setAnswers(updated)
   }
 
-  const next = () => {
+  const goNext = () => {
     if (current + 1 >= quizQuestions.length) {
       setFinished(true)
     } else {
@@ -46,7 +46,7 @@ export function QuizSection() {
     }
   }
 
-  const prev = () => {
+  const goPrev = () => {
     if (current > 0) {
       setCurrent((c) => c - 1)
       setSelected(answers[current - 1] ?? null)
@@ -68,18 +68,18 @@ export function QuizSection() {
       } else if (e.key === 'Enter' || e.key === 'ArrowRight') {
         if (isAnswered) {
           e.preventDefault()
-          next()
+          goNext()
         }
       } else if (e.key === 'ArrowLeft') {
         if (current > 0) {
           e.preventDefault()
-          prev()
+          goPrev()
         }
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [current, isAnswered, finished, q, answers])
+  }, [current, isAnswered, finished, q, answers]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const reset = () => {
     setCurrent(0)
@@ -308,12 +308,12 @@ export function QuizSection() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={prev}
+                onClick={goPrev}
                 disabled={current === 0}
               >
                 Назад
               </Button>
-              <Button onClick={next} disabled={!isAnswered} size="sm">
+              <Button onClick={goNext} disabled={!isAnswered} size="sm">
                 {current + 1 >= quizQuestions.length
                   ? 'Завершить'
                   : 'Следующий вопрос'}

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, EB_Garamond } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/site/theme-provider";
 
 const displayFont = Cormorant_Garamond({
@@ -71,9 +70,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  verification: {
-    // Можно добавить Яндекс/Google верификацию
-  },
   category: "education",
   alternates: {
     canonical: "/",
@@ -105,7 +101,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <Toaster />
         </ThemeProvider>
       </body>
     </html>

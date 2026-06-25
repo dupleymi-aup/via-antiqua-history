@@ -39,7 +39,7 @@ export function useAnimatedCounter(target: number, duration = 1200) {
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
       startRef.current = null
     }
-  }, [target, duration])
+  }, [target, duration, mounted])
 
   return value
 }
