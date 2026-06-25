@@ -17,9 +17,6 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { BookmarkButton } from '@/components/site/bookmarks'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 
-const regionColors = REGION_COLORS
-const regionLabels = REGION_LABELS
-
 const filters: { key: string; label: string }[] = [
   { key: 'all', label: 'Все' },
   { key: 'greece', label: 'Греция' },
@@ -89,7 +86,7 @@ export function PersonsSection() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <AnimatePresence mode="popLayout">
             {filtered.map((p, idx) => {
-              const color = regionColors[p.region]
+              const color = REGION_COLORS[p.region]
               return (
                 <motion.button
                   key={p.id}
@@ -120,7 +117,7 @@ export function PersonsSection() {
                         color,
                       }}
                     >
-                      {regionLabels[p.region]}
+                      {REGION_LABELS[p.region]}
                     </span>
                   </div>
                   <p className="text-xs text-primary font-medium mb-2">{p.era}</p>
@@ -151,11 +148,11 @@ export function PersonsSection() {
                     variant="secondary"
                     className="mb-2"
                     style={{
-                      backgroundColor: `oklch(from ${regionColors[active.region]} l c h / 0.15)`,
-                      color: regionColors[active.region],
+                      backgroundColor: `oklch(from ${REGION_COLORS[active.region]} l c h / 0.15)`,
+                      color: REGION_COLORS[active.region],
                     }}
                   >
-                    {regionLabels[active.region]} · {active.era}
+                    {REGION_LABELS[active.region]} · {active.era}
                   </Badge>
                 )}
                 <DialogTitle className="font-display text-2xl md:text-3xl">
@@ -200,7 +197,7 @@ export function PersonsSection() {
                     <span
                       className="inline-block h-1 w-6 rounded-full"
                       style={{
-                        backgroundColor: regionColors[active.region],
+                        backgroundColor: REGION_COLORS[active.region],
                       }}
                     />
                     Главные достижения
@@ -214,7 +211,7 @@ export function PersonsSection() {
                         <span
                           className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full shrink-0"
                           style={{
-                            backgroundColor: regionColors[active.region],
+                            backgroundColor: REGION_COLORS[active.region],
                           }}
                         />
                         <span className="text-foreground/85">{a}</span>

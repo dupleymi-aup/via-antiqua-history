@@ -7,9 +7,6 @@ import { epochs } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 
-const regionColors = REGION_COLORS
-const regionLabels = REGION_LABELS
-
 export function EpochsSection() {
   return (
     <section
@@ -91,15 +88,15 @@ export function EpochsSection() {
                             key={r}
                             className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full"
                             style={{
-                              backgroundColor: `oklch(from ${regionColors[r]} l c h / 0.12)`,
-                              color: regionColors[r],
+                              backgroundColor: `oklch(from ${REGION_COLORS[r]} l c h / 0.12)`,
+                              color: REGION_COLORS[r],
                             }}
                           >
                             <span
                               className="inline-block h-1.5 w-1.5 rounded-full"
-                              style={{ backgroundColor: regionColors[r] }}
+                              style={{ backgroundColor: REGION_COLORS[r] }}
                             />
-                            {regionLabels[r]}
+                            {REGION_LABELS[r]}
                           </span>
                         ))}
                       </div>
