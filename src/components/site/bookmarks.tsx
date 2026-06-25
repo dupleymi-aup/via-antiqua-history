@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Bookmark, BookmarkCheck, X, Trash2, BookOpen } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
-import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
+import { REGION_COLORS } from '@/lib/constants'
 
 export type BookmarkItem = {
   id: string // уникальный ключ — например "city:athens" или "landmark:parthenon"

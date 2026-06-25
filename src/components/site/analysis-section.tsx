@@ -4,7 +4,6 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { Quote, Feather } from 'lucide-react'
 import { authorAnalysis } from '@/lib/history-data'
-import { cn } from '@/lib/utils'
 
 export function AnalysisSection() {
   return (

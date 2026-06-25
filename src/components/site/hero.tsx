@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { ChevronDown, BookOpen, Map as MapIcon, Sparkles, Landmark, Building2, Calendar, Users } from 'lucide-react'
 import Link from 'next/link'
-import { allRegions, timeline, glossary, persons } from '@/lib/history-data'
+import { allRegions, timeline, persons } from '@/lib/history-data'
 import { useAnimatedCounter } from '@/hooks/use-animated-counter'
 import { REGION_COLORS } from '@/lib/constants'
 

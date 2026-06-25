@@ -1,8 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Columns3, X } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Columns3 } from 'lucide-react'
 import { architecturalOrders, type ArchitecturalOrder } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
 import {

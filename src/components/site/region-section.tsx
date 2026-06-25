@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, Calendar, Info, X } from 'lucide-react'
+import { MapPin, Calendar, Info } from 'lucide-react'
 import type { Region, Landmark } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
 import {
@@ -13,7 +13,6 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { BookmarkButton } from '@/components/site/bookmarks'
 

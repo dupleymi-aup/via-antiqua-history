@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Users, X } from 'lucide-react'
+import { Users } from 'lucide-react'
 import { persons, type Person } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
 import {

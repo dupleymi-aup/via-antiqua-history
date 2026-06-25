@@ -1,8 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, X, MapPin, Calendar, Hammer, Crown } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Sparkles, MapPin, Calendar, Hammer, Crown } from 'lucide-react'
 import { wonders, type Wonder } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
 import {

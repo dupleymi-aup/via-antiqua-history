@@ -1,8 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Search, X, MapPin, Landmark, BookMarked, Users, CornerDownLeft } from 'lucide-react'
+import { Search, MapPin, Landmark, BookMarked, Users, CornerDownLeft } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
