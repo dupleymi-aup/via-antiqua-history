@@ -57,10 +57,13 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
       if (raw) {
-        setBookmarks(JSON.parse(raw))
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) {
+          setBookmarks(parsed)
+        }
       }
     } catch {
-      // ignore
+      console.warn('Failed to parse bookmarks from localStorage')
     }
     setHydrated(true)
   }, [])
@@ -70,7 +73,7 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks))
     } catch {
-      // ignore
+      console.warn('Failed to save bookmarks to localStorage')
     }
   }, [bookmarks, hydrated])
 
