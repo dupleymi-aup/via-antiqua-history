@@ -4,15 +4,10 @@ meta:
     name: npm
     version: "22"
 
-services:
-  - name: via-antiqua-history
-    type: nodejs
-    buildCommand: npm ci && npm run build
-    startCommand: node .next/standalone/server.js
-    port: 80
-    instances: 1
-    memory: 1Gi
-    cpu: 500m
-    env:
-      NODE_ENV: production
-      PORT: "80"
+build:
+  additionalCommands: npm run build
+
+run:
+  command: node .next/standalone/server.js
+  containerPort: 80
+  persistenceMount: /data
