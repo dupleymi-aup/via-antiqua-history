@@ -6,7 +6,7 @@
       "runtime": "nodejs_22",
       "buildCommand": "npm ci && npm run build",
       "startCommand": "node .next/standalone/server.js",
-      "port": 3000,
+      "port": 80,
       "instances": 1,
       "minInstances": 1,
       "maxInstances": 3,
@@ -26,7 +26,8 @@
         }
       ],
       "env": {
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        "PORT": "80"
       }
     }
   ]
