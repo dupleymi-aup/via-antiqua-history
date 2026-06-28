@@ -182,6 +182,9 @@ export function TimelineSection() {
                   Далее <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
               </div>
+              <span className="hidden sm:inline text-[11px] text-muted-foreground italic text-center mt-2">
+                ← → для навигации
+              </span>
             </div>
           </div>
 
