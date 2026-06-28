@@ -20,9 +20,14 @@ export function QuizSection() {
   // Calculate correct answers count
   const correctCount = React.useMemo(() => {
     return answers.reduce<number>(
-      (acc, answer, index) => acc + (answer === quizQuestions[index].correct ? 1 : 0),
+      (acc, answer, index) => acc + (answer !== null && answer === quizQuestions[index].correct ? 1 : 0),
       0
     )
+  }, [answers])
+
+  // Calculate total answered count (for progress bar)
+  const answeredCount = React.useMemo(() => {
+    return answers.filter((a) => a !== null).length
   }, [answers])
 
   const q = quizQuestions[current]
@@ -88,10 +93,23 @@ export function QuizSection() {
     setFinished(false)
   }
 
-  const progress = ((current + (isAnswered ? 1 : 0)) / quizQuestions.length) * 100
+  const progress = (answeredCount / quizQuestions.length) * 100
 
   if (finished) {
     const percent = Math.round((correctCount / quizQuestions.length) * 100)
+
+    // Precompute region stats in a single pass
+    const regionStats: Record<string, { total: number; correct: number }> = {}
+    quizQuestions.forEach((q, index) => {
+      if (!regionStats[q.region]) {
+        regionStats[q.region] = { total: 0, correct: 0 }
+      }
+      regionStats[q.region].total++
+      if (answers[index] !== null && answers[index] === q.correct) {
+        regionStats[q.region].correct++
+      }
+    })
+
     return (
       <section
         id="quiz"
@@ -120,13 +138,12 @@ export function QuizSection() {
             </div>
             <p className="text-2xl font-semibold mb-8">{percent}%</p>
 
+            {/* Статистика по регионам */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
               {(['greece', 'rome', 'mesopotamia', 'kuban'] as const).map(
                 (key) => {
-                  const qs = quizQuestions.filter((q) => q.region === key)
-                  const correct = qs.filter(
-                    (_, i) => answers[quizQuestions.indexOf(qs[i])] === qs[i].correct
-                  ).length
+                  const total = regionStats[key].total
+                  const correct = regionStats[key].correct
                   return (
                     <div
                       key={key}
@@ -142,7 +159,7 @@ export function QuizSection() {
                         {REGION_LABELS[key]}
                       </div>
                       <div className="text-lg font-bold">
-                        {correct}/{qs.length}
+                        {correct}/{total}
                       </div>
                     </div>
                   )

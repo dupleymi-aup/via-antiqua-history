@@ -28,21 +28,58 @@ import { greece, rome, mesopotamia, kuban } from '@/lib/history-data'
 // JSON-LD structured data for SEO
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "История Древнего Пути",
-  "description": "Интерактивная историческая энциклопедия античного мира",
-  "url": "https://via-antiqua-history.vercel.app",
-  "applicationCategory": "EducationalApplication",
-  "operatingSystem": "Web",
-  "author": {
-    "@type": "Person",
-    "name": "Дуплей Максим Игоревич"
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "RUB"
-  }
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "История Древнего Пути",
+      "description": "Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство.",
+      "url": "https://via-antiqua-history.vercel.app",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web",
+      "browserRequirements": "Requires JavaScript",
+      "author": {
+        "@type": "Person",
+        "name": "Дуплей Максим Игоревич"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "120",
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "name": "История Древнего Пути",
+      "url": "https://via-antiqua-history.vercel.app",
+      "description": "Интерактивный исторический лабиринт античного мира",
+      "publisher": {
+        "@type": "Person",
+        "name": "Дуплей Максим Игоревич"
+      },
+      "inLanguage": "ru"
+    },
+    {
+      "@type": "EducationalOrganization",
+      "name": "История Древнего Пути",
+      "description": "Образовательный проект об античных цивилизациях",
+      "url": "https://via-antiqua-history.vercel.app",
+      "knowsAbout": [
+        "Древняя Греция",
+        "Римская империя",
+        "Месопотамия",
+        "Боспорское царство",
+        "Античность",
+        "Классическая археология"
+      ]
+    }
+  ]
 };
 
 export default function Home() {

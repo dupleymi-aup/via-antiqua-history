@@ -24,7 +24,7 @@ type SearchResult = {
   subtitle: string
   region: string
   href?: string
-  icon: React.ReactNode
+  iconType: 'MapPin' | 'Landmark' | 'BookMarked' | 'Users'
 }
 
 const typeLabels: Record<SearchResult['type'], string> = {
@@ -35,8 +35,8 @@ const typeLabels: Record<SearchResult['type'], string> = {
   'map-city': 'На карте',
 }
 
-// Build index once at module level (outside component)
-const buildIndex = (): SearchResult[] => {
+// Build index once at module level
+const searchIndex: SearchResult[] = (() => {
   const items: SearchResult[] = []
 
   allRegions.forEach((r) => {
@@ -47,7 +47,7 @@ const buildIndex = (): SearchResult[] => {
         subtitle: c.summary,
         region: r.id,
         href: `#${r.id}`,
-        icon: <MapPin className="h-4 w-4" />,
+        iconType: 'MapPin',
       })
       c.landmarks.forEach((l) => {
         items.push({
@@ -56,7 +56,7 @@ const buildIndex = (): SearchResult[] => {
           subtitle: `${c.name} — ${l.shortDesc}`,
           region: r.id,
           href: `#${r.id}`,
-          icon: <Landmark className="h-4 w-4" />,
+          iconType: 'Landmark',
         })
       })
     })
@@ -69,7 +69,7 @@ const buildIndex = (): SearchResult[] => {
       subtitle: t.definition,
       region: t.origin,
       href: '#glossary',
-      icon: <BookMarked className="h-4 w-4" />,
+      iconType: 'BookMarked',
     })
   })
 
@@ -80,7 +80,7 @@ const buildIndex = (): SearchResult[] => {
       subtitle: `${p.role} · ${p.era}`,
       region: p.region,
       href: '#persons',
-      icon: <Users className="h-4 w-4" />,
+      iconType: 'Users',
     })
   })
 
@@ -91,11 +91,18 @@ const buildIndex = (): SearchResult[] => {
       subtitle: m.description,
       region: m.region,
       href: '#map',
-      icon: <MapPin className="h-4 w-4" />,
+      iconType: 'MapPin',
     })
   })
 
   return items
+})()
+
+const iconMap: Record<SearchResult['iconType'], React.ComponentType<{ className: string }>> = {
+  MapPin: MapPin,
+  Landmark: Landmark,
+  BookMarked: BookMarked,
+  Users: Users,
 }
 
 export function SearchDialog({
@@ -108,7 +115,7 @@ export function SearchDialog({
   const [query, setQuery] = React.useState('')
   const [activeIdx, setActiveIdx] = React.useState(0)
 
-  const index = React.useMemo(() => buildIndex(), [])
+  const index = searchIndex
 
   const results = React.useMemo(() => {
     if (!query.trim()) return []
@@ -224,7 +231,7 @@ export function SearchDialog({
                           color,
                         }}
                       >
-                        {r.icon}
+                        {React.createElement(iconMap[r.iconType], { className: "h-4 w-4" })}
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="flex items-center gap-2 mb-0.5">
