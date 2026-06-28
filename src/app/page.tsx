@@ -25,6 +25,8 @@ import {
 } from '@/components/site/bookmarks'
 import { greece, rome, mesopotamia, kuban } from '@/lib/history-data'
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app'
+
 // JSON-LD structured data for SEO
 const jsonLd = {
   "@context": "https://schema.org",
@@ -33,7 +35,7 @@ const jsonLd = {
       "@type": "WebApplication",
       "name": "История Древнего Пути",
       "description": "Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство.",
-      "url": "https://via-antiqua-history.vercel.app",
+      "url": siteUrl,
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "Web",
       "browserRequirements": "Requires JavaScript",
@@ -57,7 +59,7 @@ const jsonLd = {
     {
       "@type": "WebSite",
       "name": "История Древнего Пути",
-      "url": "https://via-antiqua-history.vercel.app",
+      "url": siteUrl,
       "description": "Интерактивный исторический лабиринт античного мира",
       "publisher": {
         "@type": "Person",
@@ -69,7 +71,7 @@ const jsonLd = {
       "@type": "EducationalOrganization",
       "name": "История Древнего Пути",
       "description": "Образовательный проект об античных цивилизациях",
-      "url": "https://via-antiqua-history.vercel.app",
+      "url": siteUrl,
       "knowsAbout": [
         "Древняя Греция",
         "Римская империя",
