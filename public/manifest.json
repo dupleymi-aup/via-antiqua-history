@@ -7,12 +7,15 @@
   "background_color": "#F7F4EE",
   "theme_color": "#B08D55",
   "orientation": "portrait-primary",
+  "categories": ["education", "reference"],
+  "lang": "ru",
+  "dir": "ltr",
   "icons": [
     {
       "src": "/logo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
