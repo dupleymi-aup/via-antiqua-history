@@ -102,14 +102,10 @@ export default function Home() {
           <RegionSection region={greece} />
 
           {/* Раздел: Римская империя */}
-          <ContentGate title="Римская империя" subtitle="От основания города до падения Западной Римской империи — более тысячи лет величия, завоеваний и культурного наследия.">
-            <RegionSection region={rome} />
-          </ContentGate>
+          <RegionSection region={rome} restricted />
 
           {/* Раздел: Месопотамия */}
-          <ContentGate title="Месопотамия" subtitle="Колыбель цивилизации — от шумерских городов-государств до Вавилонского царства и Ассирийской империи.">
-            <RegionSection region={mesopotamia} />
-          </ContentGate>
+          <RegionSection region={mesopotamia} restricted />
 
           {/* Раздел: Кубань */}
           <RegionSection region={kuban} />

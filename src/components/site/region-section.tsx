@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, Calendar, Info } from 'lucide-react'
+import { MapPin, Calendar, Info, Lock } from 'lucide-react'
 import type { Region, Landmark } from '@/lib/history-data'
 import { cn, withAlpha } from '@/lib/utils'
 import {
@@ -15,6 +15,8 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { BookmarkButton } from '@/components/site/bookmarks'
+import Link from 'next/link'
+import { useAuth } from '@/contexts/AuthContext'
 
 const regionIconMap: Record<string, React.ReactNode> = {
   temple: <span className="text-xl">🏛️</span>,
@@ -23,12 +25,13 @@ const regionIconMap: Record<string, React.ReactNode> = {
   amphora: <span className="text-xl">🏺</span>,
 }
 
-export function RegionSection({ region }: { region: Region }) {
+export function RegionSection({ region, restricted }: { region: Region; restricted?: boolean }) {
   const [activeCityId, setActiveCityId] = React.useState(region.cities[0].id)
   const [activeLandmark, setActiveLandmark] = React.useState<Landmark | null>(
     null
   )
   const activeCity = region.cities.find((c) => c.id === activeCityId) ?? region.cities[0]
+  const { user } = useAuth()
 
   return (
     <section
@@ -71,6 +74,47 @@ export function RegionSection({ region }: { region: Region }) {
           </p>
         </motion.div>
 
+        {restricted && !user ? (
+          <div className="relative rounded-xl border border-border bg-card overflow-hidden">
+            <div className="blur-sm opacity-40 pointer-events-none h-32 overflow-hidden">
+              <div className="grid lg:grid-cols-12 gap-8">
+                <div className="lg:col-span-3">
+                  {region.cities.slice(0, 2).map((city) => (
+                    <div key={city.id} className="px-4 py-3 rounded-lg border border-border bg-card/50 mb-2">
+                      <div className="font-display text-base font-semibold">{city.name}</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">{city.era}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="lg:col-span-9">
+                  <div className="rounded-xl border border-border bg-card p-6">
+                    <div className="h-6 w-48 bg-muted/50 rounded mb-3" />
+                    <div className="h-4 w-full bg-muted/30 rounded mb-2" />
+                    <div className="h-4 w-3/4 bg-muted/30 rounded" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/80 backdrop-blur-sm">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-4">
+                <Lock className="h-6 w-6 text-primary" />
+              </span>
+              <p className="font-display text-xl font-semibold mb-2">
+                Полный доступ — после входа
+              </p>
+              <p className="text-sm text-muted-foreground mb-4">
+                Города, памятники и исторический контекст доступны авторизованным пользователям
+              </p>
+              <Link
+                href="/login"
+                className="inline-flex items-center justify-center gap-2 h-10 px-6 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+              >
+                Войти
+              </Link>
+            </div>
+          </div>
+        ) : (
+        <>
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Левая колонка: переключение городов */}
           <div className="lg:col-span-3">
@@ -230,6 +274,9 @@ export function RegionSection({ region }: { region: Region }) {
             ))}
           </div>
         </motion.div>
+        </>
+        )}
+
       </div>
 
       {/* Модальное окно достопримечательности */}
