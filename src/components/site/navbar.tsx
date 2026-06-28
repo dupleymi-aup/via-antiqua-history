@@ -114,7 +114,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 sm:h-9 sm:w-9"
+              className="hidden sm:inline-flex h-8 w-8 sm:h-9 sm:w-9"
               onClick={() => setSearchOpen(true)}
               aria-label="Поиск"
             >
@@ -162,7 +162,15 @@ export function Navbar() {
               </Link>
             ))}
             <div className="border-t border-border my-1" />
-            <div className="flex items-center gap-1 px-3 py-1">
+            <div className="flex flex-col gap-1 px-3 py-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start gap-2 sm:hidden"
+                onClick={() => { setSearchOpen(true); setOpen(false) }}
+              >
+                <Search className="h-4 w-4" /> Поиск
+              </Button>
               <Button
                 variant="ghost"
                 size="sm"
