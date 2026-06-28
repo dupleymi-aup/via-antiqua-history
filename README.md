@@ -191,6 +191,8 @@ This project is the intellectual property of Dupley Maxim Igorevich. Terms of us
 
 <div align="center">
 
-**История Древнего Пути** — © 2025 - 2026
+꧁ **История Древнего Пути** — © 2025 - 2026
+
+☦️ **Пути Господни - неисповедимы**
 
 </div>
