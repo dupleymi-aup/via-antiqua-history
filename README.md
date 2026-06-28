@@ -93,13 +93,24 @@ git clone https://github.com/QuadDarv1ne/via-antiqua-history.git
 cd via-antiqua-history
 
 # Установить зависимости
-bun install
+npm install
+
+# Скопировать переменные окружения
+cp .env.example .env.local
 
 # Запустить в режиме разработки
-bun run dev
+npm run dev
 ```
 
 Приложение будет доступно по адресу [http://localhost:3000](http://localhost:3000)
+
+### Деплой на Amvera
+
+1. Создайте приложение в Amvera Console
+2. Установите переменные окружения:
+   - `JWT_SECRET` — секретный ключ для JWT (сгенерируйте через `openssl rand -hex 32`)
+   - `NEXT_PUBLIC_SITE_URL` — публичный URL вашего приложения
+3. Приложение автоматически соберётся и запустится через `amvera.yaml`
 
 ### Дорожная карта
 
