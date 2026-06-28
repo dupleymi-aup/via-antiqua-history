@@ -60,4 +60,15 @@ export const FOOTER_NAV = [
   { href: '#sources', label: 'Источники' },
 ] as const
 
+export const SOCIAL_LINKS = [
+  { href: 'https://rutube.ru/channel/4218729/', label: 'Rutube', title: 'Хижина программиста' },
+  { href: 'https://github.com/QuadDarv1ne', label: 'GitHub', title: 'QuadDarv1ne' },
+  { href: 'https://vk.com/maestro7it', label: 'VK', title: 'maestro7it' },
+  { href: 'https://live.vkvideo.ru/quadd4rv1n7', label: 'VK Video', title: 'quadd4rv1n7' },
+  { href: 'https://orcid.org/0009-0007-7605-539X', label: 'ORCID', title: 'ORCID' },
+  { href: 'https://school-maestro7it.ru/', label: 'Школа', title: 'Школа Маэстро' },
+  { href: 'https://stepik.org/users/150943726/teach', label: 'Stepik', title: 'Stepik' },
+  { href: 'https://worldchess.com/profile/1094367', label: 'Chess', title: 'World Chess' },
+] as const
+
 

@@ -1,6 +1,6 @@
-import { Landmark, Feather, BookOpen } from 'lucide-react'
+import { Landmark, Feather, BookOpen, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
-import { FOOTER_NAV } from '@/lib/constants'
+import { FOOTER_NAV, SOCIAL_LINKS } from '@/lib/constants'
 
 export function Footer() {
   return (
@@ -65,9 +65,21 @@ export function Footer() {
             © {new Date().getFullYear()} «Исторический Лабиринт». Все права
             защищены.
           </p>
-          <p className="text-xs text-muted-foreground font-body italic">
-            Per aspera ad astra · От Эллады до Римских Пределов
-          </p>
+          <div className="flex flex-wrap gap-x-3 gap-y-1 justify-center md:justify-end">
+            {SOCIAL_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                title={link.title}
+              >
+                {link.label}
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
