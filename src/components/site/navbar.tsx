@@ -151,6 +151,7 @@ export function Navbar() {
               className="lg:hidden"
               onClick={() => setOpen((v) => !v)}
               aria-label="Меню"
+              aria-expanded={open}
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
@@ -174,10 +175,10 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="sm"
-              className="justify-start"
+              className="justify-start gap-2"
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             >
-              {mounted && (theme === 'dark' ? 'Светлая тема' : 'Тёмная тема')}
+              {mounted && (theme === 'dark' ? <><Sun className="h-4 w-4" /> Светлая тема</> : <><Moon className="h-4 w-4" /> Тёмная тема</>)}
             </Button>
           </div>
         </div>

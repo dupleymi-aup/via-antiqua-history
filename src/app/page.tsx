@@ -48,12 +48,13 @@ const jsonLd = {
         "price": "0",
         "priceCurrency": "RUB"
       },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "ratingCount": "120",
-        "bestRating": "5",
-        "worstRating": "1"
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "{search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
       }
     },
     {
