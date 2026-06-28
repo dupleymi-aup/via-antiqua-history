@@ -21,8 +21,8 @@ export function ContentGate({
       <section className="py-20 md:py-28 scroll-mt-20">
         <div className="container mx-auto max-w-7xl px-4">
           <div className="mb-10 md:mb-14">
-            <h2 className="font-display text-3xl md:text-5xl font-semibold mb-4">{title}</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl">{subtitle}</p>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-5xl font-semibold mb-3 sm:mb-4">{title}</h2>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl">{subtitle}</p>
           </div>
           <div className="h-64 rounded-xl bg-muted/30 animate-pulse" />
         </div>
@@ -38,8 +38,8 @@ export function ContentGate({
     <section className="py-20 md:py-28 scroll-mt-20">
       <div className="container mx-auto max-w-7xl px-4">
         <div className="mb-10 md:mb-14">
-          <h2 className="font-display text-3xl md:text-5xl font-semibold mb-4">{title}</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl">{subtitle}</p>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-5xl font-semibold mb-3 sm:mb-4">{title}</h2>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl">{subtitle}</p>
         </div>
 
         <div className="relative rounded-xl border border-border bg-card overflow-hidden min-h-[420px] md:min-h-[480px]">

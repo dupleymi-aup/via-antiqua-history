@@ -23,7 +23,7 @@ export function ReadingProgress() {
         style={{ scaleX }}
       />
       <motion.div
-        className="fixed top-[calc(env(safe-area-inset-top,0px)+56px)] right-3 h-6 text-[10px] font-medium text-muted-foreground bg-card border border-border px-1.5 py-0.5 rounded shadow-sm z-[55] leading-none flex items-center"
+        className="fixed top-12 sm:top-14 right-2 sm:right-3 h-5 sm:h-6 text-[9px] sm:text-[10px] font-medium text-muted-foreground bg-card border border-border px-1 sm:px-1.5 py-0.5 rounded shadow-sm z-[55] leading-none flex items-center"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: percentage > 5 ? 1 : 0, y: 0 }}
         transition={{ duration: 0.2 }}

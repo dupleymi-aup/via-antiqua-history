@@ -50,7 +50,7 @@ export default function LoginPage() {
               <Landmark className="h-5 w-5" />
             </span>
           </Link>
-          <h1 className="font-display text-3xl font-semibold">
+          <h1 className="font-display text-2xl sm:text-3xl font-semibold">
             {require2fa ? 'Двухфакторная аутентификация' : 'Вход'}
           </h1>
           <p className="text-sm text-muted-foreground mt-1">

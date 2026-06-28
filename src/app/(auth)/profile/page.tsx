@@ -124,7 +124,7 @@ export default function ProfilePage() {
             {(user.name || 'П')[0].toUpperCase()}
           </div>
           <div>
-            <h1 className="font-display text-3xl font-semibold">{user.name || 'Пользователь'}</h1>
+            <h1 className="font-display text-2xl sm:text-3xl font-semibold">{user.name || 'Пользователь'}</h1>
             <p className="text-sm text-muted-foreground">{user.email}</p>
           </div>
         </div>

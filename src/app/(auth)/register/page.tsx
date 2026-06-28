@@ -73,7 +73,7 @@ export default function RegisterPage() {
               <Landmark className="h-5 w-5" />
             </span>
           </Link>
-          <h1 className="font-display text-3xl font-semibold">Регистрация</h1>
+          <h1 className="font-display text-2xl sm:text-3xl font-semibold">Регистрация</h1>
           <p className="text-sm text-muted-foreground mt-1">Создайте аккаунт</p>
         </div>
 
