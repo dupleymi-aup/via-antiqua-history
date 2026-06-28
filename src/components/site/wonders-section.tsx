@@ -64,7 +64,7 @@ export function WondersSection() {
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
                 whileHover={{ y: -4 }}
                 onClick={() => setActive(w)}
-                className="text-left p-6 rounded-lg border border-border bg-card hover:border-primary hover:shadow-md transition-all relative overflow-hidden"
+                className="text-left p-6 rounded-lg border border-border bg-card hover:border-primary hover:shadow-md transition-all relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
               >
                 {/* Большая цифра-номер */}
                 <span className="absolute top-2 right-3 font-display text-6xl font-bold opacity-10">

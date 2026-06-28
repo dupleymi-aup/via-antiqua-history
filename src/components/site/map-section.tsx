@@ -57,7 +57,7 @@ export function MapSection() {
             type="button"
             onClick={() => setFilter('all')}
             className={cn(
-              'px-4 py-2 rounded-full text-sm font-medium border transition-all',
+              'px-4 py-2 rounded-full text-sm font-medium border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
               filter === 'all'
                 ? 'bg-primary text-primary-foreground border-primary'
                 : 'bg-card border-border hover:border-primary/40'
@@ -71,7 +71,7 @@ export function MapSection() {
               key={key}
               onClick={() => setFilter(key)}
               className={cn(
-                'px-4 py-2 rounded-full text-sm font-medium border transition-all flex items-center gap-2',
+                'px-4 py-2 rounded-full text-sm font-medium border transition-all flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
                 filter === key
                   ? 'text-white border-transparent'
                   : 'bg-card border-border hover:border-primary/40'

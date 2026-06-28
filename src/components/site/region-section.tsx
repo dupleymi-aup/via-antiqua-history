@@ -181,7 +181,7 @@ export function RegionSection({ region }: { region: Region }) {
                         transition={{ duration: 0.4, delay: i * 0.05 }}
                         whileHover={{ y: -4 }}
                         onClick={() => setActiveLandmark(lm)}
-                        className="text-left p-5 rounded-lg border border-border bg-card hover:border-primary hover:shadow-md transition-all"
+                        className="text-left p-5 rounded-lg border border-border bg-card hover:border-primary hover:shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
                       >
                         <div className="flex items-start justify-between gap-3 mb-2">
                           <h5 className="font-display text-lg font-semibold">

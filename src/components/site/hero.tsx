@@ -89,19 +89,23 @@ export function Hero() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-2">
-                {regionChips.map((chip) => (
-                  <span
-                    key={chip.label}
-                    className="px-4 py-2 rounded-full text-sm font-medium border border-border bg-card/60 backdrop-blur-sm flex items-center gap-2"
-                    style={{ color: chip.color }}
-                  >
-                    <span
-                      className="inline-block h-2 w-2 rounded-full"
-                      style={{ backgroundColor: chip.color }}
-                    />
-                    {chip.label}
-                  </span>
-                ))}
+                {regionChips.map((chip, i) => {
+                  const sectionIds = ['#greece', '#rome', '#mesopotamia', '#kuban']
+                  return (
+                    <Link
+                      key={chip.label}
+                      href={sectionIds[i]}
+                      className="px-4 py-2 rounded-full text-sm font-medium border border-border bg-card/60 backdrop-blur-sm flex items-center gap-2 hover:border-primary/40 hover:bg-accent/5 transition-colors"
+                      style={{ color: chip.color }}
+                    >
+                      <span
+                        className="inline-block h-2 w-2 rounded-full"
+                        style={{ backgroundColor: chip.color }}
+                      />
+                      {chip.label}
+                    </Link>
+                  )
+                })}
               </div>
 
               {/* Статистика */}

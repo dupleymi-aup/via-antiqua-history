@@ -83,7 +83,7 @@ export function GlossarySection() {
                 key={opt.key}
                 onClick={() => setFilter(opt.key)}
                 className={cn(
-                  'px-3 py-1.5 rounded-full text-xs font-medium border transition-all whitespace-nowrap',
+                  'px-3 py-1.5 rounded-full text-xs font-medium border transition-all whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
                   filter === opt.key
                     ? 'bg-primary text-primary-foreground border-primary'
                     : 'bg-card border-border hover:border-primary/40'

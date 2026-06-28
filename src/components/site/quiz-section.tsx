@@ -287,7 +287,7 @@ export function QuizSection() {
                     onClick={() => select(i)}
                     disabled={isAnswered}
                     className={cn(
-                      'w-full text-left p-4 rounded-lg border transition-all flex items-center gap-3',
+                      'w-full text-left p-4 rounded-lg border transition-all flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
                       !isAnswered &&
                         'border-border hover:border-primary hover:bg-accent/5 hover:shadow-sm cursor-pointer',
                       showAsCorrect &&

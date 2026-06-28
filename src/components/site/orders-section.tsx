@@ -147,7 +147,7 @@ export function OrdersSection() {
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 whileHover={{ y: -4 }}
                 onClick={() => setActive(order)}
-                className="text-left p-6 rounded-lg border border-border bg-card hover:border-primary hover:shadow-md transition-all flex flex-col"
+                className="text-left p-6 rounded-lg border border-border bg-card hover:border-primary hover:shadow-md transition-all flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
               >
                 <h3 className="font-display text-xl font-semibold mb-1">
                   {order.name}
