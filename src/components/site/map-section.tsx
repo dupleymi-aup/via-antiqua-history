@@ -34,18 +34,18 @@ export function MapSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="mb-10 md:mb-14 text-center"
+          className="mb-6 sm:mb-8 md:mb-10 md:mb-14 text-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-4">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
             <MapPin className="h-3.5 w-3.5 text-primary" />
-            <span className="text-xs uppercase tracking-widest font-medium">
+            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-medium">
               География античного мира
             </span>
           </div>
-          <h2 className="font-display text-3xl md:text-5xl font-semibold mb-4">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 sm:mb-4">
             Интерактивная карта
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
             Нажмите на город, чтобы узнать о нём больше. Используйте фильтры
             ниже, чтобы подсветить отдельные регионы.
           </p>
@@ -197,8 +197,8 @@ export function MapSection() {
                     style={{
                       left: `${r.x}%`,
                       top: `${r.y}%`,
-                      width: '44px',
-                      height: '44px',
+                      width: '48px',
+                      height: '48px',
                       transform: 'translate(-50%, -50%)',
                     }}
                     aria-label={r.name}
@@ -208,22 +208,22 @@ export function MapSection() {
                       className="absolute rounded-full animate-ping opacity-40 pointer-events-none"
                       style={{
                         backgroundColor: color,
-                        width: isSelected || isHovered ? '24px' : '16px',
-                        height: isSelected || isHovered ? '24px' : '16px',
+                        width: isSelected || isHovered ? '28px' : '18px',
+                        height: isSelected || isHovered ? '28px' : '18px',
                       }}
                     />
                     <span
                       className="relative block rounded-full border-2 border-white shadow-md transition-all pointer-events-none"
                       style={{
                         backgroundColor: color,
-                        width: isSelected || isHovered ? '16px' : '11px',
-                        height: isSelected || isHovered ? '16px' : '11px',
+                        width: isSelected || isHovered ? '18px' : '13px',
+                        height: isSelected || isHovered ? '18px' : '13px',
                       }}
                     />
                     {/* Подпись */}
                     <span
                       className={cn(
-                        'absolute left-1/2 -translate-x-1/2 top-full mt-0.5 whitespace-nowrap rounded px-1.5 py-0.5 text-[11px] sm:text-xs font-medium transition-opacity pointer-events-none',
+                        'absolute left-1/2 -translate-x-1/2 top-full mt-1 whitespace-nowrap rounded px-1.5 py-0.5 text-[10px] sm:text-xs font-medium transition-opacity pointer-events-none',
                         isHovered || isSelected
                           ? 'opacity-100'
                           : 'opacity-70 group-hover:opacity-100'
@@ -252,7 +252,7 @@ export function MapSection() {
 
           {/* Информация о выбранном городе */}
           <div className="lg:col-span-4">
-            <div className="rounded-xl border border-border bg-card p-6 h-full">
+            <div className="rounded-xl border border-border bg-card p-4 sm:p-6 h-full">
               <AnimatePresence mode="wait">
                 {selectedRegion ? (
                   <motion.div
