@@ -4,11 +4,10 @@ import type { NextRequest } from 'next/server'
 const protectedPaths = ['/profile']
 const authPaths = ['/login', '/register', '/forgot-password', '/reset-password']
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
   const token = req.cookies.get('session')?.value
 
-  // Basic JWT validation: check it has 3 parts and isn't expired
   const isValidToken = (t: string): boolean => {
     try {
       const parts = t.split('.')

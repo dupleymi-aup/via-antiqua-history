@@ -9,11 +9,11 @@ export type EmailMessage = {
 
 export async function sendEmail(msg: EmailMessage): Promise<boolean> {
   if (TEST_MODE) {
-    console.log('--- EMAIL (TEST MODE) ---')
-    console.log(`To: ${msg.to}`)
-    console.log(`Subject: ${msg.subject}`)
-    console.log(`Body: ${msg.text}`)
-    console.log('--- END EMAIL ---')
+    console.warn('--- EMAIL (TEST MODE) ---')
+    console.warn(`To: ${msg.to}`)
+    console.warn(`Subject: ${msg.subject}`)
+    console.warn(`Body: ${msg.text}`)
+    console.warn('--- END EMAIL ---')
     return true
   }
 

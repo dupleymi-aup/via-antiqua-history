@@ -159,7 +159,6 @@ export default function ProfilePage() {
                   Отсканируйте QR-код в приложении-аутентификаторе (Google Authenticator, Яндекс.Ключ и др.)
                 </p>
                 <div className="flex justify-center">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={qrCode} alt="QR Code" className="h-48 w-48" />
                 </div>
                 <div>

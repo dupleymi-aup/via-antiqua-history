@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { TOTP } from 'otplib'
 import { toDataURL } from 'qrcode'
-const totp = new TOTP()
 import { getDb } from '@/lib/auth/db'
 import { getSession } from '@/lib/auth/utils'
+import { totp } from '@/lib/auth/totp'
 import type { ApiResponse } from '@/lib/auth/types'
 
 export async function GET() {
@@ -49,8 +48,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json<ApiResponse>({ ok: false, error: '2FA не настроен. Запросите setup сначала' }, { status: 400 })
     }
 
-    const isValid = await totp.verify(code, { secret: user.totp_secret as string })
-    if (!isValid) {
+    const result = await totp.verify(code, { secret: user.totp_secret as string })
+    if (!result.valid) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Неверный код' }, { status: 400 })
     }
 

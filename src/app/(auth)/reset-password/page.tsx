@@ -1,12 +1,10 @@
 'use client'
 
 import * as React from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Landmark, Eye, EyeOff, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
 
 export default function ResetPasswordPage() {
-  const router = useRouter()
   const [email, setEmail] = React.useState('')
   const [code, setCode] = React.useState('')
   const [password, setPassword] = React.useState('')

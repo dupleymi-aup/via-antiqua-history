@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Landmark, Eye, EyeOff, Loader2, AlertCircle, ShieldAlert } from 'lucide-react'
+import { Landmark, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
 export default function LoginPage() {

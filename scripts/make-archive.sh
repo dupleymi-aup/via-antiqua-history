@@ -12,8 +12,8 @@
 
 set -e
 
-PROJECT_DIR="/home/z/my-project"
-ARCHIVE_PATH="$PROJECT_DIR/download/istoricheskij-labirint.zip"
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+ARCHIVE_PATH="$PROJECT_DIR/download/via-antiqua-history.zip"
 
 cd "$PROJECT_DIR"
 
@@ -24,20 +24,26 @@ rm -f "$ARCHIVE_PATH"
 zip -r "$ARCHIVE_PATH" \
   src/ \
   public/ \
-  prisma/ \
   scripts/ \
+  data/ \
+  history/ \
+  img/ \
   README.md \
+  README_RU.md \
+  README_EN.md \
   package.json \
+  package-lock.json \
   tsconfig.json \
-  tailwind.config.ts \
   next.config.ts \
   next-env.d.ts \
   eslint.config.mjs \
   postcss.config.mjs \
   components.json \
   .gitignore \
-  .env \
+  .env.example \
+  amvera.yaml \
   Caddyfile \
+  LICENSE \
   > /tmp/zip-output.log 2>&1
 
 echo "====================================="

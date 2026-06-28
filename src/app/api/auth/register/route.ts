@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { hashPassword, generateToken, createSession } from '@/lib/auth/utils'
-import { sendEmailVerification } from '@/lib/auth/email'
 import type { ApiResponse } from '@/lib/auth/types'
 
 export async function POST(req: NextRequest) {

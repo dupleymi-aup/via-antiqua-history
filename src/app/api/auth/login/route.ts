@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { verifyPassword, createSession } from '@/lib/auth/utils'
 import type { ApiResponse } from '@/lib/auth/types'
-import { TOTP } from 'otplib'
-const totp = new TOTP()
+import { totp } from '@/lib/auth/totp'
 
 export async function POST(req: NextRequest) {
   try {
@@ -34,8 +33,8 @@ export async function POST(req: NextRequest) {
       }
 
       const secret = user.totp_secret as string
-      const isValid = await totp.verify(totpCode, { secret })
-      if (!isValid) {
+      const result = await totp.verify(totpCode, { secret })
+      if (!result.valid) {
         return NextResponse.json<ApiResponse>({ ok: false, error: 'Неверный код 2FA' }, { status: 401 })
       }
     }

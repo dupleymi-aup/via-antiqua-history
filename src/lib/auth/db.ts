@@ -1,7 +1,15 @@
 import Database from 'better-sqlite3'
 import path from 'path'
+import fs from 'fs'
 
-const DB_PATH = process.env.DB_PATH || path.join(process.cwd(), 'data', 'app.db')
+const DB_PATH = process.env.DB_PATH || (() => {
+  const dataPath = path.join(process.cwd(), 'data', 'app.db')
+  const dataDir = path.dirname(dataPath)
+  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true })
+  const amveraPath = '/data/app.db'
+  if (fs.existsSync(path.dirname(amveraPath))) return amveraPath
+  return dataPath
+})()
 
 let db: Database.Database | null = null
 
@@ -70,4 +78,10 @@ export function closeDb() {
     db.close()
     db = null
   }
+}
+
+if (typeof process !== 'undefined') {
+  process.on('exit', closeDb)
+  process.on('SIGINT', () => { closeDb(); process.exit() })
+  process.on('SIGTERM', () => { closeDb(); process.exit() })
 }

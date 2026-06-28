@@ -3,7 +3,14 @@ import jwt from 'jsonwebtoken'
 import { randomBytes } from 'crypto'
 import { cookies } from 'next/headers'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production-' + randomBytes(16).toString('hex')
+const JWT_SECRET = (() => {
+  const secret = process.env.JWT_SECRET
+  if (secret) return secret
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('JWT_SECRET environment variable is required in production')
+  }
+  return 'dev-secret-change-in-production-' + randomBytes(16).toString('hex')
+})()
 const SESSION_COOKIE = 'session'
 const SESSION_MAX_AGE = 7 * 24 * 60 * 60 // 7 days in seconds
 
