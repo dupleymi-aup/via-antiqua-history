@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { User, Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useBookmarks } from '@/components/site/bookmarks'
 
 export default function ProfilePage() {
   const router = useRouter()
-  const { user, loading, logout } = useAuth()
+  const { user, loading, logout, refresh } = useAuth()
+  const { bookmarks } = useBookmarks()
   const [qrCode, setQrCode] = React.useState('')
   const [totpCode, setTotpCode] = React.useState('')
   const [recoveryCodes, setRecoveryCodes] = React.useState<string[]>([])
@@ -69,7 +71,7 @@ export default function ProfilePage() {
         setShowRecovery(true)
         setQrCode('')
         setTotpCode('')
-        window.location.reload()
+        await refresh()
       } else {
         setError(json.error || 'Неверный код')
       }
@@ -87,7 +89,7 @@ export default function ProfilePage() {
       const res = await fetch('/api/auth/2fa/verify', { method: 'DELETE' })
       const json = await res.json()
       if (json.ok) {
-        window.location.reload()
+        await refresh()
       } else {
         setError(json.error || 'Ошибка')
       }
@@ -118,9 +120,11 @@ export default function ProfilePage() {
         </Link>
 
         <div className="flex items-center gap-4 mb-8">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-            <User className="h-7 w-7 text-primary" />
-          </span>
+          <img
+            src="/img/dupley_maxim.jpg"
+            alt={user.name || 'Пользователь'}
+            className="w-14 h-14 rounded-full object-cover border border-border"
+          />
           <div>
             <h1 className="font-display text-3xl font-semibold">{user.name || 'Пользователь'}</h1>
             <p className="text-sm text-muted-foreground">{user.email}</p>
@@ -212,14 +216,24 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* Статистика */}
+          {/* Закладки */}
           <div className="rounded-xl border border-border bg-card p-6">
-            <div className="flex items-center gap-2 mb-2">
-              <Bookmark className="h-5 w-5 text-primary" />
-              <h2 className="font-display text-lg font-semibold">Синхронизация закладок</h2>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Bookmark className="h-5 w-5 text-primary" />
+                <h2 className="font-display text-lg font-semibold">Закладки</h2>
+              </div>
+              <span className="text-sm font-medium text-muted-foreground">{bookmarks.length}</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Ваши закладки автоматически синхронизируются с сервером при входе в аккаунт.
+            </p>
+          </div>
+
+          {/* Дата регистрации */}
+          <div className="rounded-xl border border-border bg-card p-6">
+            <p className="text-sm text-muted-foreground">
+              Аккаунт создан: <span className="text-foreground font-medium">{new Date(user.createdAt).toLocaleDateString('ru-RU')}</span>
             </p>
           </div>
 

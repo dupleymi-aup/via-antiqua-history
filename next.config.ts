@@ -4,10 +4,6 @@ const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: true,
   serverExternalPackages: ["better-sqlite3"],
-  images: {
-    remotePatterns: [],
-    unoptimized: true,
-  },
   async headers() {
     return [
       {
