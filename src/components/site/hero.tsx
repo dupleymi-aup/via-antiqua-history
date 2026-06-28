@@ -35,7 +35,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden parchment-bg"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden parchment-bg pt-14 sm:pt-16"
     >
       {/* Декоративные круги / античная сетка */}
       <div className="absolute inset-0 pointer-events-none">
