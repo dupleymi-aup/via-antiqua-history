@@ -186,7 +186,7 @@ export function Hero() {
             transition={{ delay: 1.4 }}
             className="mt-12 flex justify-center lg:justify-start"
           >
-            <ChevronDown className="h-6 w-6 text-muted-foreground animate-bounce" />
+            <ChevronDown className="h-6 w-6 text-muted-foreground animate-bounce" aria-hidden="true" />
           </motion.div>
         </div>
       </div>

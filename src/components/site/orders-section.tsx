@@ -92,10 +92,15 @@ function CorinthianCapital() {
   )
 }
 
+const capitalMap: Record<string, React.FC> = {
+  doric: DoricCapital,
+  ionic: IonicCapital,
+  corinthian: CorinthianCapital,
+}
+
 function Capital({ id }: { id: string }) {
-  if (id === 'doric') return <DoricCapital />
-  if (id === 'ionic') return <IonicCapital />
-  return <CorinthianCapital />
+  const Component = capitalMap[id] ?? CorinthianCapital
+  return <Component />
 }
 
 export function OrdersSection() {

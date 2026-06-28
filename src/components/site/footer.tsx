@@ -46,11 +46,9 @@ export function Footer() {
               <Feather className="h-4 w-4" /> Авторство
             </h4>
             <div className="flex items-start gap-3">
-              <img
-                src="/img/dupley_maxim.jpg"
-                alt="Дуплей Максим Игоревич"
-                className="w-12 h-12 rounded-full object-cover border border-border shrink-0"
-              />
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-display text-lg font-semibold border border-border shrink-0">
+                М
+              </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
                   Дуплей Максим Игоревич
