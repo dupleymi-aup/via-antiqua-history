@@ -60,7 +60,7 @@ export function Hero() {
           }}
         />
         {/* Тонкий меандр сверху и снизу */}
-        <div className="absolute top-24 left-0 right-0 meander-border text-primary" />
+        <div className="absolute top-12 sm:top-14 left-0 right-0 meander-border text-primary" />
         <div className="absolute bottom-24 left-0 right-0 meander-border text-primary" />
       </div>
 
