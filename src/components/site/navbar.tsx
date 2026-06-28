@@ -80,8 +80,8 @@ export function Navbar() {
       className={cn(
         'fixed top-0 inset-x-0 z-50 transition-all duration-300',
         scrolled
-          ? 'bg-background/90 backdrop-blur-md border-b border-border shadow-sm'
-          : 'bg-background/60 backdrop-blur-sm'
+          ? 'bg-background border-b border-border shadow-sm'
+          : 'bg-background/95 backdrop-blur-md'
       )}
     >
       <div className="container mx-auto max-w-7xl px-3 sm:px-4">
