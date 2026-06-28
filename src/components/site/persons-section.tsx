@@ -111,7 +111,7 @@ export function PersonsSection() {
                       )}
                     </div>
                     <span
-                      className="shrink-0 inline-block px-2 py-0.5 rounded-full text-[10px] font-medium"
+                      className="shrink-0 inline-block px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium"
                       style={{
                         backgroundColor: `oklch(from ${color} l c h / 0.12)`,
                         color,
@@ -139,7 +139,7 @@ export function PersonsSection() {
 
       {/* Модальное окно с биографией */}
       <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden">
+        <DialogContent className="max-w-2xl max-h-[90vh]">
           <DialogHeader>
             <div className="flex items-start justify-between gap-3 pr-8">
               <div>

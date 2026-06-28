@@ -95,7 +95,7 @@ export function TimelineSection() {
                   onClick={() => setActiveIdx(i)}
                   className={cn(
                     'group relative flex flex-col items-stretch transition-all',
-                    'min-w-[140px] md:min-w-[180px]'
+                    'min-w-[100px] sm:min-w-[140px] md:min-w-[180px]'
                   )}
                 >
                   {/* Точки на дорожке */}
@@ -153,7 +153,7 @@ export function TimelineSection() {
               <div className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
                 {activeIdx + 1} из {allTimeline.length}
               </div>
-              <div className="font-display text-4xl md:text-5xl font-bold mb-3 gold-text">
+              <div className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-3 gold-text">
                 {event.yearLabel}
               </div>
               <p className="text-sm text-muted-foreground mb-6 flex-1">
@@ -187,7 +187,7 @@ export function TimelineSection() {
 
           {/* Правая колонка: события по регионам */}
           <div className="md:col-span-8">
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {(['greece', 'rome', 'mesopotamia', 'kuban'] as const).map(
                 (regionKey) => {
                   const text = event[regionKey]
@@ -208,7 +208,7 @@ export function TimelineSection() {
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <span
-                          className="flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                          className="flex h-7 w-7 items-center justify-center rounded-full text-[11px] sm:text-xs font-bold text-white"
                           style={{ backgroundColor: meta.color }}
                         >
                           {meta.short}

@@ -266,7 +266,7 @@ export function BookmarksDialog({
                               {b.title}
                             </span>
                             <span
-                              className="text-[10px] uppercase tracking-wider font-medium"
+                              className="text-[11px] sm:text-xs uppercase tracking-wider font-medium"
                               style={{ color }}
                             >
                               {typeLabels[b.type]}

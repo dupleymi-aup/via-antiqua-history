@@ -235,7 +235,7 @@ export function RegionSection({ region }: { region: Region }) {
         open={!!activeLandmark}
         onOpenChange={(o) => !o && setActiveLandmark(null)}
       >
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden">
+        <DialogContent className="max-w-2xl max-h-[90vh]">
           <DialogHeader>
             <div className="flex items-start justify-between gap-3 pr-8">
               <div>

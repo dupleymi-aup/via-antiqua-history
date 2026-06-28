@@ -237,7 +237,7 @@ export function SearchDialog({
                         <span className="flex items-center gap-2 mb-0.5">
                           <span className="font-medium text-sm">{r.title}</span>
                           <span
-                            className="text-[10px] uppercase tracking-wider font-medium"
+                            className="text-[11px] sm:text-xs uppercase tracking-wider font-medium"
                             style={{ color }}
                           >
                             {typeLabels[r.type]}

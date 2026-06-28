@@ -128,7 +128,7 @@ export function GlossarySection() {
                         }}
                       />
                       <span
-                        className="shrink-0 inline-block px-2 py-0.5 rounded-full text-[10px] font-medium"
+                        className="shrink-0 inline-block px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium"
                         style={{
                           backgroundColor: `oklch(from ${meta.color} l c h / 0.12)`,
                           color: meta.color,

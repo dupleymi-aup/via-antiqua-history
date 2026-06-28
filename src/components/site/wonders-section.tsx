@@ -93,7 +93,7 @@ export function WondersSection() {
                   <div className="flex flex-wrap gap-1.5">
                     <Badge
                       variant="secondary"
-                      className="text-[10px]"
+                      className="text-[11px] sm:text-xs"
                       style={{
                         backgroundColor: `oklch(from ${color} l c h / 0.12)`,
                         color,
@@ -101,7 +101,7 @@ export function WondersSection() {
                     >
                       {REGION_LABELS[w.region]}
                     </Badge>
-                    <Badge variant="outline" className="text-[10px]">
+                    <Badge variant="outline" className="text-[11px] sm:text-xs">
                       {w.built}
                     </Badge>
                   </div>
@@ -114,7 +114,7 @@ export function WondersSection() {
 
       {/* Модальное окно */}
       <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden">
+        <DialogContent className="max-w-2xl max-h-[90vh]">
           <DialogHeader>
             <div className="flex items-start justify-between gap-3 pr-8">
               <div>

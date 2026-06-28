@@ -67,10 +67,10 @@ export function EpochsSection() {
                   </div>
 
                   {/* Карточка эпохи */}
-                  <div className="ml-12 md:ml-0 md:w-1/2 md:px-8">
+                  <div className="ml-10 md:ml-0 md:w-1/2 md:px-8">
                     <div className="rounded-lg border border-border bg-card p-5">
                       <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
-                        <h3 className="font-display text-xl font-semibold leading-tight">
+                        <h3 className="font-display text-lg sm:text-xl font-semibold leading-tight">
                           {epoch.name}
                         </h3>
                         <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
@@ -86,7 +86,7 @@ export function EpochsSection() {
                         {epoch.regions.map((r) => (
                           <span
                             key={r}
-                            className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full"
+                            className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium px-2 py-0.5 rounded-full"
                             style={{
                               backgroundColor: `oklch(from ${REGION_COLORS[r]} l c h / 0.12)`,
                               color: REGION_COLORS[r],
