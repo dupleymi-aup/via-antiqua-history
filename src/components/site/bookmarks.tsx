@@ -1,8 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import { motion } from 'framer-motion'
-import { Bookmark, BookmarkCheck, X, Trash2, BookOpen } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Bookmark, BookmarkCheck, X, Trash2, BookOpen, Check, Undo2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   Dialog,
@@ -82,15 +82,26 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
     [bookmarks]
   )
 
+  const [toast, setToast] = React.useState<{ show: boolean; title: string; added: boolean }>({ show: false, title: '', added: false })
+  const toastTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+
+  const showToast = React.useCallback((title: string, added: boolean) => {
+    setToast({ show: true, title, added })
+    clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => setToast((prev) => ({ ...prev, show: false })), 2000)
+  }, [])
+
   const toggle = React.useCallback((item: BookmarkItem) => {
     setBookmarks((cur) => {
       const exists = cur.some((b) => b.id === item.id)
       if (exists) {
+        showToast(item.title, false)
         return cur.filter((b) => b.id !== item.id)
       }
+      showToast(item.title, true)
       return [item, ...cur]
     })
-  }, [])
+  }, [showToast])
 
   const remove = React.useCallback((id: string) => {
     setBookmarks((cur) => cur.filter((b) => b.id !== id))
@@ -106,6 +117,26 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
   return (
     <BookmarksContext.Provider value={value}>
       {children}
+      <AnimatePresence>
+        {toast.show && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 50, x: '-50%' }}
+            transition={{ duration: 0.25 }}
+            className="fixed bottom-6 left-1/2 z-[70] flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-3 shadow-lg"
+          >
+            {toast.added ? (
+              <Check className="h-4 w-4 text-primary shrink-0" />
+            ) : (
+              <Undo2 className="h-4 w-4 text-muted-foreground shrink-0" />
+            )}
+            <span className="text-sm font-medium">
+              {toast.added ? 'Добавлено в закладки' : 'Убрано из закладок'}
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </BookmarksContext.Provider>
   )
 }
@@ -128,7 +159,8 @@ export function BookmarkButton({ item }: { item: BookmarkItem }) {
   const active = isBookmarked(item.id)
 
   return (
-    <button
+    <motion.button
+      whileTap={{ scale: 0.85 }}
       onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -136,7 +168,7 @@ export function BookmarkButton({ item }: { item: BookmarkItem }) {
       }}
       aria-label={active ? 'Убрать из закладок' : 'В закладки'}
       className={cn(
-        'inline-flex items-center justify-center h-9 w-9 rounded-full transition-all',
+        'inline-flex items-center justify-center h-9 w-9 rounded-full transition-colors',
         active
           ? 'bg-primary text-primary-foreground shadow-md'
           : 'bg-background/80 text-muted-foreground hover:text-foreground hover:bg-background border border-border'
@@ -147,7 +179,7 @@ export function BookmarkButton({ item }: { item: BookmarkItem }) {
       ) : (
         <Bookmark className="h-4 w-4" />
       )}
-    </button>
+    </motion.button>
   )
 }
 

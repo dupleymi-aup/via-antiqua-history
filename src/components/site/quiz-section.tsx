@@ -216,10 +216,33 @@ export function QuizSection() {
               Вопрос {current + 1} из {quizQuestions.length}
             </span>
             <span className="font-medium">
-              Правильно: {correctCount}
+              Правильно: {correctCount} / {quizQuestions.length}
             </span>
           </div>
           <Progress value={progress} className="h-2" />
+          <div className="flex gap-1.5 mt-2 justify-center">
+            {quizQuestions.map((_, i) => {
+              const a = answers[i]
+              const isCorrect_q = a !== null && a === quizQuestions[i].correct
+              return (
+                <button
+                  key={i}
+                  onClick={() => {
+                    if (answers[i] !== null || i < current) {
+                      setCurrent(i)
+                      setSelected(answers[i] ?? null)
+                    }
+                  }}
+                  className={cn(
+                    'h-2 rounded-full transition-all cursor-pointer',
+                    i === current ? 'w-6 bg-primary' : 'w-2',
+                    a === null ? 'bg-border' : isCorrect_q ? 'bg-green-500' : 'bg-red-400'
+                  )}
+                  aria-label={`Вопрос ${i + 1}${a !== null ? (isCorrect_q ? ', верно' : ', неверно') : ', не отвечен'}`}
+                />
+              )
+            })}
+          </div>
         </div>
 
         <AnimatePresence mode="wait">
@@ -252,14 +275,15 @@ export function QuizSection() {
                 const showAsCorrect = isAnswered && i === q.correct
                 const showAsWrong = isAnswered && i === selected && i !== q.correct
                 return (
-                  <button
+                  <motion.button
                     key={i}
+                    whileTap={!isAnswered ? { scale: 0.98 } : undefined}
                     onClick={() => select(i)}
                     disabled={isAnswered}
                     className={cn(
                       'w-full text-left p-4 rounded-lg border transition-all flex items-center gap-3',
                       !isAnswered &&
-                        'border-border hover:border-primary hover:bg-accent/5 cursor-pointer',
+                        'border-border hover:border-primary hover:bg-accent/5 hover:shadow-sm cursor-pointer',
                       showAsCorrect &&
                         'border-green-500 bg-green-50 dark:bg-green-950/30',
                       showAsWrong &&
@@ -267,7 +291,7 @@ export function QuizSection() {
                       isAnswered &&
                         !showAsCorrect &&
                         !showAsWrong &&
-                        'border-border opacity-60'
+                        'border-border opacity-50'
                     )}
                   >
                     <span
@@ -291,7 +315,7 @@ export function QuizSection() {
                       )}
                     </span>
                     <span className="text-sm md:text-base flex-1">{opt}</span>
-                  </button>
+                  </motion.button>
                 )
               })}
             </div>
