@@ -35,7 +35,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-screen flex flex-col overflow-hidden parchment-bg"
+      className="relative min-h-screen flex flex-col overflow-hidden parchment-bg pb-8 sm:pb-12"
     >
       {/* Декоративные круги / античная сетка */}
       <div className="absolute inset-0 pointer-events-none">
@@ -64,7 +64,7 @@ export function Hero() {
         <div className="absolute bottom-24 left-0 right-0 meander-border text-primary" />
       </div>
 
-      <div className="h-14 sm:h-16 shrink-0" />
+      <div className="h-20 sm:h-24 shrink-0" />
       <div className="flex-1 flex items-center justify-center relative z-10">
       <div className="container mx-auto max-w-5xl px-4">
         <motion.div

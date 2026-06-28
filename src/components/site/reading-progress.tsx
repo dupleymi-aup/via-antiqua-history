@@ -23,9 +23,9 @@ export function ReadingProgress() {
         style={{ scaleX }}
       />
       <motion.div
-        className="fixed top-0 right-0 text-[10px] font-medium text-muted-foreground bg-card/80 backdrop-blur-sm px-2 py-0.5 rounded-bl z-[61]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: percentage > 5 ? 1 : 0 }}
+        className="fixed top-2 right-2 h-7 text-xs font-medium text-muted-foreground bg-card/80 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border z-[61] leading-none flex items-center"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: percentage > 5 ? 1 : 0, y: 0 }}
         transition={{ duration: 0.2 }}
       >
         {percentage}%
