@@ -78,7 +78,7 @@ export function Hero() {
             </span>
           </div>
 
-          <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-semibold leading-tight tracking-tight">
+          <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight tracking-tight">
             <span className="block">Исторический Лабиринт</span>
             <span className="block gold-text mt-2">
               От Эллады до Римских Пределов

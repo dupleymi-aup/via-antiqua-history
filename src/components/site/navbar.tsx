@@ -82,24 +82,24 @@ export function Navbar() {
           : 'bg-transparent'
       )}
     >
-      <div className="container mx-auto max-w-7xl px-4">
-        <nav className="flex h-16 items-center justify-between gap-2">
-          <Link href="#top" className="flex items-center gap-2 group shrink-0">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform group-hover:rotate-12">
-              <Landmark className="h-5 w-5" />
+      <div className="container mx-auto max-w-7xl px-3 sm:px-4">
+        <nav className="flex h-14 sm:h-16 items-center justify-between gap-1 sm:gap-2">
+          <Link href="#top" className="flex items-center gap-1.5 sm:gap-2 group shrink-0">
+            <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform group-hover:rotate-12 shrink-0">
+              <Landmark className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
-            <span className="font-display text-xl font-semibold tracking-wide hidden sm:inline">
+            <span className="font-display text-base lg:text-xl font-semibold tracking-wide truncate hidden lg:inline">
               Исторический Лабиринт
             </span>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
+          <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
             {SITE_NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-3 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap",
+                  "px-2 xl:px-3 py-2 text-xs xl:text-sm font-medium rounded-md transition-colors whitespace-nowrap",
                   isActive(item.href)
                     ? "text-foreground bg-accent/10 font-semibold"
                     : "text-foreground/80 hover:text-foreground hover:bg-accent/10"
@@ -110,50 +110,39 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="flex items-center gap-1 shrink-0">
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden md:flex items-center gap-2 text-muted-foreground"
-              onClick={() => setSearchOpen(true)}
-            >
-              <Search className="h-4 w-4" />
-              <span className="hidden xl:inline">Поиск</span>
-              <kbd className="hidden xl:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] rounded border border-border bg-muted/40">
-                ⌘K
-              </kbd>
-            </Button>
+          <div className="flex items-center gap-0.5 shrink-0">
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className="h-8 w-8 sm:h-9 sm:w-9"
               onClick={() => setSearchOpen(true)}
               aria-label="Поиск"
             >
-              <Search className="h-5 w-5" />
+              <Search className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
+              className="h-8 w-8 sm:h-9 sm:w-9"
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               aria-label="Переключить тему"
             >
               {mounted &&
                 (theme === 'dark' ? (
-                  <Sun className="h-5 w-5" />
+                  <Sun className="h-4 w-4 sm:h-5 sm:w-5" />
                 ) : (
-                  <Moon className="h-5 w-5" />
+                  <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
                 ))}
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className="h-8 w-8 sm:h-9 sm:w-9 lg:hidden"
               onClick={() => setOpen((v) => !v)}
               aria-label="Меню"
               aria-expanded={open}
             >
-              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {open ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
             </Button>
           </div>
         </nav>
