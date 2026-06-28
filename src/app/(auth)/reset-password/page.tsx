@@ -2,10 +2,13 @@
 
 import * as React from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import { Landmark, Eye, EyeOff, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
 
-export default function ResetPasswordPage() {
-  const [email, setEmail] = React.useState('')
+function ResetPasswordForm() {
+  const searchParams = useSearchParams()
+  const [email, setEmail] = React.useState(searchParams.get('email') || '')
   const [code, setCode] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [showPassword, setShowPassword] = React.useState(false)
@@ -153,5 +156,17 @@ export default function ResetPasswordPage() {
         </p>
       </div>
     </main>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </main>
+    }>
+      <ResetPasswordForm />
+    </Suspense>
   )
 }

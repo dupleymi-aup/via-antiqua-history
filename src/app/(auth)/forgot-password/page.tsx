@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
             </div>
           )}
           <Link
-            href="/reset-password"
+            href={`/reset-password?email=${encodeURIComponent(email)}`}
             className="inline-flex items-center justify-center h-11 px-6 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
           >
             Ввести код
