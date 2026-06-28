@@ -68,7 +68,7 @@ function ResetPasswordForm() {
               <CheckCircle2 className="h-7 w-7 text-primary" />
             </span>
           </div>
-          <h1 className="font-display text-3xl font-semibold mb-2">Пароль изменён</h1>
+          <h1 className="font-display text-2xl sm:text-3xl font-semibold mb-2">Пароль изменён</h1>
           <p className="text-sm text-muted-foreground mb-6">Теперь вы можете войти с новым паролем.</p>
           <Link
             href="/login"

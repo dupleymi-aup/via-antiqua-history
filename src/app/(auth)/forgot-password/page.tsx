@@ -45,7 +45,7 @@ export default function ForgotPasswordPage() {
               <MailCheck className="h-7 w-7 text-primary" />
             </span>
           </div>
-          <h1 className="font-display text-3xl font-semibold mb-2">Письмо отправлено</h1>
+          <h1 className="font-display text-2xl sm:text-3xl font-semibold mb-2">Письмо отправлено</h1>
           <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
             Если пользователь с email <strong className="text-foreground">{email}</strong> существует,
             мы отправили на него код для восстановления пароля. Проверьте почту.
