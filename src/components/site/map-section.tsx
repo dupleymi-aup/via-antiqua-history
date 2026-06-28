@@ -96,7 +96,7 @@ export function MapSection() {
           {/* Карта */}
           <div className="lg:col-span-8">
             <div
-              className="relative aspect-[4/3] rounded-xl border border-border bg-card overflow-hidden"
+              className="relative aspect-[3/2] sm:aspect-[4/3] rounded-xl border border-border bg-card overflow-hidden"
               style={{
                 backgroundImage: `
                   linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
@@ -190,12 +190,12 @@ export function MapSection() {
                     onClick={() => setSelected(r.id)}
                     onMouseEnter={() => setHovered(r.id)}
                     onMouseLeave={() => setHovered(null)}
-                    className="absolute group"
+                    className="absolute group flex items-center justify-center"
                     style={{
                       left: `${r.x}%`,
                       top: `${r.y}%`,
-                      width: '24px',
-                      height: '24px',
+                      width: '44px',
+                      height: '44px',
                       transform: 'translate(-50%, -50%)',
                     }}
                     aria-label={r.name}
@@ -207,9 +207,6 @@ export function MapSection() {
                         backgroundColor: color,
                         width: isSelected || isHovered ? '24px' : '16px',
                         height: isSelected || isHovered ? '24px' : '16px',
-                        left: '50%',
-                        top: '50%',
-                        transform: 'translate(-50%, -50%)',
                       }}
                     />
                     <span
@@ -218,21 +215,17 @@ export function MapSection() {
                         backgroundColor: color,
                         width: isSelected || isHovered ? '16px' : '11px',
                         height: isSelected || isHovered ? '16px' : '11px',
-                        left: '50%',
-                        top: '50%',
-                        transform: 'translate(-50%, -50%)',
                       }}
                     />
                     {/* Подпись */}
                     <span
                       className={cn(
-                        'absolute left-1/2 -translate-x-1/2 mt-1 whitespace-nowrap rounded px-1.5 py-0.5 text-[10px] font-medium transition-opacity pointer-events-none',
+                        'absolute left-1/2 -translate-x-1/2 top-full mt-0.5 whitespace-nowrap rounded px-1.5 py-0.5 text-[11px] sm:text-xs font-medium transition-opacity pointer-events-none',
                         isHovered || isSelected
                           ? 'opacity-100'
                           : 'opacity-70 group-hover:opacity-100'
                       )}
                       style={{
-                        top: '100%',
                         backgroundColor: 'oklch(1 0 0 / 0.85)',
                         color: 'oklch(0.2 0 0)',
                         backdropFilter: 'blur(4px)',
@@ -245,12 +238,11 @@ export function MapSection() {
               })}
 
               {/* Подписи регионов */}
-              <div className="absolute top-3 left-3 text-xs text-muted-foreground italic font-body">
-                Схематическая карта античного мира ·
-                <span className="ml-1">от Средиземноморья до Кубани</span>
+              <div className="absolute top-3 left-3 text-[11px] sm:text-xs text-muted-foreground italic font-body leading-tight">
+                Схематическая карта античного мира
               </div>
-              <div className="absolute bottom-3 right-3 text-[10px] text-muted-foreground italic">
-                Не географически точная, а концептуальная схема
+              <div className="absolute bottom-3 right-3 text-[11px] sm:text-xs text-muted-foreground italic leading-tight">
+                Концептуальная схема
               </div>
             </div>
           </div>

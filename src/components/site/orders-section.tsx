@@ -17,7 +17,7 @@ import { BookmarkButton } from '@/components/site/bookmarks'
 // SVG-схемы капителей для каждого ордера
 function DoricCapital() {
   return (
-    <svg viewBox="0 0 80 50" className="w-full h-32" preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 80 50" className="w-full h-20 sm:h-28 md:h-32" preserveAspectRatio="xMidYMid meet">
       {/* Абака — квадратная плита */}
       <rect x="10" y="5" width="60" height="10" fill="currentColor" opacity="0.85" />
       {/* Эхин — круглая подушка */}
@@ -34,7 +34,7 @@ function DoricCapital() {
 
 function IonicCapital() {
   return (
-    <svg viewBox="0 0 80 50" className="w-full h-32" preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 80 50" className="w-full h-20 sm:h-28 md:h-32" preserveAspectRatio="xMidYMid meet">
       {/* Абака */}
       <rect x="5" y="8" width="70" height="6" fill="currentColor" opacity="0.85" />
       {/* Левая волюта */}
@@ -61,7 +61,7 @@ function IonicCapital() {
 
 function CorinthianCapital() {
   return (
-    <svg viewBox="0 0 80 60" className="w-full h-32" preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 80 60" className="w-full h-20 sm:h-28 md:h-32" preserveAspectRatio="xMidYMid meet">
       {/* Абака */}
       <rect x="3" y="5" width="74" height="6" fill="currentColor" opacity="0.85" />
       {/* Маленькие волюты в углах */}
