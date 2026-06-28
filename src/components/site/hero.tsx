@@ -143,7 +143,7 @@ export function Hero() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="hidden lg:flex flex-col items-center lg:sticky lg:top-24"
+              className="hidden lg:flex flex-col items-end lg:sticky lg:top-24"
             >
               <div className="relative mb-3">
                 <div className="w-40 h-40 lg:w-44 lg:h-44 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-lg">
@@ -160,7 +160,7 @@ export function Hero() {
                 </div>
               </div>
 
-              <div className="text-center">
+              <div className="text-right">
                 <p className="font-display text-base font-semibold">
                   Дуплей Максим Игоревич
                 </p>
