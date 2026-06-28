@@ -29,7 +29,7 @@ export async function sendEmail(msg: EmailMessage): Promise<boolean> {
       },
     })
     await transporter.sendMail({
-      from: process.env.SMTP_FROM || 'noreply@via-antiqua.ru',
+      from: process.env.SMTP_FROM || 'noreply@example.com',
       to: msg.to,
       subject: msg.subject,
       text: msg.text,

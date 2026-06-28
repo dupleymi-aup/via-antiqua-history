@@ -12,7 +12,9 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error(error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error(error)
+    }
   }, [error])
 
   return (
@@ -30,6 +32,11 @@ export default function Error({
           Произошла непредвиденная ошибка. Возможно, это временный сбой — попробуйте
           обновить страницу или вернуться на главную.
         </p>
+        {error.digest && (
+          <p className="text-xs text-muted-foreground/50 mb-4 font-mono">
+            ID ошибки: {error.digest}
+          </p>
+        )}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             type="button"

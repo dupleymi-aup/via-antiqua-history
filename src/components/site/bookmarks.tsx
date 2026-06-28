@@ -88,7 +88,7 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
           setTimeout(() => { syncRef.current = false }, 100)
         }
       } catch {
-        console.warn('Failed to sync bookmarks from server')
+        // Silent fail — bookmarks sync is best-effort
       }
     }
     sync()
@@ -104,7 +104,7 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
         }
       }
     } catch {
-      console.warn('Failed to parse bookmarks from localStorage')
+      // Corrupted data — start fresh
     }
     setHydrated(true)
   }, [])
@@ -114,7 +114,7 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks))
     } catch {
-      console.warn('Failed to save bookmarks to localStorage')
+      // Storage full or unavailable — silently ignore
     }
   }, [bookmarks, hydrated])
 
@@ -128,7 +128,7 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
           body: JSON.stringify({ bookmarks }),
         })
       } catch {
-        console.warn('Failed to sync bookmarks to server')
+        // Silent fail — bookmarks sync is best-effort
       }
     }, 1500)
     return () => clearTimeout(timer)
