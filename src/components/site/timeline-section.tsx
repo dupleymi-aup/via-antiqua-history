@@ -19,11 +19,11 @@ export function TimelineSection() {
   const sectionRef = React.useRef<HTMLElement>(null)
   const event = allTimeline[activeIdx]
 
-  const go = (dir: 1 | -1) => {
+  const go = React.useCallback((dir: 1 | -1) => {
     setActiveIdx((cur) =>
       Math.min(allTimeline.length - 1, Math.max(0, cur + dir))
     )
-  }
+  }, [])
 
   // Отслеживаем, в зоне видимости ли секция
   React.useEffect(() => {
@@ -53,7 +53,7 @@ export function TimelineSection() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [isInView, activeIdx])
+  }, [isInView, go])
 
   return (
     <section
