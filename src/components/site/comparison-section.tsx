@@ -67,8 +67,11 @@ export function ComparisonSection() {
                       key={col.key}
                       onMouseEnter={() => setActiveCol(col.key)}
                       onMouseLeave={() => setActiveCol(null)}
+                      onFocus={() => setActiveCol(col.key)}
+                      onBlur={() => setActiveCol(null)}
+                      tabIndex={0}
                       className={cn(
-                        'text-left p-4 font-display font-semibold transition-colors cursor-default min-w-[200px]',
+                        'text-left p-4 font-display font-semibold transition-colors cursor-default min-w-[200px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary',
                         activeCol === col.key ? 'bg-muted/40' : 'bg-card'
                       )}
                     >

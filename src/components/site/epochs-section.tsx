@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { Hourglass } from 'lucide-react'
 import { epochs } from '@/lib/history-data'
-import { cn } from '@/lib/utils'
+import { cn, withAlpha } from '@/lib/utils'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 
 export function EpochsSection() {
@@ -88,7 +88,7 @@ export function EpochsSection() {
                             key={r}
                             className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium px-2 py-0.5 rounded-full"
                             style={{
-                              backgroundColor: `oklch(from ${REGION_COLORS[r]} l c h / 0.12)`,
+                              backgroundColor: withAlpha(REGION_COLORS[r], 0.12),
                               color: REGION_COLORS[r],
                             }}
                           >

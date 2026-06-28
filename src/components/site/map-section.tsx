@@ -193,7 +193,7 @@ export function MapSection() {
                     onClick={() => setSelected(r.id)}
                     onMouseEnter={() => setHovered(r.id)}
                     onMouseLeave={() => setHovered(null)}
-                    className="absolute group flex items-center justify-center"
+                    className="absolute group flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-full"
                     style={{
                       left: `${r.x}%`,
                       top: `${r.y}%`,

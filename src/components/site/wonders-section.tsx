@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { BookmarkButton } from '@/components/site/bookmarks'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
+import { withAlpha } from '@/lib/utils'
 
 export function WondersSection() {
   const [active, setActive] = React.useState<Wonder | null>(null)
@@ -95,7 +96,7 @@ export function WondersSection() {
                       variant="secondary"
                       className="text-[11px] sm:text-xs"
                       style={{
-                        backgroundColor: `oklch(from ${color} l c h / 0.12)`,
+                        backgroundColor: withAlpha(color, 0.12),
                         color,
                       }}
                     >
@@ -123,7 +124,7 @@ export function WondersSection() {
                     variant="secondary"
                     className="mb-2"
                     style={{
-                      backgroundColor: `oklch(from ${REGION_COLORS[active.region]} l c h / 0.15)`,
+                      backgroundColor: withAlpha(REGION_COLORS[active.region], 0.15),
                       color: REGION_COLORS[active.region],
                     }}
                   >

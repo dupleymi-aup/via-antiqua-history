@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Bookmark, BookmarkCheck, X, Trash2, BookOpen, Check, Undo2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, withAlpha } from '@/lib/utils'
 import {
   Dialog,
   DialogContent,
@@ -345,7 +345,7 @@ export function BookmarksDialog({
                         <span
                           className="shrink-0 mt-0.5 flex h-8 w-8 items-center justify-center rounded-md"
                           style={{
-                            backgroundColor: `oklch(from ${color} l c h / 0.12)`,
+                            backgroundColor: withAlpha(color, 0.12),
                             color,
                           }}
                         >

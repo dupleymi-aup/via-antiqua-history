@@ -120,11 +120,9 @@ export default function ProfilePage() {
         </Link>
 
         <div className="flex items-center gap-4 mb-8">
-          <img
-            src="/img/dupley_maxim.jpg"
-            alt={user.name || 'Пользователь'}
-            className="w-14 h-14 rounded-full object-cover border border-border"
-          />
+          <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-display text-xl font-semibold border border-border shrink-0">
+            {(user.name || 'П')[0].toUpperCase()}
+          </div>
           <div>
             <h1 className="font-display text-3xl font-semibold">{user.name || 'Пользователь'}</h1>
             <p className="text-sm text-muted-foreground">{user.email}</p>

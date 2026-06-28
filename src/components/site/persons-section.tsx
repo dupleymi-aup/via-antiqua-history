@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Users } from 'lucide-react'
 import { persons, type Person } from '@/lib/history-data'
-import { cn } from '@/lib/utils'
+import { cn, withAlpha } from '@/lib/utils'
 import {
   Dialog,
   DialogContent,
@@ -114,7 +114,7 @@ export function PersonsSection() {
                     <span
                       className="shrink-0 inline-block px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium"
                       style={{
-                        backgroundColor: `oklch(from ${color} l c h / 0.12)`,
+                        backgroundColor: withAlpha(color, 0.12),
                         color,
                       }}
                     >
@@ -149,7 +149,7 @@ export function PersonsSection() {
                     variant="secondary"
                     className="mb-2"
                     style={{
-                      backgroundColor: `oklch(from ${REGION_COLORS[active.region]} l c h / 0.15)`,
+                      backgroundColor: withAlpha(REGION_COLORS[active.region], 0.15),
                       color: REGION_COLORS[active.region],
                     }}
                   >

@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Calendar, Info } from 'lucide-react'
 import type { Region, Landmark } from '@/lib/history-data'
-import { cn } from '@/lib/utils'
+import { cn, withAlpha } from '@/lib/utils'
 import {
   Dialog,
   DialogContent,
@@ -35,7 +35,7 @@ export function RegionSection({ region }: { region: Region }) {
       id={region.id}
       className="py-20 md:py-28 scroll-mt-20"
       style={{
-        background: `linear-gradient(180deg, transparent 0%, oklch(from ${region.color} l c h / 0.04) 50%, transparent 100%)`,
+        background: `linear-gradient(180deg, transparent 0%, ${withAlpha(region.color, 0.04)} 50%, transparent 100%)`,
       }}
     >
       <div className="container mx-auto max-w-7xl px-4">
@@ -85,7 +85,7 @@ export function RegionSection({ region }: { region: Region }) {
                   key={city.id}
                   onClick={() => setActiveCityId(city.id)}
                   className={cn(
-                    'text-left whitespace-nowrap lg:whitespace-normal px-4 py-3 rounded-lg border transition-all',
+                    'text-left whitespace-nowrap lg:whitespace-normal px-4 py-3 rounded-lg border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
                     activeCityId === city.id
                       ? 'bg-card border-primary shadow-sm'
                       : 'bg-card/50 border-border hover:bg-card hover:border-primary/40'
@@ -191,7 +191,7 @@ export function RegionSection({ region }: { region: Region }) {
                             variant="secondary"
                             className="shrink-0"
                             style={{
-                              backgroundColor: `oklch(from ${region.color} l c h / 0.15)`,
+                              backgroundColor: withAlpha(region.color, 0.15),
                               color: region.color,
                             }}
                           >
@@ -245,7 +245,7 @@ export function RegionSection({ region }: { region: Region }) {
                   variant="secondary"
                   className="mb-2"
                   style={{
-                    backgroundColor: `oklch(from ${region.color} l c h / 0.15)`,
+                    backgroundColor: withAlpha(region.color, 0.15),
                     color: region.color,
                   }}
                 >

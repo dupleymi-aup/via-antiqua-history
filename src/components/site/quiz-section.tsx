@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Brain, CheckCircle2, XCircle, RotateCcw, Trophy } from 'lucide-react'
 import { quizQuestions } from '@/lib/history-data'
-import { cn } from '@/lib/utils'
+import { cn, withAlpha } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
@@ -149,7 +149,7 @@ export function QuizSection() {
                       key={key}
                       className="rounded-lg border border-border p-3"
                       style={{
-                        backgroundColor: `${REGION_COLORS[key].replace(')', ' / 0.08)')}`,
+                        backgroundColor: withAlpha(REGION_COLORS[key], 0.08),
                       }}
                     >
                       <div
@@ -259,7 +259,7 @@ export function QuizSection() {
               <span
                 className="text-xs uppercase tracking-widest font-medium px-2 py-1 rounded-full"
                 style={{
-                  backgroundColor: `${REGION_COLORS[q.region].replace(')', ' / 0.12)')}`,
+                  backgroundColor: withAlpha(REGION_COLORS[q.region], 0.12),
                   color: REGION_COLORS[q.region],
                 }}
               >

@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { BookMarked, Search } from 'lucide-react'
 import { glossary } from '@/lib/history-data'
-import { cn } from '@/lib/utils'
+import { cn, withAlpha } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { BookmarkButton } from '@/components/site/bookmarks'
 import { REGION_COLORS, REGION_LABELS, FILTER_LABELS } from '@/lib/constants'
@@ -131,7 +131,7 @@ export function GlossarySection() {
                       <span
                         className="shrink-0 inline-block px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium"
                         style={{
-                          backgroundColor: `oklch(from ${meta.color} l c h / 0.12)`,
+                          backgroundColor: withAlpha(meta.color, 0.12),
                           color: meta.color,
                         }}
                       >

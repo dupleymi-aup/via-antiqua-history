@@ -15,7 +15,7 @@ import {
   persons,
   mapRegions,
 } from '@/lib/history-data'
-import { cn } from '@/lib/utils'
+import { cn, withAlpha } from '@/lib/utils'
 import { REGION_COLORS } from '@/lib/constants'
 
 type SearchResult = {
@@ -229,7 +229,7 @@ export function SearchDialog({
                       <span
                         className="shrink-0 mt-0.5 flex h-8 w-8 items-center justify-center rounded-md"
                         style={{
-                          backgroundColor: `oklch(from ${color} l c h / 0.12)`,
+                          backgroundColor: withAlpha(color, 0.12),
                           color,
                         }}
                       >
