@@ -110,16 +110,16 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
               <p className="text-sm md:text-base text-muted-foreground mb-6 max-w-md text-center px-4">
                 Города, памятники и исторический контекст доступны авторизованным пользователям
               </p>
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-3 px-4">
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center gap-2 h-11 px-7 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors text-sm sm:text-base"
                 >
                   Войти
                 </Link>
                 <Link
                   href="/register"
-                  className="inline-flex items-center justify-center gap-2 h-11 px-7 rounded-lg border border-border bg-card/60 font-medium hover:bg-accent/10 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg border border-border bg-card/60 font-medium hover:bg-accent/10 transition-colors text-sm sm:text-base"
                 >
                   Зарегистрироваться
                 </Link>
@@ -131,9 +131,9 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Левая колонка: переключение городов */}
           <div className="lg:col-span-3">
-            <div className="lg:sticky lg:top-24 relative flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible custom-scroll pb-2 lg:pb-0">
+            <div className="lg:sticky lg:top-24 relative flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible custom-scroll pb-2 lg:pb-0 -mx-4 px-4 lg:mx-0 lg:px-0">
               <div className="pointer-events-none absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-background to-transparent lg:hidden" />
-              <span className="hidden lg:block text-xs uppercase tracking-widest text-muted-foreground mb-3">
+              <span className="hidden lg:block text-xs uppercase tracking-widest text-muted-foreground mb-3 shrink-0">
                 Города и памятники
               </span>
               {region.cities.map((city) => (
@@ -142,7 +142,7 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                   key={city.id}
                   onClick={() => setActiveCityId(city.id)}
                   className={cn(
-                    'text-left whitespace-nowrap lg:whitespace-normal px-4 py-3 rounded-lg border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
+                    'text-left whitespace-nowrap lg:whitespace-normal px-4 py-3 rounded-lg border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 shrink-0 lg:shrink',
                     activeCityId === city.id
                       ? 'bg-card border-primary shadow-sm'
                       : 'bg-card/50 border-border hover:bg-card hover:border-primary/40'
@@ -228,7 +228,7 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                     Главные достопримечательности
                   </h4>
 
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                     {activeCity.landmarks.map((lm, i) => (
                       <motion.button
                         key={lm.id}
@@ -236,17 +236,17 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.4, delay: i * 0.05 }}
-                        whileHover={{ y: -4 }}
+                        whileHover={{ y: -3 }}
                         onClick={() => setActiveLandmark(lm)}
-                        className="text-left p-5 rounded-lg border border-border bg-card hover:border-primary hover:shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+                        className="text-left p-4 sm:p-5 rounded-lg border border-border bg-card hover:border-primary hover:shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
                       >
-                        <div className="flex items-start justify-between gap-3 mb-2">
-                          <h5 className="font-display text-lg font-semibold">
+                        <div className="flex items-start justify-between gap-2 sm:gap-3 mb-2">
+                          <h5 className="font-display text-base sm:text-lg font-semibold leading-tight">
                             {lm.name}
                           </h5>
                           <Badge
                             variant="secondary"
-                            className="shrink-0"
+                            className="shrink-0 text-[10px] sm:text-xs"
                             style={{
                               backgroundColor: withAlpha(region.color, 0.15),
                               color: region.color,
@@ -255,10 +255,10 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                             {lm.period}
                           </Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2">
                           {lm.shortDesc}
                         </p>
-                        <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary">
+                        <span className="mt-2 sm:mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary">
                           Подробнее →
                         </span>
                       </motion.button>

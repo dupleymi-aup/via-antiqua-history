@@ -57,17 +57,17 @@ export function ContentGate({
             <p className="text-sm md:text-base text-muted-foreground mb-6 max-w-md text-center px-4">
               Войдите или зарегистрируйтесь, чтобы получить полный доступ к этому разделу
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 px-4">
               <Link
                 href="/login"
-                className="inline-flex items-center justify-center gap-2 h-11 px-7 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors text-sm sm:text-base"
               >
                 <BookOpen className="h-4 w-4" />
                 Войти
               </Link>
               <Link
                 href="/register"
-                className="inline-flex items-center justify-center gap-2 h-11 px-7 rounded-lg border border-border bg-card/60 font-medium hover:bg-accent/10 transition-colors"
+                className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg border border-border bg-card/60 font-medium hover:bg-accent/10 transition-colors text-sm sm:text-base"
               >
                 Зарегистрироваться
               </Link>

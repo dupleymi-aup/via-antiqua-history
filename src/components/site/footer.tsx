@@ -27,7 +27,7 @@ export function Footer() {
             <h4 className="font-display text-sm font-semibold mb-3 flex items-center gap-2">
               <BookOpen className="h-4 w-4" /> Разделы
             </h4>
-            <ul className="space-y-2">
+            <ul className="grid grid-cols-2 sm:grid-cols-2 gap-x-4 gap-y-2">
               {FOOTER_NAV.map((item) => (
                 <li key={item.href}>
                   <Link

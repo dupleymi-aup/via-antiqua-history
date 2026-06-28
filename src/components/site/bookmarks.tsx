@@ -255,7 +255,7 @@ export function BookmarksFloatingButton({
       transition={{ delay: 1, duration: 0.3 }}
       onClick={onClick}
       aria-label="Закладки"
-      className="fixed bottom-6 left-6 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-card border border-border text-foreground shadow-lg hover:shadow-xl hover:bg-accent/10 transition-all"
+      className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-card border border-border text-foreground shadow-lg hover:shadow-xl hover:bg-accent/10 transition-all"
     >
       <Bookmark className="h-5 w-5" />
       {count > 0 && (
