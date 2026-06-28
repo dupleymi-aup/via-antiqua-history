@@ -115,14 +115,10 @@ export default function Home() {
           <RegionSection region={kuban} />
 
           {/* Ключевые персоналии */}
-          <ContentGate title="Ключевые персоналии" subtitle="Полководцы, философы, поэты и правители, чьи деяния определили ход истории античного мира.">
-            <PersonsSection />
-          </ContentGate>
+          <PersonsSection />
 
           {/* Семь чудес света */}
-          <ContentGate title="Семь чудес света" subtitle="Величайшие сооружения древности — от Колизея до Висячих садов Семирамиды.">
-            <WondersSection />
-          </ContentGate>
+          <WondersSection />
 
           {/* Архитектурные ордера */}
           <ContentGate title="Архитектурные ордера" subtitle="Дорийский, ионический и коринфский — система пропорций, определившая облик античной архитектуры.">
@@ -153,17 +149,13 @@ export default function Home() {
           </ContentGate>
 
           {/* Глоссарий ключевых терминов */}
-          <ContentGate title="Глоссарий" subtitle="Основные понятия античного мира — от архитектурных ордеров до политических институтов.">
-            <GlossarySection />
-          </ContentGate>
+          <GlossarySection />
 
           {/* Интерактивный квиз */}
           <QuizSection />
 
           {/* Источники и ссылки */}
-          <ContentGate title="Источники и ссылки" subtitle="Литература, первоисточники и музеи, использованные при подготовке материалов.">
-            <SourcesSection />
-          </ContentGate>
+          <SourcesSection />
         </main>
         <Footer />
         <ScrollToTop />

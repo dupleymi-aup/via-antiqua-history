@@ -40,22 +40,22 @@ export const FILTER_LABELS: Record<string, string> = {
 export const PUBLIC_NAV = [
   { href: '#greece', label: 'Греция' },
   { href: '#kuban', label: 'Кубань' },
+  { href: '#persons', label: 'Персоналии' },
+  { href: '#wonders', label: 'Чудеса' },
   { href: '#timeline', label: 'Хронология' },
+  { href: '#glossary', label: 'Глоссарий' },
   { href: '#quiz', label: 'Квиз' },
+  { href: '#sources', label: 'Источники' },
 ] as const
 
 export const PROTECTED_NAV = [
   { href: '#rome', label: 'Рим' },
   { href: '#mesopotamia', label: 'Месопотамия' },
-  { href: '#persons', label: 'Персоналии' },
-  { href: '#wonders', label: 'Чудеса' },
   { href: '#orders', label: 'Ордера' },
   { href: '#epochs', label: 'Эпохи' },
   { href: '#map', label: 'Карта' },
   { href: '#comparison', label: 'Сравнение' },
   { href: '#analysis', label: 'Анализ' },
-  { href: '#glossary', label: 'Глоссарий' },
-  { href: '#sources', label: 'Источники' },
 ] as const
 
 export const SITE_NAV = [...PUBLIC_NAV, ...PROTECTED_NAV] as const
