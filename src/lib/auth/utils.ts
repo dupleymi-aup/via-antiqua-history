@@ -3,14 +3,22 @@ import jwt from 'jsonwebtoken'
 import { randomBytes } from 'crypto'
 import { cookies } from 'next/headers'
 
-const JWT_SECRET = (() => {
+let _jwtSecret: string | undefined
+
+function getJwtSecret(): string {
+  if (_jwtSecret !== undefined) return _jwtSecret
   const secret = process.env.JWT_SECRET
-  if (secret) return secret
+  if (secret) {
+    _jwtSecret = secret
+    return secret
+  }
   if (process.env.NODE_ENV === 'production') {
     throw new Error('JWT_SECRET environment variable is required in production')
   }
-  return 'dev-secret-change-in-production-' + randomBytes(16).toString('hex')
-})()
+  _jwtSecret = 'dev-secret-change-in-production-' + randomBytes(16).toString('hex')
+  return _jwtSecret
+}
+
 const SESSION_COOKIE = 'session'
 const SESSION_MAX_AGE = 7 * 24 * 60 * 60 // 7 days in seconds
 
@@ -40,12 +48,12 @@ export function generateNumericCode(length = 6): string {
 }
 
 export function signJwt(payload: SessionPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: SESSION_MAX_AGE })
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: SESSION_MAX_AGE })
 }
 
 export function verifyJwt(token: string): SessionPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as SessionPayload
+    return jwt.verify(token, getJwtSecret()) as SessionPayload
   } catch {
     return null
   }
