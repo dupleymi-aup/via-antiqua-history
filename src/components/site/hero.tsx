@@ -144,7 +144,7 @@ export function Hero() {
               <div className="relative mb-4">
                 <div className="w-48 h-48 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-lg">
                   <img
-                    src="/img/dupley_maxim.png"
+                    src="/img/dupley_maxim.jpg"
                     alt="Дуплей Максим Игоревич"
                     width={192}
                     height={192}
