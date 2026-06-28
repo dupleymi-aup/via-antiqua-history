@@ -1,0 +1,60 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { TOTP } from 'otplib'
+const totp = new TOTP()
+import { getDb } from '@/lib/auth/db'
+import type { ApiResponse } from '@/lib/auth/types'
+
+export async function POST(req: NextRequest) {
+  try {
+    const { userId, code } = await req.json()
+
+    if (!userId || !code) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: 'Укажите userId и код' }, { status: 400 })
+    }
+
+    const db = getDb()
+    const user = db.prepare('SELECT totp_secret, totp_enabled, recovery_codes FROM users WHERE id = ?').get(userId) as Record<string, unknown> | undefined
+
+    if (!user || !user.totp_enabled) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: '2FA не включён' }, { status: 400 })
+    }
+
+    if (user.totp_secret) {
+      const isValid = await totp.verify(code, { secret: user.totp_secret as string })
+      if (isValid) {
+        return NextResponse.json<ApiResponse>({ ok: true })
+      }
+    }
+
+    const recoveryCodes = JSON.parse((user.recovery_codes as string) || '[]') as string[]
+    const idx = recoveryCodes.indexOf(code)
+    if (idx !== -1) {
+      recoveryCodes.splice(idx, 1)
+      db.prepare('UPDATE users SET recovery_codes = ? WHERE id = ?').run(JSON.stringify(recoveryCodes), userId)
+      return NextResponse.json<ApiResponse>({ ok: true, data: { usedRecoveryCode: true } })
+    }
+
+    return NextResponse.json<ApiResponse>({ ok: false, error: 'Неверный код' }, { status: 401 })
+  } catch (err) {
+    console.error('2FA verify error:', err)
+    return NextResponse.json<ApiResponse>({ ok: false, error: 'Внутренняя ошибка сервера' }, { status: 500 })
+  }
+}
+
+export async function DELETE() {
+  try {
+    const { getSession } = await import('@/lib/auth/utils')
+    const session = await getSession()
+    if (!session) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: 'Не авторизован' }, { status: 401 })
+    }
+
+    const db = getDb()
+    db.prepare('UPDATE users SET totp_secret = NULL, totp_enabled = 0, recovery_codes = ? WHERE id = ?').run('[]', session.userId)
+
+    return NextResponse.json<ApiResponse>({ ok: true })
+  } catch (err) {
+    console.error('2FA disable error:', err)
+    return NextResponse.json<ApiResponse>({ ok: false, error: 'Внутренняя ошибка сервера' }, { status: 500 })
+  }
+}

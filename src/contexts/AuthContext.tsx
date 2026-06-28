@@ -1,0 +1,92 @@
+'use client'
+
+import * as React from 'react'
+import type { User } from '@/lib/auth/types'
+
+type AuthState = {
+  user: User | null
+  loading: boolean
+  login: (email: string, password: string, totpCode?: string) => Promise<{ ok: boolean; error?: string; require2fa?: boolean }>
+  register: (email: string, password: string, name: string) => Promise<{ ok: boolean; error?: string }>
+  logout: () => Promise<void>
+  refresh: () => Promise<void>
+}
+
+const AuthContext = React.createContext<AuthState | null>(null)
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = React.useState<User | null>(null)
+  const [loading, setLoading] = React.useState(true)
+
+  const refresh = React.useCallback(async () => {
+    try {
+      const res = await fetch('/api/auth/me')
+      const json = await res.json()
+      if (json.ok && json.data) {
+        setUser(json.data)
+      } else {
+        setUser(null)
+      }
+    } catch {
+      setUser(null)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    refresh()
+  }, [refresh])
+
+  const login = React.useCallback(async (email: string, password: string, totpCode?: string) => {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, totpCode }),
+    })
+    const json = await res.json()
+
+    if (json.ok && json.data) {
+      if (json.data.require2fa) {
+        return { ok: true, require2fa: true }
+      }
+      setUser(json.data as User)
+    }
+
+    return { ok: json.ok, error: json.error, require2fa: json.data?.require2fa }
+  }, [])
+
+  const register = React.useCallback(async (email: string, password: string, name: string) => {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, name }),
+    })
+    const json = await res.json()
+
+    if (json.ok && json.data) {
+      setUser(json.data as User)
+    }
+
+    return { ok: json.ok, error: json.error }
+  }, [])
+
+  const logout = React.useCallback(async () => {
+    await fetch('/api/auth/logout', { method: 'POST' })
+    setUser(null)
+  }, [])
+
+  return (
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refresh }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+export function useAuth() {
+  const ctx = React.useContext(AuthContext)
+  if (!ctx) {
+    throw new Error('useAuth must be used within AuthProvider')
+  }
+  return ctx
+}

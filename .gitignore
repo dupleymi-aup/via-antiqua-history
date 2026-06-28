@@ -56,3 +56,8 @@ server.log
 # bun (project uses npm)
 bun.lock
 bun.lockb
+data/
+*.db
+*.db-wal
+*.db-shm
+.env

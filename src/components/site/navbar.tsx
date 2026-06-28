@@ -3,7 +3,8 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { useTheme } from 'next-themes'
-import { Menu, X, Sun, Moon, Landmark, Search } from 'lucide-react'
+import { Menu, X, Sun, Moon, Landmark, Search, User } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { SearchDialog } from '@/components/site/search-dialog'
@@ -16,6 +17,7 @@ export function Navbar() {
   const [activeSection, setActiveSection] = React.useState('')
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
+  const { user } = useAuth()
 
   React.useEffect(() => {
     setMounted(true)
@@ -134,6 +136,13 @@ export function Navbar() {
                   <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
                 ))}
             </Button>
+            <Link
+              href={user ? '/profile' : '/login'}
+              className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-colors"
+              aria-label={user ? 'Профиль' : 'Войти'}
+            >
+              <User className="h-4 w-4 sm:h-5 sm:w-5" />
+            </Link>
             <Button
               variant="ghost"
               size="icon"
@@ -179,6 +188,13 @@ export function Navbar() {
               >
                 {mounted && (theme === 'dark' ? <><Sun className="h-4 w-4" /> Светлая тема</> : <><Moon className="h-4 w-4" /> Тёмная тема</>)}
               </Button>
+              <Link
+                href={user ? '/profile' : '/login'}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md hover:bg-accent/10"
+              >
+                <User className="h-4 w-4" /> {user ? 'Профиль' : 'Войти'}
+              </Link>
             </div>
           </div>
         </div>
