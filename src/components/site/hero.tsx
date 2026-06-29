@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import Image from 'next/image'
 import { ChevronDown, BookOpen, Map as MapIcon, Landmark, Building2, Calendar, Users } from 'lucide-react'
 import Link from 'next/link'
 import { allRegions, timeline, persons } from '@/lib/history-data'
@@ -93,13 +94,12 @@ export function Hero() {
           className="mb-5 sm:mb-7"
         >
           <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border border-border/60 bg-card/40 backdrop-blur-sm">
-            <img
+            <Image
               src="/img/dupley_maxim.jpg"
               alt="Дуплей Максим Игоревич"
               width={28}
               height={28}
-              loading="lazy"
-              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover ring-2 ring-primary/15 shrink-0"
+              className="rounded-full object-cover ring-2 ring-primary/15 shrink-0"
             />
             <span className="text-[11px] sm:text-xs font-medium text-foreground/70">
               Дуплей М.И.

@@ -34,7 +34,7 @@ export function MapSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="mb-6 sm:mb-8 md:mb-10 md:mb-14 text-center"
+          className="mb-6 sm:mb-8 md:mb-14 text-center"
         >
           <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
             <MapPin className="h-3.5 w-3.5 text-primary" />
@@ -252,7 +252,8 @@ export function MapSection() {
 
           {/* Информация о выбранном городе */}
           <div className="lg:col-span-4">
-            <div className="rounded-xl border border-border bg-card p-4 sm:p-5 md:p-6 h-full">
+            <div className="relative rounded-xl border border-border bg-card p-4 sm:p-5 md:p-6 h-full">
+              <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-primary/40" />
               <AnimatePresence mode="wait">
                 {selectedRegion ? (
                   <motion.div

@@ -1,23 +1,12 @@
 'use client'
 
 import * as React from 'react'
+import dynamic from 'next/dynamic'
 import { Navbar } from '@/components/site/navbar'
 import { Hero } from '@/components/site/hero'
 import { RegionSection } from '@/components/site/region-section'
-import { PersonsSection } from '@/components/site/persons-section'
-import { TimelineSection } from '@/components/site/timeline-section'
-import { MapSection } from '@/components/site/map-section'
-import { ComparisonSection } from '@/components/site/comparison-section'
-import { AnalysisSection } from '@/components/site/analysis-section'
-import { GlossarySection } from '@/components/site/glossary-section'
-import { WondersSection } from '@/components/site/wonders-section'
-import { OrdersSection } from '@/components/site/orders-section'
-import { EpochsSection } from '@/components/site/epochs-section'
-import { QuizSection } from '@/components/site/quiz-section'
-import { SourcesSection } from '@/components/site/sources-section'
 import { ContentGate } from '@/components/site/content-gate'
 import { Footer } from '@/components/site/footer'
-
 import { ReadingProgress } from '@/components/site/reading-progress'
 import { SectionDivider } from '@/components/site/section-divider'
 import {
@@ -25,6 +14,40 @@ import {
   BookmarksDialog,
 } from '@/components/site/bookmarks'
 import { greece, rome, mesopotamia, kuban } from '@/lib/history-data'
+
+const PersonsSection = dynamic(() =>
+  import('@/components/site/persons-section').then((m) => m.PersonsSection)
+)
+const WondersSection = dynamic(() =>
+  import('@/components/site/wonders-section').then((m) => m.WondersSection)
+)
+const TimelineSection = dynamic(() =>
+  import('@/components/site/timeline-section').then((m) => m.TimelineSection)
+)
+const MapSection = dynamic(() =>
+  import('@/components/site/map-section').then((m) => m.MapSection)
+)
+const ComparisonSection = dynamic(() =>
+  import('@/components/site/comparison-section').then((m) => m.ComparisonSection)
+)
+const AnalysisSection = dynamic(() =>
+  import('@/components/site/analysis-section').then((m) => m.AnalysisSection)
+)
+const GlossarySection = dynamic(() =>
+  import('@/components/site/glossary-section').then((m) => m.GlossarySection)
+)
+const OrdersSection = dynamic(() =>
+  import('@/components/site/orders-section').then((m) => m.OrdersSection)
+)
+const EpochsSection = dynamic(() =>
+  import('@/components/site/epochs-section').then((m) => m.EpochsSection)
+)
+const QuizSection = dynamic(() =>
+  import('@/components/site/quiz-section').then((m) => m.QuizSection)
+)
+const SourcesSection = dynamic(() =>
+  import('@/components/site/sources-section').then((m) => m.SourcesSection)
+)
 
 export default function Home() {
   return (

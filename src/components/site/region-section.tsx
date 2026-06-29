@@ -145,6 +145,7 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                   type="button"
                   key={city.id}
                   onClick={() => setActiveCityId(city.id)}
+                  aria-current={activeCityId === city.id ? 'true' : undefined}
                   className={cn(
                     'text-left whitespace-nowrap lg:whitespace-normal pl-4 pr-3 py-3 rounded-lg border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 shrink-0 lg:shrink relative overflow-hidden',
                     activeCityId === city.id
