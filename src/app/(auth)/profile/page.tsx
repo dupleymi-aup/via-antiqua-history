@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark, User } from 'lucide-react'
+import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useBookmarks } from '@/components/site/bookmarks'
 
@@ -120,19 +120,11 @@ export default function ProfilePage() {
         </Link>
 
         <div className="flex items-center gap-4 mb-8">
-<<<<<<< HEAD
           <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-display text-lg sm:text-xl font-semibold border border-border shrink-0">
             {(user.name || 'П')[0].toUpperCase()}
           </div>
           <div className="min-w-0">
             <h1 className="font-display text-xl sm:text-2xl md:text-3xl font-semibold truncate">{user.name || 'Пользователь'}</h1>
-=======
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-display text-lg sm:text-xl font-semibold border border-border shrink-0">
-            {(user.name || 'П')[0].toUpperCase()}
-          </div>
-          <div className="min-w-0">
-            <h1 className="font-display text-xl sm:text-2xl md:text-3xl font-semibold truncate">{user.name || 'Пользователь'}</h1>
->>>>>>> upstream/main
             <p className="text-sm text-muted-foreground">{user.email}</p>
           </div>
         </div>
