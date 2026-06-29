@@ -119,10 +119,27 @@ export default function RootLayout({
           <AuthProvider>
             <BookmarksProvider>
               {children}
-            </BookmarksProvider>
-          </AuthProvider>
-        </ThemeProvider>
-      </body>
+         </BookmarksProvider>
+        </AuthProvider>
+      </ThemeProvider>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "История Древнего Пути — Интерактивный исторический лабиринт",
+            description:
+              "Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство. Глоссарий 50+ терминов, 18 античных городов, 44 памятника, 12 персоналий, 7 чудес света, лента времени, интерактивная карта и сравнительный анализ цивилизаций.",
+            url: process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app',
+            author: { '@type': 'Person', name: 'Дуплей Максим Игоревич' },
+            inLanguage: 'ru-RU',
+            educationalLevel: 'beginner',
+            educationalUse: 'reference',
+          }),
+        }}
+      />
+    </body>
     </html>
   );
 }
