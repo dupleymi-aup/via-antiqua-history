@@ -216,10 +216,18 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                     />
                   </div>
 
-                  <p className="text-sm sm:text-base md:text-lg leading-relaxed text-foreground/90 mb-4 sm:mb-6 italic border-l-3 sm:border-l-4 pl-3 sm:pl-4"
-                     style={{ borderColor: region.color }}>
-                    {activeCity.summary}
-                  </p>
+                  <div className="relative mb-5 sm:mb-7">
+                    <span
+                      className="absolute -top-1 -left-1 text-3xl sm:text-4xl leading-none select-none"
+                      style={{ color: withAlpha(region.color, 0.2) }}
+                    >
+                      &ldquo;
+                    </span>
+                    <p className="text-sm sm:text-base md:text-lg leading-relaxed text-foreground/90 italic border-l-[3px] sm:border-l-4 pl-4 sm:pl-5 ml-0.5"
+                       style={{ borderColor: region.color }}>
+                      {activeCity.summary}
+                    </p>
+                  </div>
 
                   <div className="space-y-3 sm:space-y-4">
                     {activeCity.description.map((para, i) => (
@@ -314,7 +322,8 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
         onOpenChange={(o) => !o && setActiveLandmark(null)}
       >
         <DialogContent className="max-w-2xl max-h-[85vh] sm:max-h-[90vh]">
-          <DialogHeader className="pb-2 sm:pb-3">
+          <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl" style={{ backgroundColor: region.color }} />
+          <DialogHeader className="pb-2 sm:pb-3 pt-1">
             <div className="flex items-start justify-between gap-2 sm:gap-3 pr-8">
               <div className="min-w-0 flex-1">
                 <Badge

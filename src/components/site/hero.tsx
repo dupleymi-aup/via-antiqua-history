@@ -37,30 +37,40 @@ export function Hero() {
       id="top"
       className="relative overflow-hidden parchment-bg"
     >
-      {/* Декоративные круги */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Бэкграунд-декорации */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Основное свечение слева вверху */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 0.4, scale: 1 }}
-          transition={{ duration: 1.6 }}
-          className="absolute -top-40 -left-40 h-64 w-64 sm:h-80 sm:w-80 md:h-[28rem] md:w-[28rem] rounded-full"
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 0.35, scale: 1 }}
+          transition={{ duration: 1.8 }}
+          className="absolute -top-48 -left-48 h-[30rem] w-[30rem] rounded-full blur-3xl"
           style={{
             background:
-              'radial-gradient(circle, oklch(0.7 0.13 60 / 0.15) 0%, transparent 70%)',
+              'radial-gradient(circle, oklch(0.7 0.13 60 / 0.18) 0%, transparent 70%)',
           }}
         />
+        {/* Дополнительное свечение справа снизу */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 0.35, scale: 1 }}
-          transition={{ duration: 1.6, delay: 0.2 }}
-          className="absolute -bottom-40 -right-40 h-64 w-64 sm:h-80 sm:w-80 md:h-[28rem] md:w-[28rem] rounded-full"
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 0.3, scale: 1 }}
+          transition={{ duration: 1.8, delay: 0.25 }}
+          className="absolute -bottom-48 -right-48 h-[26rem] w-[26rem] rounded-full blur-3xl"
           style={{
             background:
               'radial-gradient(circle, oklch(0.5 0.12 145 / 0.12) 0%, transparent 70%)',
           }}
         />
+        {/* Центральное мягкое свечение */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[20rem] w-[20rem] rounded-full blur-2xl opacity-[0.06]"
+          style={{ background: 'radial-gradient(circle, oklch(0.6 0.1 80) 0%, transparent 70%)' }}
+        />
+        {/* Декоративные колонны (очень тонкие) */}
+        <div className="absolute right-[8%] top-[15%] h-40 w-px bg-gradient-to-b from-transparent via-primary/5 to-transparent hidden md:block" />
+        <div className="absolute right-[12%] top-[20%] h-32 w-px bg-gradient-to-b from-transparent via-primary/4 to-transparent hidden md:block" />
+        <div className="absolute left-[5%] bottom-[20%] h-28 w-px bg-gradient-to-b from-transparent via-primary/4 to-transparent hidden lg:block" />
         {/* Нижний разделитель */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
       </div>
 
       <div className="relative z-10 container mx-auto max-w-6xl px-4 pt-20 sm:pt-24 md:pt-28 pb-10 sm:pb-14 md:pb-18">
@@ -96,9 +106,12 @@ export function Hero() {
           transition={{ duration: 0.6 }}
         >
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-[1.08] tracking-tight">
-            <span className="block">Исторический Лабиринт</span>
-            <span className="block gold-text mt-1.5 sm:mt-2 text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-normal">
-              От Эллады до Римских Пределов
+            <span className="block tracking-wide">Исторический Лабиринт</span>
+            <span className="relative inline-block mt-1 sm:mt-1.5">
+              <span className="block gold-text text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-normal">
+                От Эллады до Римских Пределов
+              </span>
+              <span className="absolute -bottom-1.5 sm:-bottom-2 left-0 right-0 h-px bg-gradient-to-r from-primary/30 via-primary/10 to-transparent rounded-full" />
             </span>
           </h1>
         </motion.div>
@@ -204,15 +217,25 @@ function StatCard({
   label: string
 }) {
   const animatedValue = useAnimatedCounter(value, 1400)
+  const [hovered, setHovered] = React.useState(false)
   return (
-    <div className="rounded-lg border border-border/50 bg-card/35 backdrop-blur-sm px-2 sm:px-2.5 py-1.5 sm:py-2">
-      <div className="flex items-center justify-center gap-1 text-primary/80 mb-px">
+    <motion.div
+      whileHover={{ y: -2, scale: 1.03 }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      className="rounded-lg border border-border/50 bg-card/40 backdrop-blur-sm px-2 sm:px-2.5 py-1.5 sm:py-2 text-center transition-shadow duration-200 cursor-default"
+    >
+      <motion.div
+        className="flex items-center justify-center gap-1 text-primary/80 mb-px"
+        animate={hovered ? { scale: 1.08 } : { scale: 1 }}
+        transition={{ duration: 0.2 }}
+      >
         {icon}
         <span className="font-display text-base sm:text-lg md:text-xl font-bold gold-text tabular-nums">
           {animatedValue}
         </span>
-      </div>
+      </motion.div>
       <div className="text-[9px] sm:text-[10px] text-muted-foreground/60 text-center">{label}</div>
-    </div>
+    </motion.div>
   )
 }
