@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark } from 'lucide-react'
+import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark, User } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useBookmarks } from '@/components/site/bookmarks'
 
@@ -120,11 +120,9 @@ export default function ProfilePage() {
         </Link>
 
         <div className="flex items-center gap-4 mb-8">
-          <img
-            src="/img/dupley_maxim.jpg"
-            alt={user.name || 'Пользователь'}
-            className="w-14 h-14 rounded-full object-cover border border-border"
-          />
+          <div className="w-14 h-14 rounded-full bg-primary/10 border border-border flex items-center justify-center text-primary shrink-0">
+            <User className="h-6 w-6" />
+          </div>
           <div>
             <h1 className="font-display text-3xl font-semibold">{user.name || 'Пользователь'}</h1>
             <p className="text-sm text-muted-foreground">{user.email}</p>

@@ -116,26 +116,64 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>
-            <BookmarksProvider>
-              {children}
-         </BookmarksProvider>
-        </AuthProvider>
-      </ThemeProvider>
+            <AuthProvider>
+              <BookmarksProvider>
+                {children}
+              </BookmarksProvider>
+            </AuthProvider>
+          </ThemeProvider>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "История Древнего Пути — Интерактивный исторический лабиринт",
-            description:
-              "Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство. Глоссарий 50+ терминов, 18 античных городов, 44 памятника, 12 персоналий, 7 чудес света, лента времени, интерактивная карта и сравнительный анализ цивилизаций.",
-            url: process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app',
-            author: { '@type': 'Person', name: 'Дуплей Максим Игоревич' },
-            inLanguage: 'ru-RU',
-            educationalLevel: 'beginner',
-            educationalUse: 'reference',
+            '@context': 'https://schema.org',
+            '@graph': [
+              {
+                '@type': 'WebSite',
+                name: 'История Древнего Пути — Интерактивный исторический лабиринт',
+                description:
+                  'Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство. Глоссарий 50+ терминов, 18 античных городов, 44 памятника, 12 персоналий, 7 чудес света, лента времени, интерактивная карта и сравнительный анализ цивилизаций.',
+                url: process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app',
+                author: { '@type': 'Person', name: 'Дуплей Максим Игоревич' },
+                inLanguage: 'ru-RU',
+                educationalLevel: 'beginner',
+                educationalUse: 'reference',
+              },
+              {
+                '@type': 'WebApplication',
+                name: 'История Древнего Пути',
+                description:
+                  'Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство.',
+                url: process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app',
+                applicationCategory: 'EducationalApplication',
+                operatingSystem: 'Web',
+                browserRequirements: 'Requires JavaScript',
+                author: { '@type': 'Person', name: 'Дуплей Максим Игоревич' },
+                offers: { '@type': 'Offer', price: '0', priceCurrency: 'RUB' },
+                potentialAction: {
+                  '@type': 'SearchAction',
+                  target: {
+                    '@type': 'EntryPoint',
+                    urlTemplate: (process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app') + '/?q={search_term_string}',
+                  },
+                  'query-input': 'required name=search_term_string',
+                },
+              },
+              {
+                '@type': 'EducationalOrganization',
+                name: 'История Древнего Пути',
+                description: 'Образовательный проект об античных цивилизациях',
+                url: process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app',
+                knowsAbout: [
+                  'Древняя Греция',
+                  'Римская империя',
+                  'Месопотамия',
+                  'Боспорское царство',
+                  'Античность',
+                  'Классическая археология',
+                ],
+              },
+            ],
           }),
         }}
       />
