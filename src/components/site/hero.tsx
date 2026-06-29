@@ -66,8 +66,8 @@ export function Hero() {
       <div className="h-16 sm:h-20 md:h-24 shrink-0" />
       <div className="flex-1 flex items-center justify-center relative z-10">
         <div className="container mx-auto max-w-6xl px-4">
-          {/* Автор — компактный бейдж на мобильных, справа на десктопе */}
-          <div className="flex justify-center mb-4 sm:mb-6">
+          {/* Автор — компактный бейдж на мобильных */}
+          <div className="lg:hidden flex justify-center mb-4 sm:mb-6">
             <div className="inline-flex items-center gap-2 sm:gap-3 px-3 py-2 rounded-full border border-border bg-card/60 backdrop-blur-sm">
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg overflow-hidden border border-primary/20 shrink-0">
                 <img
@@ -89,7 +89,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-[1fr,auto] gap-10 lg:gap-12 items-start">
+          <div className="grid lg:grid-cols-[1fr,auto] gap-8 lg:gap-12 items-start">
             {/* Левая колонка — основной контент */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -167,7 +167,7 @@ export function Hero() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="hidden lg:flex flex-col items-end lg:sticky lg:top-24"
+              className="hidden lg:flex flex-col items-end"
             >
               <div className="relative mb-3">
                 <div className="w-40 h-40 lg:w-44 lg:h-44 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-lg">
