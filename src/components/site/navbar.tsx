@@ -4,7 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from 'next-themes'
-import { Menu, X, Sun, Moon, Landmark, Search, User } from 'lucide-react'
+import { Menu, X, Sun, Moon, Landmark, Search, User, Lock } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -183,7 +183,7 @@ export function Navbar() {
             className="lg:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl overflow-hidden"
           >
             <div className="container mx-auto max-w-7xl px-3 py-3 flex flex-col gap-px">
-              {PUBLIC_NAV.map((item) => (
+              {(user ? SITE_NAV : PUBLIC_NAV).map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -199,24 +199,13 @@ export function Navbar() {
                 </Link>
               ))}
               {!user && PROTECTED_NAV.map((item) => (
-                <Link
-                  key={item.href}
+                <Link key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className="px-3 py-2.5 text-sm font-medium text-muted-foreground/70 hover:bg-accent/5 rounded-lg flex items-center justify-between"
                 >
                   <span>{item.label}</span>
-                  <span className="text-[10px] bg-primary/8 text-primary/70 px-1.5 py-0.5 rounded-full">🔒</span>
-                </Link>
-              ))}
-              {user && PROTECTED_NAV.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="px-3 py-2.5 text-sm font-medium hover:bg-accent/5 rounded-lg"
-                >
-                  {item.label}
+                  <Lock className="h-3 w-3 text-muted-foreground/50" />
                 </Link>
               ))}
               {user && (

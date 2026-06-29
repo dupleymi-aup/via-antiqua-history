@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { Landmark, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { cn, passwordStrength } from '@/lib/utils'
@@ -61,12 +62,22 @@ export default function RegisterPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
-      <div className="w-full max-w-sm">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-sm"
+      >
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 12, delay: 0.1 }}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground"
+            >
               <Landmark className="h-5 w-5" />
-            </span>
+            </motion.span>
           </Link>
           <h1 className="font-display text-2xl sm:text-3xl font-semibold">Регистрация</h1>
           <p className="text-sm text-muted-foreground mt-1">Создайте аккаунт</p>
@@ -184,7 +195,7 @@ export default function RegisterPage() {
             Войти
           </Link>
         </p>
-      </div>
+      </motion.div>
     </main>
   )
 }

@@ -8,23 +8,27 @@ import { cn } from '@/lib/utils'
 
 const categoryMeta: Record<
   SourceRef['category'],
-  { label: string; icon: React.ReactNode }
+  { label: string; icon: React.ReactNode; color: string }
 > = {
   primary: {
     label: 'Первичные источники',
     icon: <Scroll className="h-4 w-4" />,
+    color: 'oklch(0.55 0.15 45)',
   },
   literature: {
     label: 'Исследовательская литература',
     icon: <BookOpen className="h-4 w-4" />,
+    color: 'oklch(0.5 0.12 260)',
   },
   web: {
     label: 'Веб-источники',
     icon: <Globe className="h-4 w-4" />,
+    color: 'oklch(0.6 0.15 180)',
   },
   museum: {
     label: 'Музеи и заповедники',
     icon: <Landmark className="h-4 w-4" />,
+    color: 'oklch(0.55 0.1 80)',
   },
 }
 
@@ -92,9 +96,10 @@ export function SourcesSection() {
                       key={src.title + idx}
                       {...(src.url ? { href: src.url, target: '_blank', rel: 'noopener noreferrer' } : {})}
                       className={cn(
-                        'rounded-lg border border-border bg-card p-3 sm:p-4 transition-shadow hover:shadow-sm',
+                        'rounded-lg border border-border bg-card p-3 sm:p-4 transition-shadow hover:shadow-sm relative overflow-hidden',
                         src.url && 'cursor-pointer'
                       )}
+                      style={{ borderLeftColor: meta.color, borderLeftWidth: 3 }}
                     >
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <h4 className="font-display font-semibold text-sm sm:text-base leading-tight line-clamp-2">
