@@ -98,6 +98,7 @@ export function Hero() {
               alt="Дуплей Максим Игоревич"
               width={28}
               height={28}
+              loading="lazy"
               className="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover ring-2 ring-primary/15 shrink-0"
             />
             <span className="text-[11px] sm:text-xs font-medium text-foreground/70">

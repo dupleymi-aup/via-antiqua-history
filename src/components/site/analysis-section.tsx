@@ -24,7 +24,7 @@ export function AnalysisSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-10 md:mb-12 md:mb-16"
+          className="text-center mb-8 sm:mb-10 md:mb-16"
         >
           <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
             <Feather className="h-3.5 w-3.5 text-primary" />
@@ -51,8 +51,9 @@ export function AnalysisSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.6, delay: idx * 0.05 }}
-              className="rounded-xl border border-border bg-card p-5 sm:p-6 md:p-8 lg:p-10 relative"
+              className="rounded-xl border border-border bg-card p-5 sm:p-6 md:p-8 lg:p-10 relative overflow-hidden"
             >
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary/40" />
               <div className="absolute top-4 left-4 sm:top-6 sm:left-6 hidden md:block">
                 <span className="font-display text-4xl sm:text-5xl font-bold text-primary/20">
                   {String(idx + 1).padStart(2, '0')}

@@ -17,7 +17,7 @@ import { QuizSection } from '@/components/site/quiz-section'
 import { SourcesSection } from '@/components/site/sources-section'
 import { ContentGate } from '@/components/site/content-gate'
 import { Footer } from '@/components/site/footer'
-import { ScrollToTop } from '@/components/site/scroll-to-top'
+
 import { ReadingProgress } from '@/components/site/reading-progress'
 import { SectionDivider } from '@/components/site/section-divider'
 import {
@@ -93,7 +93,6 @@ export default function Home() {
           <SourcesSection />
         </main>
         <Footer />
-        <ScrollToTop />
         <BookmarksFloatingButtonWithDialog />
       </div>
     </>
