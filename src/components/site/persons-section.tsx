@@ -141,7 +141,8 @@ export function PersonsSection() {
       {/* Модальное окно с биографией */}
       <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
         <DialogContent className="max-w-2xl max-h-[85vh] sm:max-h-[90vh]">
-          <DialogHeader className="pb-2 sm:pb-3">
+          {active && <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl" style={{ backgroundColor: REGION_COLORS[active.region] }} />}
+          <DialogHeader className="pb-2 sm:pb-3 pt-1">
             <div className="flex items-start justify-between gap-2 sm:gap-3 pr-8">
               <div className="min-w-0 flex-1">
                 {active && (
