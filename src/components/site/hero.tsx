@@ -2,11 +2,12 @@
 
 import * as React from 'react'
 import { motion } from 'framer-motion'
-import { ChevronDown, BookOpen, Map as MapIcon, Landmark, Building2, Calendar, Users } from 'lucide-react'
+import { ChevronDown, BookOpen, Map as MapIcon, Landmark, Building2, Calendar, Users, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { allRegions, timeline, persons } from '@/lib/history-data'
 import { useAnimatedCounter } from '@/hooks/use-animated-counter'
 import { REGION_COLORS } from '@/lib/constants'
+import { cn } from '@/lib/utils'
 
 const regionChips = [
   { label: 'Греция', color: REGION_COLORS.greece },
@@ -183,7 +184,12 @@ export function Hero() {
           transition={{ delay: 1.2 }}
           className="mt-10 sm:mt-14 flex justify-center"
         >
-          <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground/60 animate-bounce" aria-hidden="true" />
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6 text-primary/50" aria-hidden="true" />
+          </motion.div>
         </motion.div>
       </div>
     </section>
@@ -200,15 +206,23 @@ function StatCard({
   label: string
 }) {
   const animatedValue = useAnimatedCounter(value, 1400)
+  const [hovered, setHovered] = React.useState(false)
   return (
-    <div className="rounded-lg border border-border bg-card/50 backdrop-blur-sm px-2.5 sm:px-3 py-2 sm:py-2.5">
+    <motion.div
+      whileHover={{ y: -2, scale: 1.02 }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      className="rounded-xl border border-border/70 bg-card/50 backdrop-blur-sm px-2.5 sm:px-3 py-2 sm:py-2.5 transition-shadow duration-200 cursor-default"
+    >
       <div className="flex items-center justify-center gap-1 text-primary mb-0.5">
-        {icon}
+        <span className={cn('transition-transform duration-200', hovered ? 'scale-110' : '')}>
+          {icon}
+        </span>
         <span className="font-display text-lg sm:text-xl md:text-2xl font-bold gold-text tabular-nums">
           {animatedValue}
         </span>
       </div>
       <div className="text-[10px] sm:text-xs text-muted-foreground text-center">{label}</div>
-    </div>
+    </motion.div>
   )
 }

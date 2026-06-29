@@ -19,6 +19,7 @@ import { ContentGate } from '@/components/site/content-gate'
 import { Footer } from '@/components/site/footer'
 import { ScrollToTop } from '@/components/site/scroll-to-top'
 import { ReadingProgress } from '@/components/site/reading-progress'
+import { SectionDivider } from '@/components/site/section-divider'
 import {
   BookmarksFloatingButton,
   BookmarksDialog,
@@ -33,9 +34,11 @@ export default function Home() {
         <Navbar />
         <main id="main-content" role="main" className="flex-1">
           <Hero />
+          <SectionDivider />
 
           {/* Раздел: Древняя Греция */}
           <RegionSection region={greece} />
+          <SectionDivider />
 
           {/* Раздел: Римская империя */}
           <RegionSection region={rome} restricted />
