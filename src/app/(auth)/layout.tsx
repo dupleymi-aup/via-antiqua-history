@@ -1,5 +1,17 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Landmark } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s | История Древнего Пути',
+    default: 'История Древнего Пути — Интерактивный исторический лабиринт',
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (

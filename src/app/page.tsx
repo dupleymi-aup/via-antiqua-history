@@ -25,74 +25,10 @@ import {
 } from '@/components/site/bookmarks'
 import { greece, rome, mesopotamia, kuban } from '@/lib/history-data'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app'
-
-// JSON-LD structured data for SEO
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebApplication",
-      "name": "История Древнего Пути",
-      "description": "Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство.",
-      "url": siteUrl,
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Web",
-      "browserRequirements": "Requires JavaScript",
-      "author": {
-        "@type": "Person",
-        "name": "Дуплей Максим Игоревич"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "RUB"
-      },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "{search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@type": "WebSite",
-      "name": "История Древнего Пути",
-      "url": siteUrl,
-      "description": "Интерактивный исторический лабиринт античного мира",
-      "publisher": {
-        "@type": "Person",
-        "name": "Дуплей Максим Игоревич"
-      },
-      "inLanguage": "ru"
-    },
-    {
-      "@type": "EducationalOrganization",
-      "name": "История Древнего Пути",
-      "description": "Образовательный проект об античных цивилизациях",
-      "url": siteUrl,
-      "knowsAbout": [
-        "Древняя Греция",
-        "Римская империя",
-        "Месопотамия",
-        "Боспорское царство",
-        "Античность",
-        "Классическая археология"
-      ]
-    }
-  ]
-};
-
 export default function Home() {
   return (
     <>
       <div className="min-h-screen flex flex-col bg-background font-body">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
         <ReadingProgress />
         <Navbar />
         <main id="main-content" role="main" className="flex-1">

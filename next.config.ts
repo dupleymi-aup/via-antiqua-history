@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: true,
+  turbopack: {
+    root: process.cwd(),
+  },
   serverExternalPackages: ["better-sqlite3"],
   images: {
     formats: ['image/avif', 'image/webp'],

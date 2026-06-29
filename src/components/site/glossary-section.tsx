@@ -57,8 +57,13 @@ export function GlossarySection() {
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 sm:mb-4">
             Глоссарий ключевых терминов
           </h2>
+<<<<<<< HEAD
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            22 основных понятия античного мира — от архитектурных ордеров до
+            {glossary.length} ключевых понятий античного мира — от архитектурных ордеров до
+=======
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            {glossary.length} ключевых понятий античного мира — от архитектурных ордеров до
+>>>>>>> upstream/main
             политических институтов. Используйте фильтр и поиск для быстрого
             доступа.
           </p>

@@ -9,7 +9,7 @@ const cormorant = Cormorant_Garamond({
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  variable: "--font-display",
+  variable: "--font-cormorant",
   display: "swap",
 });
 
@@ -17,7 +17,7 @@ const ebGaramond = EB_Garamond({
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  variable: "--font-body",
+  variable: "--font-eb-garamond",
   display: "swap",
 });
 
@@ -103,9 +103,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" suppressHydrationWarning>
+    <html lang="ru" suppressHydrationWarning className={`${cormorant.variable} ${ebGaramond.variable}`}>
       <body
-        className={`${cormorant.variable} ${ebGaramond.variable} font-body antialiased bg-background text-foreground`}
+        className="font-body antialiased bg-background text-foreground"
       >
         <a href="#main-content" className="skip-link">
           Перейти к основному содержанию
@@ -122,7 +122,62 @@ export default function RootLayout({
             </BookmarksProvider>
           </AuthProvider>
         </ThemeProvider>
-      </body>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@graph': [
+              {
+                '@type': 'WebSite',
+                name: 'История Древнего Пути — Интерактивный исторический лабиринт',
+                description:
+                  'Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство. Глоссарий 50+ терминов, 18 античных городов, 44 памятника, 12 персоналий, 7 чудес света, лента времени, интерактивная карта и сравнительный анализ цивилизаций.',
+                url: process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app',
+                author: { '@type': 'Person', name: 'Дуплей Максим Игоревич' },
+                inLanguage: 'ru-RU',
+                educationalLevel: 'beginner',
+                educationalUse: 'reference',
+              },
+              {
+                '@type': 'WebApplication',
+                name: 'История Древнего Пути',
+                description:
+                  'Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство.',
+                url: process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app',
+                applicationCategory: 'EducationalApplication',
+                operatingSystem: 'Web',
+                browserRequirements: 'Requires JavaScript',
+                author: { '@type': 'Person', name: 'Дуплей Максим Игоревич' },
+                offers: { '@type': 'Offer', price: '0', priceCurrency: 'RUB' },
+                potentialAction: {
+                  '@type': 'SearchAction',
+                  target: {
+                    '@type': 'EntryPoint',
+                    urlTemplate: (process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app') + '/?q={search_term_string}',
+                  },
+                  'query-input': 'required name=search_term_string',
+                },
+              },
+              {
+                '@type': 'EducationalOrganization',
+                name: 'История Древнего Пути',
+                description: 'Образовательный проект об античных цивилизациях',
+                url: process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app',
+                knowsAbout: [
+                  'Древняя Греция',
+                  'Римская империя',
+                  'Месопотамия',
+                  'Боспорское царство',
+                  'Античность',
+                  'Классическая археология',
+                ],
+              },
+            ],
+          }),
+        }}
+      />
+    </body>
     </html>
   );
 }
