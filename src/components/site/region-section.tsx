@@ -48,78 +48,78 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="mb-10 md:mb-14"
+          className="mb-6 sm:mb-8 md:mb-10 md:mb-14"
         >
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
             <span
-              className="flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-card"
+              className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg border border-border bg-card shrink-0"
               style={{ color: region.color }}
             >
               {regionIconMap[region.icon]}
             </span>
-            <div>
+            <div className="min-w-0">
               <span
-                className="text-xs uppercase tracking-widest font-medium"
+                className="text-[10px] sm:text-xs uppercase tracking-widest font-medium"
                 style={{ color: region.color }}
               >
                 Раздел
               </span>
-              <h2 className="font-display text-3xl md:text-5xl font-semibold">
+              <h2 className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight truncate">
                 {region.name}
               </h2>
             </div>
           </div>
-          <p className="text-lg md:text-xl text-muted-foreground italic font-body max-w-3xl">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground italic font-body max-w-3xl">
             {region.tagline}
           </p>
         </motion.div>
 
         {restricted && !user ? (
-          <div className="relative rounded-xl border border-border bg-card overflow-hidden min-h-[420px] md:min-h-[480px]">
-            <div className="blur-sm opacity-30 pointer-events-none overflow-hidden">
-              <div className="grid lg:grid-cols-12 gap-8 p-8">
+          <div className="relative rounded-xl border border-border bg-card overflow-hidden min-h-[360px] sm:min-h-[420px] md:min-h-[480px]">
+            <div className="blur-[3px] opacity-25 pointer-events-none overflow-hidden">
+              <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 p-5 sm:p-8">
                 <div className="lg:col-span-3">
                   {region.cities.slice(0, 3).map((city) => (
-                    <div key={city.id} className="px-4 py-3 rounded-lg border border-border bg-card/50 mb-2">
-                      <div className="font-display text-base font-semibold">{city.name}</div>
-                      <div className="text-xs text-muted-foreground mt-0.5">{city.era}</div>
+                    <div key={city.id} className="px-3 py-2.5 sm:px-4 sm:py-3 rounded-lg border border-border bg-card/50 mb-2">
+                      <div className="font-display text-sm sm:text-base font-semibold">{city.name}</div>
+                      <div className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">{city.era}</div>
                     </div>
                   ))}
                 </div>
                 <div className="lg:col-span-9">
-                  <div className="rounded-xl border border-border bg-card p-6">
-                    <div className="h-7 w-56 bg-muted/50 rounded mb-4" />
-                    <div className="h-4 w-full bg-muted/30 rounded mb-2" />
-                    <div className="h-4 w-5/6 bg-muted/30 rounded mb-2" />
-                    <div className="h-4 w-3/4 bg-muted/30 rounded mb-6" />
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="h-24 bg-muted/20 rounded-lg" />
-                      <div className="h-24 bg-muted/20 rounded-lg" />
+                  <div className="rounded-xl border border-border bg-card p-5 sm:p-6">
+                    <div className="h-6 w-48 sm:w-56 bg-muted/50 rounded mb-3 sm:mb-4" />
+                    <div className="h-3 sm:h-4 w-full bg-muted/30 rounded mb-1.5 sm:mb-2" />
+                    <div className="h-3 sm:h-4 w-5/6 bg-muted/30 rounded mb-1.5 sm:mb-2" />
+                    <div className="h-3 sm:h-4 w-3/4 bg-muted/30 rounded mb-4 sm:mb-6" />
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                      <div className="h-20 sm:h-24 bg-muted/20 rounded-lg" />
+                      <div className="h-20 sm:h-24 bg-muted/20 rounded-lg" />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-card/70 via-card/85 to-card/95 backdrop-blur-[2px]">
-              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 mb-5">
-                <Lock className="h-7 w-7 text-primary" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-card/80 via-card/90 to-card/95 backdrop-blur-sm px-4">
+              <span className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-primary/10 mb-4 sm:mb-5">
+                <Lock className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
               </span>
-              <p className="font-display text-2xl md:text-3xl font-semibold mb-3 text-center px-4">
+              <p className="font-display text-xl sm:text-2xl md:text-3xl font-semibold mb-2 sm:mb-3 text-center">
                 {region.name}
               </p>
-              <p className="text-sm md:text-base text-muted-foreground mb-6 max-w-md text-center px-4">
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground mb-5 sm:mb-6 max-w-sm text-center">
                 Города, памятники и исторический контекст доступны авторизованным пользователям
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 px-4">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full max-w-xs sm:max-w-sm">
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors text-sm sm:text-base"
+                  className="inline-flex items-center justify-center gap-2 h-10 sm:h-11 px-5 sm:px-7 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors text-sm sm:text-base flex-1 sm:flex-none"
                 >
                   Войти
                 </Link>
                 <Link
                   href="/register"
-                  className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg border border-border bg-card/60 font-medium hover:bg-accent/10 transition-colors text-sm sm:text-base"
+                  className="inline-flex items-center justify-center gap-2 h-10 sm:h-11 px-5 sm:px-7 rounded-lg border border-border bg-card/60 font-medium hover:bg-accent/10 transition-colors text-sm sm:text-base flex-1 sm:flex-none"
                 >
                   Зарегистрироваться
                 </Link>
@@ -169,13 +169,13 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.35 }}
               >
-                <div className="rounded-xl border border-border bg-card p-6 md:p-8">
-                  <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
-                    <div>
-                      <h3 className="font-display text-2xl md:text-3xl font-semibold">
+                <div className="rounded-xl border border-border bg-card p-4 sm:p-5 md:p-6 lg:p-8">
+                  <div className="flex flex-wrap items-start justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-semibold leading-tight">
                         {activeCity.name}
                       </h3>
-                      <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <MapPin className="h-3.5 w-3.5" />
                           {activeCity.region}
@@ -204,14 +204,14 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                     />
                   </div>
 
-                  <p className="text-base md:text-lg leading-relaxed text-foreground/90 mb-6 italic border-l-4 pl-4"
+                  <p className="text-sm sm:text-base md:text-lg leading-relaxed text-foreground/90 mb-4 sm:mb-6 italic border-l-3 sm:border-l-4 pl-3 sm:pl-4"
                      style={{ borderColor: region.color }}>
                     {activeCity.summary}
                   </p>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     {activeCity.description.map((para, i) => (
-                      <p key={i} className="text-base leading-relaxed text-foreground/85">
+                      <p key={i} className="text-sm sm:text-base leading-relaxed text-foreground/85">
                         {para}
                       </p>
                     ))}
@@ -276,12 +276,12 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-16 prose prose-lg max-w-none"
+          className="mt-10 sm:mt-12 md:mt-16 prose prose-sm md:prose-lg max-w-none"
         >
-          <h4 className="font-display text-xl md:text-2xl font-semibold mb-4">
+          <h4 className="font-display text-lg sm:text-xl md:text-2xl font-semibold mb-3 sm:mb-4">
             Исторический контекст
           </h4>
-          <div className="space-y-4 text-base leading-relaxed text-foreground/85">
+          <div className="space-y-3 sm:space-y-4 text-sm sm:text-base leading-relaxed text-foreground/85">
             {region.description.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
@@ -297,13 +297,13 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
         open={!!activeLandmark}
         onOpenChange={(o) => !o && setActiveLandmark(null)}
       >
-        <DialogContent className="max-w-2xl max-h-[90vh]">
-          <DialogHeader>
-            <div className="flex items-start justify-between gap-3 pr-8">
-              <div>
+        <DialogContent className="max-w-2xl max-h-[85vh] sm:max-h-[90vh]">
+          <DialogHeader className="pb-2 sm:pb-3">
+            <div className="flex items-start justify-between gap-2 sm:gap-3 pr-8">
+              <div className="min-w-0 flex-1">
                 <Badge
                   variant="secondary"
-                  className="mb-2"
+                  className="mb-2 text-[10px] sm:text-xs"
                   style={{
                     backgroundColor: withAlpha(region.color, 0.15),
                     color: region.color,
@@ -311,7 +311,7 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                 >
                   {activeLandmark?.period}
                 </Badge>
-                <DialogTitle className="font-display text-2xl md:text-3xl">
+                <DialogTitle className="font-display text-xl sm:text-2xl md:text-3xl leading-tight">
                   {activeLandmark?.name}
                 </DialogTitle>
               </div>
@@ -328,30 +328,30 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                 />
               )}
             </div>
-            <DialogDescription className="text-base">
+            <DialogDescription className="text-xs sm:text-base">
               {activeLandmark?.shortDesc}
             </DialogDescription>
           </DialogHeader>
 
-          <ScrollArea className="max-h-[60vh] pr-4">
-            <div className="space-y-5">
-              <p className="text-base leading-relaxed text-foreground/90">
+          <ScrollArea className="max-h-[55vh] sm:max-h-[60vh] pr-3 sm:pr-4">
+            <div className="space-y-4 sm:space-y-5">
+              <p className="text-sm sm:text-base leading-relaxed text-foreground/90">
                 {activeLandmark?.fullDesc}
               </p>
 
               <div>
-                <h5 className="font-display text-lg font-semibold mb-3 flex items-center gap-2">
+                <h5 className="font-display text-base sm:text-lg font-semibold mb-2 sm:mb-3 flex items-center gap-2">
                   <span
-                    className="inline-block h-1 w-6 rounded-full"
+                    className="inline-block h-1 w-5 sm:w-6 rounded-full"
                     style={{ backgroundColor: region.color }}
                   />
                   Ключевые особенности
                 </h5>
-                <ul className="space-y-2">
+                <ul className="space-y-1.5 sm:space-y-2">
                   {activeLandmark?.highlights.map((h, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-2 text-sm leading-relaxed"
+                      className="flex items-start gap-2 text-xs sm:text-sm leading-relaxed"
                     >
                       <span
                         className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full shrink-0"

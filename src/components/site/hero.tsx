@@ -66,6 +66,29 @@ export function Hero() {
       <div className="h-16 sm:h-20 md:h-24 shrink-0" />
       <div className="flex-1 flex items-center justify-center relative z-10">
         <div className="container mx-auto max-w-6xl px-4">
+          {/* Автор — компактный бейдж на мобильных, справа на десктопе */}
+          <div className="flex justify-center mb-4 sm:mb-6">
+            <div className="inline-flex items-center gap-2 sm:gap-3 px-3 py-2 rounded-full border border-border bg-card/60 backdrop-blur-sm">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg overflow-hidden border border-primary/20 shrink-0">
+                <img
+                  src="/img/dupley_maxim.jpg"
+                  alt="Дуплей Максим Игоревич"
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[11px] sm:text-xs font-semibold leading-tight">
+                  Дуплей М.И.
+                </span>
+                <span className="text-[10px] text-muted-foreground leading-tight">
+                  Образовательный ресурс
+                </span>
+              </div>
+            </div>
+          </div>
+
           <div className="grid lg:grid-cols-[1fr,auto] gap-10 lg:gap-12 items-start">
             {/* Левая колонка — основной контент */}
             <motion.div
@@ -139,15 +162,15 @@ export function Hero() {
               </div>
             </motion.div>
 
-            {/* Правая колонка — автор */}
+            {/* Правая колонка — автор (только десктоп) */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="order-2 lg:order-2 flex flex-col items-center lg:items-end lg:sticky lg:top-24 mt-6 lg:mt-0"
+              className="hidden lg:flex flex-col items-end lg:sticky lg:top-24"
             >
               <div className="relative mb-3">
-                <div className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-lg">
+                <div className="w-40 h-40 lg:w-44 lg:h-44 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-lg">
                   <img
                     src="/img/dupley_maxim.jpg"
                     alt="Дуплей Максим Игоревич"
@@ -156,13 +179,13 @@ export function Hero() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary flex items-center justify-center">
-                  <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary-foreground" />
+                <div className="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-primary flex items-center justify-center">
+                  <Sparkles className="h-3.5 w-3.5 text-primary-foreground" />
                 </div>
               </div>
 
-              <div className="text-center lg:text-right">
-                <p className="font-display text-sm sm:text-base font-semibold">
+              <div className="text-right">
+                <p className="font-display text-base font-semibold">
                   Дуплей Максим Игоревич
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">

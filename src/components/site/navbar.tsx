@@ -95,7 +95,16 @@ export function Navbar() {
             </span>
           </Link>
 
-          <div className="flex items-center gap-0.5 shrink-0">
+          <div className="flex items-center gap-1 shrink-0">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 sm:hidden"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Поиск"
+            >
+              <Search className="h-4 w-4" />
+            </Button>
             <Button
               variant="ghost"
               size="icon"
@@ -128,7 +137,7 @@ export function Navbar() {
             </Button>
             <Link
               href={user ? '/profile' : '/login'}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-colors"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent/10 transition-colors shrink-0"
               aria-label={user ? 'Профиль' : 'Войти'}
             >
               <User className="h-4 w-4" />
@@ -136,7 +145,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 lg:hidden"
+              className="h-8 w-8 lg:hidden shrink-0"
               onClick={() => setOpen((v) => !v)}
               aria-label="Меню"
               aria-expanded={open}
@@ -174,14 +183,19 @@ export function Navbar() {
       </div>
 
       {open && (
-          <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-md">
-          <div className="container mx-auto max-w-7xl px-4 py-3 flex flex-col gap-1">
+          <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-md shadow-lg">
+          <div className="container mx-auto max-w-7xl px-3 py-3 flex flex-col gap-0.5">
             {PUBLIC_NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="px-3 py-2 text-sm font-medium hover:bg-accent/10 rounded-md"
+                className={cn(
+                  "px-3 py-2.5 text-sm font-medium rounded-md transition-colors",
+                  isActive(item.href)
+                    ? "bg-accent/10 text-foreground font-semibold"
+                    : "hover:bg-accent/5 text-foreground/80"
+                )}
               >
                 {item.label}
               </Link>
@@ -191,9 +205,9 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent/10 rounded-md flex items-center gap-2"
+                className="px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-accent/5 rounded-md flex items-center justify-between"
               >
-                {item.label}
+                <span>{item.label}</span>
                 <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">🔒</span>
               </Link>
             ))}
@@ -202,17 +216,26 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="px-3 py-2 text-sm font-medium hover:bg-accent/10 rounded-md"
+                className="px-3 py-2.5 text-sm font-medium hover:bg-accent/5 rounded-md"
               >
                 {item.label}
               </Link>
             ))}
-            <div className="border-t border-border my-1" />
-            <div className="flex flex-col gap-1 px-3 py-1">
+            {user && (
+              <Link
+                href="/profile"
+                onClick={() => setOpen(false)}
+                className="px-3 py-2.5 text-sm font-medium hover:bg-accent/5 rounded-md"
+              >
+                Профиль
+              </Link>
+            )}
+            <div className="my-2 border-t border-border" />
+            <div className="grid grid-cols-2 gap-1.5 px-1">
               <Button
                 variant="ghost"
                 size="sm"
-                className="justify-start gap-2 sm:hidden"
+                className="justify-start gap-2 h-9 text-sm"
                 onClick={() => { setSearchOpen(true); setOpen(false) }}
               >
                 <Search className="h-4 w-4" /> Поиск
@@ -220,25 +243,18 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="justify-start gap-2"
-              onClick={() => {
-                if (theme === 'system') {
-                  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-                  setTheme(prefersDark ? 'light' : 'dark')
-                } else {
-                  setTheme(theme === 'dark' ? 'light' : 'dark')
-                }
-              }}
+                className="justify-start gap-2 h-9 text-sm"
+                onClick={() => {
+                  if (theme === 'system') {
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+                    setTheme(prefersDark ? 'light' : 'dark')
+                  } else {
+                    setTheme(theme === 'dark' ? 'light' : 'dark')
+                  }
+                }}
               >
-                {mounted && (theme === 'dark' ? <><Sun className="h-4 w-4" /> Светлая тема</> : <><Moon className="h-4 w-4" /> Тёмная тема</>)}
+                {mounted && (theme === 'dark' ? <><Sun className="h-4 w-4" /> Свет</> : <><Moon className="h-4 w-4" /> Тёмный</>)}
               </Button>
-              <Link
-                href={user ? '/profile' : '/login'}
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md hover:bg-accent/10"
-              >
-                <User className="h-4 w-4" /> {user ? 'Профиль' : 'Войти'}
-              </Link>
             </div>
           </div>
         </div>
