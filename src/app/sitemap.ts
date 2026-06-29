@@ -3,20 +3,6 @@ import type { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app'
 
-  const sections = [
-    '#greece', '#rome', '#mesopotamia', '#kuban',
-    '#persons', '#wonders', '#orders', '#epochs',
-    '#timeline', '#map', '#comparison', '#analysis',
-    '#glossary', '#quiz', '#sources',
-  ]
-
-  const sectionEntries: MetadataRoute.Sitemap = sections.map((hash) => ({
-    url: `${baseUrl}/${hash}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }))
-
   return [
     {
       url: baseUrl,
@@ -36,6 +22,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.3,
     },
-    ...sectionEntries,
+    {
+      url: `${baseUrl}/forgot-password`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.2,
+    },
+    {
+      url: `${baseUrl}/reset-password`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.2,
+    },
   ]
 }
