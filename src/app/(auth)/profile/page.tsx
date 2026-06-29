@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark, AlertTriangle } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useBookmarks } from '@/components/site/bookmarks'
@@ -121,7 +122,12 @@ export default function ProfilePage() {
           ← На главную
         </Link>
 
-        <div className="flex items-center gap-4 mb-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="flex items-center gap-4 mb-8"
+        >
           <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-display text-lg sm:text-xl font-semibold border border-border shrink-0">
             {(user.name || 'П')[0].toUpperCase()}
           </div>
@@ -129,11 +135,22 @@ export default function ProfilePage() {
             <h1 className="font-display text-xl sm:text-2xl md:text-3xl font-semibold truncate">{user.name || 'Пользователь'}</h1>
             <p className="text-sm text-muted-foreground">{user.email}</p>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="space-y-6">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: { transition: { staggerChildren: 0.08 } },
+          }}
+          className="space-y-6"
+        >
           {/* 2FA секция */}
-          <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+            className="relative rounded-xl border border-border bg-card p-4 sm:p-6"
+          >
+            <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-primary/40" />
             <div className="flex items-center justify-between gap-2 mb-3 sm:mb-4">
               <div className="flex items-center gap-2 min-w-0">
                 <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-primary shrink-0" />
@@ -242,10 +259,14 @@ export default function ProfilePage() {
                 Настроить 2FA
               </button>
             )}
-          </div>
+          </motion.div>
 
           {/* Закладки */}
-          <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+            className="relative rounded-xl border border-border bg-card p-4 sm:p-6"
+          >
+            <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-primary/40" />
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2 min-w-0">
                 <Bookmark className="h-4 w-4 sm:h-5 sm:w-5 text-primary shrink-0" />
@@ -256,25 +277,33 @@ export default function ProfilePage() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               Ваши закладки автоматически синхронизируются с сервером при входе в аккаунт.
             </p>
-          </div>
+          </motion.div>
 
           {/* Дата регистрации */}
-          <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+            className="relative rounded-xl border border-border bg-card p-4 sm:p-6"
+          >
+            <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-primary/40" />
             <p className="text-sm text-muted-foreground">
               Аккаунт создан: <span className="text-foreground font-medium">{new Date(user.createdAt).toLocaleDateString('ru-RU')}</span>
             </p>
-          </div>
+          </motion.div>
 
           {/* Выход */}
-          <button
-            onClick={handleLogout}
-            disabled={loggingOut}
-            className="inline-flex items-center gap-2 h-10 sm:h-11 px-5 sm:px-6 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 disabled:opacity-50 transition-colors"
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
           >
-            {loggingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
-            Выйти
-          </button>
-        </div>
+            <button
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="inline-flex items-center gap-2 h-10 sm:h-11 px-5 sm:px-6 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 disabled:opacity-50 transition-colors"
+            >
+              {loggingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
+              Выйти
+            </button>
+          </motion.div>
+        </motion.div>
       </div>
     </main>
   )

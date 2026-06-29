@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Calendar, Play, Pause } from 'lucide-react'
 import { timeline, additionalTimelineEvents } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -16,10 +16,13 @@ const allTimeline = [...timeline, ...additionalTimelineEvents].sort(
 export function TimelineSection() {
   const [activeIdx, setActiveIdx] = React.useState(0)
   const [isInView, setIsInView] = React.useState(false)
+  const [autoPlay, setAutoPlay] = React.useState(false)
   const sectionRef = React.useRef<HTMLElement>(null)
+  const autoPlayRef = React.useRef<ReturnType<typeof setInterval> | undefined>(undefined)
   const event = allTimeline[activeIdx]
 
   const go = React.useCallback((dir: 1 | -1) => {
+    setAutoPlay(false)
     setActiveIdx((cur) =>
       Math.min(allTimeline.length - 1, Math.max(0, cur + dir))
     )
@@ -36,6 +39,24 @@ export function TimelineSection() {
     observer.observe(el)
     return () => observer.disconnect()
   }, [])
+
+  // Auto-play interval
+  React.useEffect(() => {
+    if (!autoPlay || !isInView) {
+      clearInterval(autoPlayRef.current)
+      return
+    }
+    autoPlayRef.current = setInterval(() => {
+      setActiveIdx((cur) => {
+        if (cur >= allTimeline.length - 1) {
+          setAutoPlay(false)
+          return cur
+        }
+        return cur + 1
+      })
+    }, 4000)
+    return () => clearInterval(autoPlayRef.current)
+  }, [autoPlay, isInView])
 
   // Keyboard navigation когда секция в видимости
   React.useEffect(() => {
@@ -67,7 +88,7 @@ export function TimelineSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="mb-6 sm:mb-8 md:mb-10 md:mb-14 text-center"
+          className="mb-6 sm:mb-8 md:mb-14 text-center"
         >
           <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
             <Calendar className="h-3.5 w-3.5 text-primary" />
@@ -93,7 +114,7 @@ export function TimelineSection() {
                 <button
                   type="button"
                   key={i}
-                  onClick={() => setActiveIdx(i)}
+                  onClick={() => { setAutoPlay(false); setActiveIdx(i) }}
                   aria-label={`Событие: ${ev.yearLabel}`}
                   className={cn(
                     'group relative flex flex-col items-stretch transition-all',
@@ -173,6 +194,15 @@ export function TimelineSection() {
                   className="flex-1 text-xs sm:text-sm"
                 >
                   <ChevronLeft className="h-3.5 w-3.5 mr-1 sm:mr-1" /> Назад
+                </Button>
+                <Button
+                  variant={autoPlay ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setAutoPlay((v) => !v)}
+                  disabled={activeIdx === allTimeline.length - 1}
+                  className="flex-none text-xs sm:text-sm"
+                >
+                  {autoPlay ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
                 </Button>
                 <Button
                   variant="outline"
