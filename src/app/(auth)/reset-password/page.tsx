@@ -4,6 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
+import { motion } from 'framer-motion'
 import { Landmark, Eye, EyeOff, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { passwordStrength } from '@/lib/utils'
 
@@ -50,14 +51,24 @@ function ResetPasswordForm() {
 
   if (done) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
-        <div className="w-full max-w-sm text-center">
-          <div className="flex justify-center mb-6">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-              <CheckCircle2 className="h-7 w-7 text-primary" />
-            </span>
-          </div>
-          <h1 className="font-display text-2xl sm:text-3xl font-semibold mb-2">Пароль изменён</h1>
+    <main className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-sm text-center"
+      >
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 12, delay: 0.1 }}
+          className="flex justify-center mb-6"
+        >
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+            <CheckCircle2 className="h-7 w-7 text-primary" />
+          </span>
+        </motion.div>
+        <h1 className="font-display text-2xl sm:text-3xl font-semibold mb-2">Пароль изменён</h1>
           <p className="text-sm text-muted-foreground mb-6">Теперь вы можете войти с новым паролем.</p>
           <Link
             href="/login"
@@ -65,25 +76,37 @@ function ResetPasswordForm() {
           >
             Войти
           </Link>
-        </div>
+        </motion.div>
       </main>
     )
   }
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
-      <div className="w-full max-w-sm">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-sm"
+      >
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 12, delay: 0.1 }}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground"
+            >
               <Landmark className="h-5 w-5" />
-            </span>
+            </motion.span>
           </Link>
           <h1 className="font-display text-2xl sm:text-3xl font-semibold">Новый пароль</h1>
           <p className="text-sm text-muted-foreground mt-1">Введите код из письма и новый пароль</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="relative rounded-xl border border-border bg-card p-6 sm:p-8">
+          <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-primary/40" />
+          <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
             <div className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
               <AlertCircle className="h-4 w-4 shrink-0" />
@@ -170,7 +193,8 @@ function ResetPasswordForm() {
         <p className="mt-6 text-center text-sm text-muted-foreground">
           <Link href="/login" className="hover:underline underline-offset-2">Вернуться ко входу</Link>
         </p>
-      </div>
+        </div>
+      </motion.div>
     </main>
   )
 }

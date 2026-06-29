@@ -99,11 +99,14 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
+              className="h-8 w-8 relative"
               onClick={() => setSearchOpen(true)}
-              aria-label="Поиск"
+              aria-label="Поиск (Ctrl+K)"
             >
               <Search className="h-4 w-4" />
+              <kbd className="absolute -bottom-0.5 right-0.5 hidden sm:inline-flex items-center justify-center px-1 py-0.5 text-[8px] leading-none rounded border border-border bg-muted/60 text-muted-foreground/60">
+                ⌘K
+              </kbd>
             </Button>
             <Button
               variant="ghost"
