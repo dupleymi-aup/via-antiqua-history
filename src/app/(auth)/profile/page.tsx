@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark } from 'lucide-react'
+import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark, AlertTriangle } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useBookmarks } from '@/components/site/bookmarks'
 
@@ -18,6 +18,7 @@ export default function ProfilePage() {
   const [setupLoading, setSetupLoading] = React.useState(false)
   const [confirmLoading, setConfirmLoading] = React.useState(false)
   const [disableLoading, setDisableLoading] = React.useState(false)
+  const [confirmDisable, setConfirmDisable] = React.useState(false)
   const [error, setError] = React.useState('')
   const [copiedIdx, setCopiedIdx] = React.useState(-1)
   const [loggingOut, setLoggingOut] = React.useState(false)
@@ -89,6 +90,7 @@ export default function ProfilePage() {
       const res = await fetch('/api/auth/2fa/verify', { method: 'DELETE' })
       const json = await res.json()
       if (json.ok) {
+        setConfirmDisable(false)
         await refresh()
       } else {
         setError(json.error || 'Ошибка')
@@ -146,13 +148,41 @@ export default function ProfilePage() {
               <p className="text-sm text-destructive mb-3">{error}</p>
             )}
 
-            {user.totpEnabled ? (
+            {user.totpEnabled ? confirmDisable ? (
+              <div className="space-y-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
+                <p className="text-sm font-medium text-destructive flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 shrink-0" />
+                  Вы уверены?
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Отключение 2FA снижает безопасность вашего аккаунта. Вы сможете
+                  войти только по паролю.
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleDisable2fa}
+                    disabled={disableLoading}
+                    className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-destructive text-destructive-foreground text-sm font-medium hover:bg-destructive/90 disabled:opacity-50 transition-colors"
+                  >
+                    {disableLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldOff className="h-4 w-4" />}
+                    Отключить
+                  </button>
+                  <button
+                    onClick={() => setConfirmDisable(false)}
+                    disabled={disableLoading}
+                    className="inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 transition-colors"
+                  >
+                    Отмена
+                  </button>
+                </div>
+              </div>
+            ) : (
               <button
-                onClick={handleDisable2fa}
+                onClick={() => setConfirmDisable(true)}
                 disabled={disableLoading}
                 className="inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 disabled:opacity-50 transition-colors"
               >
-                {disableLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldOff className="h-4 w-4" />}
+                <ShieldOff className="h-4 w-4" />
                 Отключить 2FA
               </button>
             ) : qrCode ? (

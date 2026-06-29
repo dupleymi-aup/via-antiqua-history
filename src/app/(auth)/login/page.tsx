@@ -17,9 +17,17 @@ export default function LoginPage() {
   const [loading, setLoading] = React.useState(false)
   const [require2fa, setRequire2fa] = React.useState(false)
 
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
+    if (!EMAIL_REGEX.test(email)) {
+      setError('Укажите корректный email')
+      return
+    }
+
     setLoading(true)
 
     try {

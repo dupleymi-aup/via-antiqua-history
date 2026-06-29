@@ -35,9 +35,16 @@ export default function RegisterPage() {
   const passwordsMatch = confirmPassword.length > 0 && password === confirmPassword
   const passwordsMismatch = confirmPassword.length > 0 && password !== confirmPassword
 
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
+    if (!EMAIL_REGEX.test(email)) {
+      setError('Укажите корректный email')
+      return
+    }
 
     if (password.length < 8) {
       setError('Пароль должен быть не менее 8 символов')
