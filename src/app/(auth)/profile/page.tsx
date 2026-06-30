@@ -108,10 +108,14 @@ export default function ProfilePage() {
     router.push('/')
   }
 
-  const copyCode = (code: string, idx: number) => {
-    navigator.clipboard.writeText(code)
-    setCopiedIdx(idx)
-    setTimeout(() => setCopiedIdx(-1), 2000)
+  const copyCode = async (code: string, idx: number) => {
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopiedIdx(idx)
+      setTimeout(() => setCopiedIdx(-1), 2000)
+    } catch {
+      // Clipboard access denied or unavailable
+    }
   }
 
   return (
