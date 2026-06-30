@@ -104,8 +104,12 @@ export default function ProfilePage() {
 
   const handleLogout = async () => {
     setLoggingOut(true)
-    await logout()
-    router.push('/')
+    try {
+      await logout()
+    } finally {
+      setLoggingOut(false)
+      router.push('/')
+    }
   }
 
   const copyCode = async (code: string, idx: number) => {
