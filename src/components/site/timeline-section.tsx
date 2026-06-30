@@ -17,13 +17,6 @@ export function TimelineSection() {
   const [activeIdx, setActiveIdx] = React.useState(0)
   const [isInView, setIsInView] = React.useState(false)
   const sectionRef = React.useRef<HTMLElement>(null)
-  const event = allTimeline[activeIdx]
-
-  const go = React.useCallback((dir: 1 | -1) => {
-    setActiveIdx((cur) =>
-      Math.min(allTimeline.length - 1, Math.max(0, cur + dir))
-    )
-  }, [])
 
   // Отслеживаем, в зоне видимости ли секция
   React.useEffect(() => {
@@ -47,21 +40,36 @@ export function TimelineSection() {
       if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return
       if (e.key === 'ArrowLeft') {
         e.preventDefault()
-        go(-1)
+        setActiveIdx((cur) => Math.max(0, cur - 1))
       } else if (e.key === 'ArrowRight') {
         e.preventDefault()
-        go(1)
+        setActiveIdx((cur) => Math.min(allTimeline.length - 1, cur + 1))
       }
     }
     el.addEventListener('keydown', onKey)
     return () => el.removeEventListener('keydown', onKey)
-  }, [isInView, go])
+  }, [isInView])
+
+  if (!allTimeline.length) {
+    return null
+  }
+
+  const go = (dir: 1 | -1) => {
+    setActiveIdx((cur) =>
+      Math.min(allTimeline.length - 1, Math.max(0, cur + dir))
+    )
+  }
+
+  const event = allTimeline[activeIdx]
 
   return (
     <section
       id="timeline"
       ref={sectionRef}
-      className="py-20 md:py-28 scroll-mt-20"
+      tabIndex={0}
+      role="region"
+      aria-label="Лента времени"
+      className="py-20 md:py-28 scroll-mt-20 outline-none"
     >
       <div className="container mx-auto max-w-7xl px-4">
         <motion.div
