@@ -3,12 +3,23 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: true,
+  poweredByHeader: false,
+  compress: true,
   turbopack: {
     root: process.cwd(),
   },
   serverExternalPackages: ["better-sqlite3"],
   images: {
     formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 768, 1024, 1280, 1536],
+    imageSizes: [16, 32, 48, 64, 96],
+    minimumCacheTTL: 60,
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   async headers() {
     return [

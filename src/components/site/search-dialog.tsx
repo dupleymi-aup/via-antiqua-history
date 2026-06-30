@@ -216,7 +216,7 @@ export function SearchDialog({
               </div>
             ) : (
               <>
-                <div className="px-3 py-2 text-xs text-muted-foreground">
+                <div className="px-3 py-2 text-xs text-muted-foreground" aria-live="polite" aria-atomic="true">
                   Найдено результатов: {results.length}
                 </div>
                 <div id="search-results-list" role="listbox" aria-label="Результаты поиска">

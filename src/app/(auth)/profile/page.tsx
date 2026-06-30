@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark, AlertTriangle } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useBookmarks } from '@/components/site/bookmarks'
+import { ErrorBoundary } from '@/components/ui/error-boundary'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -124,6 +125,7 @@ export default function ProfilePage() {
   }
 
   return (
+    <ErrorBoundary>
     <main className="min-h-screen bg-background">
       <div className="container mx-auto max-w-2xl px-4 py-8 sm:py-12">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8">
@@ -314,5 +316,6 @@ export default function ProfilePage() {
         </motion.div>
       </div>
     </main>
+    </ErrorBoundary>
   )
 }

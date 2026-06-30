@@ -102,9 +102,6 @@
       radial-gradient(circle at 80% 70%, oklch(0.45 0.06 50 / 0.18) 0%, transparent 50%),
       linear-gradient(180deg, oklch(0.18 0.015 55) 0%, oklch(0.15 0.018 50) 100%);
   }
-  .text-shadow-soft {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.18);
-  }
   /* Subtle gold gradient text */
   .gold-text {
     background: linear-gradient(135deg, oklch(0.7 0.13 70) 0%, oklch(0.55 0.13 50) 100%);
@@ -126,6 +123,10 @@
   }
   .custom-scroll::-webkit-scrollbar-thumb:hover {
     background: oklch(0.55 0.1 55 / 0.6);
+  }
+  .custom-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(0.6 0.08 60 / 0.4) transparent;
   }
 }
 

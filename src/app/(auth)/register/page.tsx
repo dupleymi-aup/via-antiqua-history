@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import { Landmark, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { cn, passwordStrength } from '@/lib/utils'
+import { ErrorBoundary } from '@/components/ui/error-boundary'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -61,6 +62,7 @@ export default function RegisterPage() {
   }
 
   return (
+    <ErrorBoundary>
     <main className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -197,5 +199,6 @@ export default function RegisterPage() {
         </p>
       </motion.div>
     </main>
+    </ErrorBoundary>
   )
 }

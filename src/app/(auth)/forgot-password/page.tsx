@@ -4,6 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Landmark, Loader2, AlertCircle, MailCheck } from 'lucide-react'
+import { ErrorBoundary } from '@/components/ui/error-boundary'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = React.useState('')
@@ -39,6 +40,7 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
+    <ErrorBoundary>
     <main className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -78,10 +80,12 @@ export default function ForgotPasswordPage() {
         </p>
       </motion.div>
     </main>
+    </ErrorBoundary>
   )
 }
 
   return (
+    <ErrorBoundary>
     <main className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -146,5 +150,6 @@ export default function ForgotPasswordPage() {
         </div>
       </motion.div>
     </main>
+    </ErrorBoundary>
   )
 }

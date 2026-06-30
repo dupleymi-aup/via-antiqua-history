@@ -7,6 +7,7 @@ import { Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { Landmark, Eye, EyeOff, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { passwordStrength } from '@/lib/utils'
+import { ErrorBoundary } from '@/components/ui/error-boundary'
 
 function ResetPasswordForm() {
   const searchParams = useSearchParams()
@@ -51,6 +52,7 @@ function ResetPasswordForm() {
 
   if (done) {
     return (
+    <ErrorBoundary>
     <main className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -78,10 +80,12 @@ function ResetPasswordForm() {
           </Link>
         </motion.div>
       </main>
+    </ErrorBoundary>
     )
   }
 
   return (
+    <ErrorBoundary>
     <main className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -196,6 +200,7 @@ function ResetPasswordForm() {
         </div>
       </motion.div>
     </main>
+    </ErrorBoundary>
   )
 }
 
