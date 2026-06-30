@@ -22,14 +22,17 @@ export function ReadingProgress() {
         className="fixed top-0 left-0 right-0 h-1.5 z-[60] origin-left bg-primary"
         style={{ scaleX }}
       />
-      <motion.div
-        className="fixed top-16 right-4 h-7 text-xs font-medium text-muted-foreground bg-card/80 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border z-[61] leading-none flex items-center"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: percentage > 5 ? 1 : 0, y: 0 }}
-        transition={{ duration: 0.2 }}
-      >
-        {percentage}%
-      </motion.div>
+      {percentage > 5 && (
+        <motion.div
+          className="fixed top-16 right-4 h-7 text-xs font-medium text-muted-foreground bg-card/80 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border z-[61] leading-none flex items-center"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
+        >
+          {percentage}%
+        </motion.div>
+      )}
     </>
   )
 }
