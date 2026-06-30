@@ -1,0 +1,23 @@
+export type * from './types'
+
+export { greece } from './greece'
+export { rome } from './rome'
+export { mesopotamia } from './mesopotamia'
+export { kuban } from './kuban'
+export { authorAnalysis } from './analysis'
+export { timeline, additionalTimelineEvents } from './timeline'
+export { mapRegions } from './map'
+export { quizQuestions } from './quiz'
+export { comparisonRows } from './comparison'
+export { glossary } from './glossary'
+export { sources } from './sources'
+export { persons } from './persons'
+export { wonders } from './wonders'
+export { architecturalOrders } from './orders'
+export { epochs } from './epochs'
+
+import { greece } from './greece'
+import { rome } from './rome'
+import { mesopotamia } from './mesopotamia'
+import { kuban } from './kuban'
+export const allRegions = [greece, rome, mesopotamia, kuban]
