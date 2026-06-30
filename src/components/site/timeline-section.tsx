@@ -37,9 +37,11 @@ export function TimelineSection() {
     return () => observer.disconnect()
   }, [])
 
-  // Keyboard navigation когда секция в видимости
+  // Keyboard navigation когда секция в видимости (только на элементе секции)
   React.useEffect(() => {
     if (!isInView) return
+    const el = sectionRef.current
+    if (!el) return
     const onKey = (e: KeyboardEvent) => {
       const active = document.activeElement
       if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return
@@ -51,8 +53,8 @@ export function TimelineSection() {
         go(1)
       }
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    el.addEventListener('keydown', onKey)
+    return () => el.removeEventListener('keydown', onKey)
   }, [isInView, go])
 
   return (
@@ -67,7 +69,7 @@ export function TimelineSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
-          className="mb-6 sm:mb-8 md:mb-10 md:mb-14 text-center"
+          className="mb-6 sm:mb-8 md:mb-14 text-center"
         >
           <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
             <Calendar className="h-3.5 w-3.5 text-primary" />
@@ -95,6 +97,7 @@ export function TimelineSection() {
                   key={i}
                   onClick={() => setActiveIdx(i)}
                   aria-label={`Событие: ${ev.yearLabel}`}
+                  aria-current={activeIdx === i ? 'true' : undefined}
                   className={cn(
                     'group relative flex flex-col items-stretch transition-all',
                     'min-w-[110px] sm:min-w-[150px] md:min-w-[190px]'
