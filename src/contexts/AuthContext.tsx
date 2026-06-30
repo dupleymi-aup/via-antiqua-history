@@ -47,14 +47,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
       const json = await res.json()
 
-      if (json.ok && json.data) {
-        if (json.data.require2fa) {
-          return { ok: true, require2fa: true }
-        }
+      if (!json.ok) {
+        return { ok: false, error: json.error || 'Ошибка входа' }
+      }
+
+      if (json.data?.require2fa) {
+        return { ok: true, require2fa: true }
+      }
+
+      if (json.data) {
         setUser(json.data as User)
       }
 
-      return { ok: json.ok, error: json.error, require2fa: json.data?.require2fa }
+      return { ok: true }
     } catch {
       return { ok: false, error: 'Ошибка сети. Проверьте подключение.' }
     }
