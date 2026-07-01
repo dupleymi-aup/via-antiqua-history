@@ -25,7 +25,6 @@ zip -r "$ARCHIVE_PATH" \
   src/ \
   public/ \
   scripts/ \
-  data/ \
   history/ \
   img/ \
   README.md \
