@@ -32,6 +32,20 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
   )
   const activeCity = region.cities.find((c) => c.id === activeCityId) ?? region.cities[0]
   const { user } = useAuth()
+  const [hasSubscription, setHasSubscription] = React.useState(false)
+
+  React.useEffect(() => {
+    if (!user || !restricted) return
+    let cancelled = false
+    fetch('/api/subscription/status')
+      .then(r => r.json())
+      .then(data => {
+        if (!cancelled) setHasSubscription(data.ok && data.data?.status === 'active')
+      })
+      .catch(() => {})
+      .finally(() => {})
+    return () => { cancelled = true }
+  }, [user, restricted])
 
   if (!region.cities.length) {
     return null
@@ -82,7 +96,7 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
           </p>
         </motion.div>
 
-        {restricted && !user ? (
+        {restricted && (!user || !hasSubscription) ? (
           <div className="relative rounded-xl border border-border bg-card overflow-hidden min-h-[360px] sm:min-h-[420px] md:min-h-[480px]">
             <div className="blur-[3px] opacity-25 pointer-events-none overflow-hidden">
               <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 p-5 sm:p-8">

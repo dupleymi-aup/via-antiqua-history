@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
         break
         
       default:
-        console.log(`Unhandled webhook event: ${event}`, data)
+        console.warn(`Unhandled webhook event: ${event}`, data)
     }
 
     return NextResponse.json({ ok: true, message: 'Webhook processed' })
@@ -99,7 +99,6 @@ async function handlePaymentCompleted(data: unknown) {
   } | undefined
 
   if (!payment) {
-    // eslint-disable-next-line no-console
     console.error(`Payment not found: ${paymentData.externalPaymentId} / ${paymentData.paymentId}`)
     return
   }
@@ -123,8 +122,7 @@ async function handlePaymentCompleted(data: unknown) {
     WHERE user_id = ? AND status = 'pending' AND payment_id = ?
   `).run(payment.id, now, expiresAt, payment.user_id, payment.id)
 
-  // eslint-disable-next-line no-console
-  console.log(`Subscription activated for user ${payment.user_id}`)
+  console.warn(`Subscription activated for user ${payment.user_id}`)
   
   // Здесь можно добавить отправку email уведомления
   // или другие действия после успешной оплаты
@@ -150,8 +148,7 @@ async function handlePaymentFailed(data: unknown) {
     WHERE id = ? OR external_payment_id = ?
   `).run(now, paymentData.externalPaymentId, paymentData.paymentId)
 
-  // eslint-disable-next-line no-console
-  console.log(`Payment failed: ${paymentData.externalPaymentId} / ${paymentData.paymentId}`, { reason: paymentData.reason })
+  console.warn(`Payment failed: ${paymentData.externalPaymentId} / ${paymentData.paymentId}`, { reason: paymentData.reason })
 }
 
 /**
@@ -183,6 +180,5 @@ async function handlePaymentRefunded(data: unknown) {
     WHERE payment_id = ? AND status = 'active'
   `).run(now, paymentData.externalPaymentId)
 
-  // eslint-disable-next-line no-console
-  console.log(`Payment refunded: ${paymentData.externalPaymentId} / ${paymentData.paymentId}`, { refundAmount: paymentData.refundAmount })
+  console.warn(`Payment refunded: ${paymentData.externalPaymentId} / ${paymentData.paymentId}`, { refundAmount: paymentData.refundAmount })
 }
