@@ -25,8 +25,8 @@ function ResetPasswordForm() {
     e.preventDefault()
     setError('')
 
-    if (password.length < 8) {
-      setError('Пароль должен быть не менее 8 символов')
+    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
+      setError('Пароль должен содержать минимум 8 символов, букву и цифру')
       return
     }
 

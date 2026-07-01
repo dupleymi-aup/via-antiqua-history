@@ -7,7 +7,7 @@ import { Compass, Home, Landmark } from 'lucide-react'
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-background px-4 py-12">
+    <main role="alert" className="min-h-screen flex flex-col items-center justify-center bg-background px-4 py-12">
       <div className="text-center max-w-md">
         <Link href="/" className="inline-flex items-center gap-2 mb-8 hover:opacity-80 transition-opacity">
           <motion.span
@@ -37,17 +37,10 @@ export default function NotFound() {
           transition={{ delay: 0.25 }}
           className="font-display text-5xl sm:text-6xl font-semibold mb-2 gold-text"
         >
-          404
+          404 — Путь не найден
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="font-display text-xl text-foreground mb-4"
-        >
-          Путь не найден
-        </motion.p>
+
 
         <motion.p
           initial={{ opacity: 0, y: 8 }}

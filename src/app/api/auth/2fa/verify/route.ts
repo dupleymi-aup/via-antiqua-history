@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (user.totp_secret) {
-      const result = await totp.verify(code, { secret: user.totp_secret as string })
+      const result = await totp.verify(code, { secret: user.totp_secret as string, epochTolerance: 1 })
       if (result.valid) {
         return NextResponse.json<ApiResponse>({ ok: true })
       }

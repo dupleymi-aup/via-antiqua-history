@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json<ApiResponse>({ ok: false, error: '2FA не настроен. Запросите setup сначала' }, { status: 400 })
     }
 
-    const result = await totp.verify(code, { secret: user.totp_secret as string })
+    const result = await totp.verify(code, { secret: user.totp_secret as string, epochTolerance: 1 })
     if (!result.valid) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Неверный код' }, { status: 400 })
     }

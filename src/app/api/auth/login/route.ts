@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       }
 
       const secret = user.totp_secret as string
-      const result = await totp.verify(totpCode, { secret })
+      const result = await totp.verify(totpCode, { secret, epochTolerance: 1 })
       if (!result.valid) {
         return NextResponse.json<ApiResponse>({ ok: false, error: 'Неверный код 2FA' }, { status: 401 })
       }

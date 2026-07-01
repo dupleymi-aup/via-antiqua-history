@@ -11,8 +11,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Заполните все поля' }, { status: 400 })
     }
 
-    if (password.length < 8) {
-      return NextResponse.json<ApiResponse>({ ok: false, error: 'Пароль должен быть не менее 8 символов' }, { status: 400 })
+    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: 'Пароль должен содержать минимум 8 символов, букву и цифру' }, { status: 400 })
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
