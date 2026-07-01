@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { Landmark, Eye, EyeOff, Loader2, AlertCircle, CheckCircle2, Mail, KeyRound, Lock } from 'lucide-react'
-import { passwordStrength } from '@/lib/utils'
+import { passwordStrength, validatePassword, validateEmail } from '@/lib/utils'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
 
 function ResetPasswordForm() {
@@ -14,6 +14,7 @@ function ResetPasswordForm() {
   const [email, setEmail] = React.useState(searchParams.get('email') || '')
   const [code, setCode] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [confirmPassword, setConfirmPassword] = React.useState('')
   const [showPassword, setShowPassword] = React.useState(false)
   const [done, setDone] = React.useState(false)
   const [error, setError] = React.useState('')
@@ -21,12 +22,32 @@ function ResetPasswordForm() {
 
   const strength = React.useMemo(() => passwordStrength(password), [password])
 
+  const passwordsMatch = confirmPassword.length > 0 && password === confirmPassword
+  const passwordsMismatch = confirmPassword.length > 0 && password !== confirmPassword
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
 
-    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
-      setError('Пароль должен содержать минимум 8 символов, букву и цифру')
+    if (!email || !code || !password) {
+      setError('Заполните все поля')
+      return
+    }
+
+    const emailError = validateEmail(email)
+    if (emailError) {
+      setError(emailError)
+      return
+    }
+
+    const passwordError = validatePassword(password)
+    if (passwordError) {
+      setError(passwordError)
+      return
+    }
+
+    if (password !== confirmPassword) {
+      setError('Пароли не совпадают')
       return
     }
 
@@ -243,6 +264,7 @@ function ResetPasswordForm() {
                     placeholder="Минимум 8 символов"
                     required
                     minLength={8}
+                    maxLength={128}
                     autoComplete="new-password"
                     className="w-full h-11 pl-10 pr-11 rounded-xl border border-border/60 bg-background/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary/50 transition-all placeholder:text-muted-foreground/40"
                   />
@@ -267,6 +289,37 @@ function ResetPasswordForm() {
                     </div>
                     <p className="text-[11px] text-muted-foreground/60">{strength.label}</p>
                   </div>
+                )}
+              </motion.div>
+
+              <motion.div variants={item}>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-foreground/80">
+                  Подтверждение пароля
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50 pointer-events-none" />
+                  <input
+                    id="confirmPassword"
+                    type={showPassword ? 'text' : 'password'}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Повторите пароль"
+                    required
+                    autoComplete="new-password"
+                    className={`w-full h-11 pl-10 pr-4 rounded-xl border bg-background/60 text-sm focus:outline-none focus:ring-2 transition-all placeholder:text-muted-foreground/40 ${
+                      passwordsMismatch
+                        ? 'border-destructive/40 focus:ring-destructive/20 focus:border-destructive/50'
+                        : passwordsMatch
+                          ? 'border-green-500/40 focus:ring-green-500/20 focus:border-green-500/50'
+                          : 'border-border/60 focus:ring-primary/25 focus:border-primary/50'
+                    }`}
+                  />
+                </div>
+                {passwordsMismatch && (
+                  <p className="text-[11px] text-destructive/70 mt-1.5">Пароли не совпадают</p>
+                )}
+                {passwordsMatch && (
+                  <p className="text-[11px] text-green-600/70 dark:text-green-400/70 mt-1.5">Пароли совпадают</p>
                 )}
               </motion.div>
 

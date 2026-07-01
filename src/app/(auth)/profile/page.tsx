@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark, AlertTriangle, Crown, CreditCard, QrCode, Clock, CheckCircle2, XCircle } from 'lucide-react'
+import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark, AlertTriangle, Crown, CreditCard, QrCode, Clock, CheckCircle2, XCircle, Lock } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useBookmarks } from '@/components/site/bookmarks'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
@@ -21,9 +21,10 @@ export default function ProfilePage() {
   const [confirmLoading, setConfirmLoading] = React.useState(false)
   const [disableLoading, setDisableLoading] = React.useState(false)
   const [confirmDisable, setConfirmDisable] = React.useState(false)
-  const [error, setError] = React.useState('')
+  const [error2fa, setError2fa] = React.useState('')
   const [copiedIdx, setCopiedIdx] = React.useState(-1)
   const [loggingOut, setLoggingOut] = React.useState(false)
+  const [totpPassword, setTotpPassword] = React.useState('')
 
   // Subscription state
   const [subscription, setSubscription] = React.useState<{
@@ -47,6 +48,16 @@ export default function ProfilePage() {
 
   const [cancelLoading, setCancelLoading] = React.useState(false)
   const [confirmCancel, setConfirmCancel] = React.useState(false)
+  const [errorSub, setErrorSub] = React.useState('')
+
+  // Change password state
+  const [showChangePassword, setShowChangePassword] = React.useState(false)
+  const [currentPassword, setCurrentPassword] = React.useState('')
+  const [newPassword, setNewPassword] = React.useState('')
+  const [confirmNewPassword, setConfirmNewPassword] = React.useState('')
+  const [changePasswordLoading, setChangePasswordLoading] = React.useState(false)
+  const [changePasswordError, setChangePasswordError] = React.useState('')
+  const [changePasswordSuccess, setChangePasswordSuccess] = React.useState(false)
 
   React.useEffect(() => {
     if (!loading && !user) {
@@ -98,7 +109,7 @@ export default function ProfilePage() {
   }, [paymentData])
 
   const handleCreateSubscription = async () => {
-    setError('')
+    setErrorSub('')
     setCreateLoading(true)
     try {
       const res = await fetch('/api/subscription/create', {
@@ -109,10 +120,10 @@ export default function ProfilePage() {
       if (json.ok) {
         setPaymentData(json.data)
       } else {
-        setError(json.error || 'Ошибка создания подписки')
+        setErrorSub(json.error || 'Ошибка создания подписки')
       }
     } catch {
-      setError('Ошибка при создании подписки')
+      setErrorSub('Ошибка при создании подписки')
     } finally {
       setCreateLoading(false)
     }
@@ -128,10 +139,10 @@ export default function ProfilePage() {
         setConfirmCancel(false)
         refresh()
       } else {
-        setError(json.error || 'Ошибка отмены')
+        setErrorSub(json.error || 'Ошибка отмены')
       }
     } catch {
-      setError('Ошибка при отмене подписки')
+      setErrorSub('Ошибка при отмене подписки')
     } finally {
       setCancelLoading(false)
     }
@@ -148,7 +159,7 @@ export default function ProfilePage() {
   if (!user) return null
 
   const handleSetup2fa = async () => {
-    setError('')
+    setError2fa('')
     setSetupLoading(true)
     try {
       const res = await fetch('/api/auth/2fa/setup')
@@ -156,23 +167,23 @@ export default function ProfilePage() {
       if (json.ok) {
         setQrCode(json.data.qrCode)
       } else {
-        setError(json.error || 'Ошибка')
+        setError2fa(json.error || 'Ошибка')
       }
     } catch {
-      setError('Ошибка при настройке 2FA')
+      setError2fa('Ошибка при настройке 2FA')
     } finally {
       setSetupLoading(false)
     }
   }
 
   const handleConfirm2fa = async () => {
-    setError('')
+    setError2fa('')
     setConfirmLoading(true)
     try {
       const res = await fetch('/api/auth/2fa/setup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: totpCode }),
+        body: JSON.stringify({ code: totpCode, password: totpPassword }),
       })
       const json = await res.json()
       if (json.ok) {
@@ -180,31 +191,37 @@ export default function ProfilePage() {
         setShowRecovery(true)
         setQrCode('')
         setTotpCode('')
+        setTotpPassword('')
         await refresh()
       } else {
-        setError(json.error || 'Неверный код')
+        setError2fa(json.error || 'Неверный код')
       }
     } catch {
-      setError('Ошибка при подтверждении 2FA')
+      setError2fa('Ошибка при подтверждении 2FA')
     } finally {
       setConfirmLoading(false)
     }
   }
 
   const handleDisable2fa = async () => {
-    setError('')
+    setError2fa('')
     setDisableLoading(true)
     try {
-      const res = await fetch('/api/auth/2fa/verify', { method: 'DELETE' })
+      const res = await fetch('/api/auth/2fa/verify', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: totpPassword }),
+      })
       const json = await res.json()
       if (json.ok) {
         setConfirmDisable(false)
+        setTotpPassword('')
         await refresh()
       } else {
-        setError(json.error || 'Ошибка')
+        setError2fa(json.error || 'Ошибка')
       }
     } catch {
-      setError('Ошибка при отключении 2FA')
+      setError2fa('Ошибка при отключении 2FA')
     } finally {
       setDisableLoading(false)
     }
@@ -216,7 +233,51 @@ export default function ProfilePage() {
       await logout()
     } finally {
       setLoggingOut(false)
-      router.push('/')
+      router.push('/login')
+    }
+  }
+
+  const handleChangePassword = async () => {
+    setChangePasswordError('')
+    setChangePasswordSuccess(false)
+
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      setChangePasswordError('Заполните все поля')
+      return
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      setChangePasswordError('Новые пароли не совпадают')
+      return
+    }
+
+    if (currentPassword === newPassword) {
+      setChangePasswordError('Новый пароль должен отличаться от текущего')
+      return
+    }
+
+    setChangePasswordLoading(true)
+    try {
+      const res = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      })
+      const json = await res.json()
+      if (json.ok) {
+        setChangePasswordSuccess(true)
+        setCurrentPassword('')
+        setNewPassword('')
+        setConfirmNewPassword('')
+        setShowChangePassword(false)
+        setTimeout(() => setChangePasswordSuccess(false), 3000)
+      } else {
+        setChangePasswordError(json.error || 'Ошибка')
+      }
+    } catch {
+      setChangePasswordError('Ошибка при смене пароля')
+    } finally {
+      setChangePasswordLoading(false)
     }
   }
 
@@ -287,8 +348,8 @@ export default function ProfilePage() {
               )}
             </div>
 
-            {error && (
-              <p className="text-sm text-destructive mb-3">{error}</p>
+            {errorSub && (
+              <p className="text-sm text-destructive mb-3">{errorSub}</p>
             )}
 
             {subLoading ? (
@@ -480,8 +541,8 @@ export default function ProfilePage() {
               </span>
             </div>
 
-            {error && (
-              <p className="text-sm text-destructive mb-3">{error}</p>
+            {error2fa && (
+              <p className="text-sm text-destructive mb-3">{error2fa}</p>
             )}
 
             {user.totpEnabled ? confirmDisable ? (
@@ -494,17 +555,34 @@ export default function ProfilePage() {
                   Отключение 2FA снижает безопасность вашего аккаунта. Вы сможете
                   войти только по паролю.
                 </p>
+                <div>
+                  <label htmlFor="disable-2fa-password" className="block text-xs font-medium mb-1 text-foreground/80">
+                    Подтвердите паролем
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/50 pointer-events-none" />
+                    <input
+                      id="disable-2fa-password"
+                      type="password"
+                      value={totpPassword}
+                      onChange={(e) => setTotpPassword(e.target.value)}
+                      placeholder="Ваш пароль"
+                      autoComplete="current-password"
+                      className="w-full h-9 pl-8 pr-3 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-destructive/30 focus:border-destructive/50 transition-colors"
+                    />
+                  </div>
+                </div>
                 <div className="flex gap-2">
                   <button
                     onClick={handleDisable2fa}
-                    disabled={disableLoading}
+                    disabled={disableLoading || !totpPassword}
                     className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-destructive text-destructive-foreground text-sm font-medium hover:bg-destructive/90 disabled:opacity-50 transition-colors"
                   >
                     {disableLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldOff className="h-4 w-4" />}
                     Отключить
                   </button>
                   <button
-                    onClick={() => setConfirmDisable(false)}
+                    onClick={() => { setConfirmDisable(false); setTotpPassword('') }}
                     disabled={disableLoading}
                     className="inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 transition-colors"
                   >
@@ -531,31 +609,59 @@ export default function ProfilePage() {
                 </div>
                 <div>
                   <label htmlFor="totp-input" className="block text-sm font-medium mb-1.5">Код из приложения</label>
-                  <div className="flex gap-2">
+                  <input
+                    id="totp-input"
+                    type="text"
+                    value={totpCode}
+                    onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    placeholder="000000"
+                    maxLength={6}
+                    className="w-full h-11 px-4 rounded-lg border border-border bg-background text-sm text-center tracking-[8px] font-mono focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="totp-password" className="block text-sm font-medium mb-1.5">Пароль для подтверждения</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50 pointer-events-none" />
                     <input
-                      id="totp-input"
-                      type="text"
-                      value={totpCode}
-                      onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                      placeholder="000000"
-                      maxLength={6}
-                      className="flex-1 h-11 px-4 rounded-lg border border-border bg-background text-sm text-center tracking-[8px] font-mono focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+                      id="totp-password"
+                      type="password"
+                      value={totpPassword}
+                      onChange={(e) => setTotpPassword(e.target.value)}
+                      placeholder="Ваш пароль"
+                      autoComplete="current-password"
+                      className="w-full h-11 pl-10 pr-4 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
                     />
-                    <button
-                      onClick={handleConfirm2fa}
-                      disabled={confirmLoading || totpCode.length !== 6}
-                      className="h-11 px-6 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors inline-flex items-center gap-2"
-                    >
-                      {confirmLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-                      Подтвердить
-                    </button>
                   </div>
                 </div>
+                <button
+                  onClick={handleConfirm2fa}
+                  disabled={confirmLoading || totpCode.length !== 6 || !totpPassword}
+                  className="w-full h-11 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors inline-flex items-center justify-center gap-2"
+                >
+                  {confirmLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                  Подтвердить включение 2FA
+                </button>
               </div>
             ) : showRecovery ? (
               <div className="space-y-3">
-                <p className="text-sm font-medium">Коды восстановления</p>
-                <p className="text-xs text-muted-foreground">Сохраните их в надёжном месте. Каждый код можно использовать только один раз.</p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium">Коды восстановления</p>
+                    <p className="text-xs text-muted-foreground">Сохраните их в надёжном месте. Каждый код можно использовать только один раз.</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(recoveryCodes.join('\n'))
+                      setCopiedIdx(-2)
+                      setTimeout(() => setCopiedIdx(-1), 2000)
+                    }}
+                    className="shrink-0 inline-flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border text-xs font-medium hover:bg-accent/10 transition-colors"
+                  >
+                    {copiedIdx === -2 ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
+                    <span className="hidden sm:inline">{copiedIdx === -2 ? 'Скопировано' : 'Копировать все'}</span>
+                  </button>
+                </div>
                 <div className="grid grid-cols-2 gap-2">
                   {recoveryCodes.map((code, i) => (
                     <button
@@ -577,6 +683,126 @@ export default function ProfilePage() {
               >
                 {setupLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Smartphone className="h-4 w-4" />}
                 Настроить 2FA
+              </button>
+            )}
+          </motion.div>
+
+          {/* Смена пароля */}
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+            className="relative rounded-xl border border-border bg-card p-4 sm:p-6"
+          >
+            <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-primary/40" />
+            <div className="flex items-center justify-between gap-2 mb-3 sm:mb-4">
+              <div className="flex items-center gap-2 min-w-0">
+                <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-primary shrink-0" />
+                <h2 className="font-display text-base sm:text-lg font-semibold truncate">Пароль</h2>
+              </div>
+            </div>
+
+            {changePasswordSuccess && (
+              <div className="mb-3 p-3 rounded-lg border border-green-500/30 bg-green-500/5 text-sm text-green-600 dark:text-green-400">
+                Пароль успешно изменён
+              </div>
+            )}
+
+            {changePasswordError && (
+              <p className="text-sm text-destructive mb-3">{changePasswordError}</p>
+            )}
+
+            {showChangePassword ? (
+              <div className="space-y-3">
+                <div>
+                  <label htmlFor="current-password" className="block text-xs font-medium mb-1 text-foreground/80">
+                    Текущий пароль
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/50 pointer-events-none" />
+                    <input
+                      id="current-password"
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      placeholder="Введите текущий пароль"
+                      autoComplete="current-password"
+                      className="w-full h-9 pl-8 pr-3 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="new-password" className="block text-xs font-medium mb-1 text-foreground/80">
+                    Новый пароль
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/50 pointer-events-none" />
+                    <input
+                      id="new-password"
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Минимум 8 символов"
+                      autoComplete="new-password"
+                      className="w-full h-9 pl-8 pr-3 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="confirm-new-password" className="block text-xs font-medium mb-1 text-foreground/80">
+                    Подтвердите новый пароль
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/50 pointer-events-none" />
+                    <input
+                      id="confirm-new-password"
+                      type="password"
+                      value={confirmNewPassword}
+                      onChange={(e) => setConfirmNewPassword(e.target.value)}
+                      placeholder="Повторите новый пароль"
+                      autoComplete="new-password"
+                      className={`w-full h-9 pl-8 pr-3 rounded-lg border bg-background text-sm focus:outline-none focus:ring-2 transition-colors ${
+                        confirmNewPassword && confirmNewPassword !== newPassword
+                          ? 'border-destructive/40 focus:ring-destructive/30'
+                          : confirmNewPassword && confirmNewPassword === newPassword
+                            ? 'border-green-500/40 focus:ring-green-500/30'
+                            : 'border-border focus:ring-primary/30 focus:border-primary'
+                      }`}
+                    />
+                  </div>
+                  {confirmNewPassword && confirmNewPassword !== newPassword && (
+                    <p className="text-[11px] text-destructive/70 mt-1">Пароли не совпадают</p>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleChangePassword}
+                    disabled={changePasswordLoading || !currentPassword || !newPassword || !confirmNewPassword || newPassword !== confirmNewPassword}
+                    className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                  >
+                    {changePasswordLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
+                    Изменить пароль
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowChangePassword(false)
+                      setCurrentPassword('')
+                      setNewPassword('')
+                      setConfirmNewPassword('')
+                      setChangePasswordError('')
+                    }}
+                    disabled={changePasswordLoading}
+                    className="inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 transition-colors"
+                  >
+                    Отмена
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowChangePassword(true)}
+                className="inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 transition-colors"
+              >
+                <Lock className="h-4 w-4" />
+                Изменить пароль
               </button>
             )}
           </motion.div>

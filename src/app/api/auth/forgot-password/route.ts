@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { generateNumericCode, generateToken } from '@/lib/auth/utils'
 import { sendPasswordResetEmail } from '@/lib/auth/email'
+import { checkRateLimit, rateLimitResponse } from '@/lib/auth/rate-limit'
 import type { ApiResponse } from '@/lib/auth/types'
+
+const RATE_LIMIT = { windowMs: 15 * 60 * 1000, max: 3 }
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,6 +13,12 @@ export async function POST(req: NextRequest) {
 
     if (!email) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Укажите email' }, { status: 400 })
+    }
+
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const rl = checkRateLimit(`forgot:${ip}:${email.toLowerCase()}`, RATE_LIMIT)
+    if (!rl.allowed) {
+      return rateLimitResponse(rl.resetMs)
     }
 
     const db = getDb()
@@ -22,9 +31,13 @@ export async function POST(req: NextRequest) {
     const code = generateNumericCode(6)
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString()
 
-    db.prepare(
-      `INSERT INTO verification_tokens (id, user_id, type, code, expires_at) VALUES (?, ?, 'password_reset', ?, ?)`
-    ).run(generateToken(16), user.id, code, expiresAt)
+    const createToken = db.transaction(() => {
+      db.prepare("UPDATE verification_tokens SET used = 1 WHERE user_id = ? AND type = 'password_reset' AND used = 0").run(user.id)
+      db.prepare(
+        `INSERT INTO verification_tokens (id, user_id, type, code, expires_at) VALUES (?, ?, 'password_reset', ?, ?)`
+      ).run(generateToken(16), user.id, code, expiresAt)
+    })
+    createToken()
 
     await sendPasswordResetEmail(email.toLowerCase(), code)
 

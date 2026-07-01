@@ -25,3 +25,18 @@ export function passwordStrength(password: string) {
   if (score <= 3) return { score, label: 'Хороший', color: 'bg-blue-500' }
   return { score, label: 'Отличный', color: 'bg-green-500' }
 }
+
+export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+export function validatePassword(password: string): string | null {
+  if (password.length < 8) return 'Пароль должен содержать минимум 8 символов'
+  if (password.length > 128) return 'Пароль не должен превышать 128 символов'
+  if (!/[A-Za-z]/.test(password)) return 'Пароль должен содержать хотя бы одну букву'
+  if (!/\d/.test(password)) return 'Пароль должен содержать хотя бы одну цифру'
+  return null
+}
+
+export function validateEmail(email: string): string | null {
+  if (!EMAIL_REGEX.test(email)) return 'Укажите корректный email'
+  return null
+}

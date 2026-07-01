@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { hashPassword, generateToken, createSession } from '@/lib/auth/utils'
+import { validateEmail, validatePassword } from '@/lib/utils'
+import { checkRateLimit, rateLimitResponse } from '@/lib/auth/rate-limit'
 import type { ApiResponse } from '@/lib/auth/types'
+
+const RATE_LIMIT = { windowMs: 60 * 60 * 1000, max: 5 }
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,13 +15,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Заполните все поля' }, { status: 400 })
     }
 
-    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
-      return NextResponse.json<ApiResponse>({ ok: false, error: 'Пароль должен содержать минимум 8 символов, букву и цифру' }, { status: 400 })
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const rl = checkRateLimit(`register:${ip}`, RATE_LIMIT)
+    if (!rl.allowed) {
+      return rateLimitResponse(rl.resetMs)
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      return NextResponse.json<ApiResponse>({ ok: false, error: 'Некорректный email' }, { status: 400 })
+    const trimmedName = name.trim()
+    if (trimmedName.length < 1 || trimmedName.length > 100) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: 'Имя должно содержать от 1 до 100 символов' }, { status: 400 })
+    }
+
+    const emailError = validateEmail(email)
+    if (emailError) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: emailError }, { status: 400 })
+    }
+
+    const passwordError = validatePassword(password)
+    if (passwordError) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: passwordError }, { status: 400 })
     }
 
     const db = getDb()
@@ -30,14 +46,21 @@ export async function POST(req: NextRequest) {
     const passwordHash = await hashPassword(password)
 
     db.prepare('INSERT INTO users (id, email, password_hash, name) VALUES (?, ?, ?, ?)').run(
-      id, email.toLowerCase(), passwordHash, name
+      id, email.toLowerCase(), passwordHash, trimmedName
     )
 
     await createSession(id, email.toLowerCase())
 
     return NextResponse.json<ApiResponse>({
       ok: true,
-      data: { id, email: email.toLowerCase(), name, createdAt: new Date().toISOString() },
+      data: {
+        id,
+        email: email.toLowerCase(),
+        name: trimmedName,
+        emailVerified: 0,
+        totpEnabled: 0,
+        createdAt: new Date().toISOString(),
+      },
     })
   } catch (err) {
     console.error('Register error:', err)

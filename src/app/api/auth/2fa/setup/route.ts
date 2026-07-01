@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { randomBytes } from 'crypto'
 import { toDataURL } from 'qrcode'
 import { getDb } from '@/lib/auth/db'
-import { getSession } from '@/lib/auth/utils'
+import { getSession, verifyPassword } from '@/lib/auth/utils'
 import { totp } from '@/lib/auth/totp'
 import type { ApiResponse } from '@/lib/auth/types'
 
@@ -37,16 +37,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Не авторизован' }, { status: 401 })
     }
 
-    const { code } = await req.json()
+    const { code, password } = await req.json()
     if (!code) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Укажите код' }, { status: 400 })
     }
 
+    if (!password) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: 'Введите пароль для подтверждения' }, { status: 400 })
+    }
+
     const db = getDb()
-    const user = db.prepare('SELECT totp_secret FROM users WHERE id = ?').get(session.userId) as Record<string, unknown> | undefined
+    const user = db.prepare('SELECT totp_secret, password_hash FROM users WHERE id = ?').get(session.userId) as Record<string, unknown> | undefined
 
     if (!user || !user.totp_secret) {
       return NextResponse.json<ApiResponse>({ ok: false, error: '2FA не настроен. Запросите setup сначала' }, { status: 400 })
+    }
+
+    const valid = await verifyPassword(password, user.password_hash as string)
+    if (!valid) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: 'Неверный пароль' }, { status: 401 })
     }
 
     const result = await totp.verify(code, { secret: user.totp_secret as string, epochTolerance: 1 })

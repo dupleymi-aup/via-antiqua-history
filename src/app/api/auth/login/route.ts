@@ -3,6 +3,9 @@ import { getDb } from '@/lib/auth/db'
 import { verifyPassword, createSession } from '@/lib/auth/utils'
 import type { ApiResponse } from '@/lib/auth/types'
 import { totp } from '@/lib/auth/totp'
+import { checkRateLimit, rateLimitResponse } from '@/lib/auth/rate-limit'
+
+const RATE_LIMIT = { windowMs: 15 * 60 * 1000, max: 10 }
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,6 +13,12 @@ export async function POST(req: NextRequest) {
 
     if (!email || !password) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Заполните все поля' }, { status: 400 })
+    }
+
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const rl = checkRateLimit(`login:${ip}:${email.toLowerCase()}`, RATE_LIMIT)
+    if (!rl.allowed) {
+      return rateLimitResponse(rl.resetMs)
     }
 
     const db = getDb()

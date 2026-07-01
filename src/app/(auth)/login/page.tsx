@@ -7,8 +7,7 @@ import { motion } from 'framer-motion'
 import { Landmark, Eye, EyeOff, Loader2, AlertCircle, KeyRound, Mail } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+import { validateEmail } from '@/lib/utils'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -25,8 +24,14 @@ export default function LoginPage() {
     e.preventDefault()
     setError('')
 
-    if (!EMAIL_REGEX.test(email)) {
-      setError('Укажите корректный email')
+    if (!email || !password) {
+      setError('Заполните все поля')
+      return
+    }
+
+    const emailError = validateEmail(email)
+    if (emailError) {
+      setError(emailError)
       return
     }
 
@@ -36,7 +41,6 @@ export default function LoginPage() {
       const result = await login(email, password, totpCode || undefined)
       if (result.require2fa && !totpCode) {
         setRequire2fa(true)
-        setLoading(false)
         return
       }
       if (result.ok) {
@@ -165,6 +169,7 @@ export default function LoginPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
                       required
+                      minLength={8}
                       autoComplete="current-password"
                       className="w-full h-11 px-4 pr-11 rounded-xl border border-border/60 bg-background/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary/50 transition-all placeholder:text-muted-foreground/40"
                     />
@@ -195,6 +200,7 @@ export default function LoginPage() {
                     required
                     maxLength={6}
                     autoComplete="one-time-code"
+                    autoFocus
                     className="w-full h-11 pl-10 pr-4 rounded-xl border border-border/60 bg-background/60 text-sm text-center text-lg tracking-[10px] font-mono focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary/50 transition-all placeholder:text-muted-foreground/30"
                   />
                 </div>
@@ -238,7 +244,7 @@ export default function LoginPage() {
           ) : (
             <button
               type="button"
-              onClick={() => { setRequire2fa(false); setTotpCode('') }}
+              onClick={() => { setRequire2fa(false); setTotpCode(''); setError('') }}
               className="text-sm text-muted-foreground/70 hover:text-foreground transition-colors underline underline-offset-3"
             >
               Назад ко входу

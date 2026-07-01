@@ -45,6 +45,10 @@ function initSchema(db: Database.Database) {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    -- NOTE: sessions table is defined for potential future database-backed sessions.
+    -- Current implementation uses JWT cookies (see utils.ts), so this table is not actively used.
+    -- The DELETE FROM sessions in reset-password was removed since the table is always empty.
+
     CREATE TABLE IF NOT EXISTS verification_tokens (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,

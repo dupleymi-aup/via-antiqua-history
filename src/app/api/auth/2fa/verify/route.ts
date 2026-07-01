@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/auth/db'
-import { getSession } from '@/lib/auth/utils'
+import { getSession, verifyPassword } from '@/lib/auth/utils'
 import { totp } from '@/lib/auth/totp'
 import type { ApiResponse } from '@/lib/auth/types'
 
@@ -51,14 +51,30 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function DELETE() {
+export async function DELETE(req: NextRequest) {
   try {
     const session = await getSession()
     if (!session) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Не авторизован' }, { status: 401 })
     }
 
+    const { password } = await req.json().catch(() => ({}))
+    if (!password) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: 'Введите пароль для отключения 2FA' }, { status: 400 })
+    }
+
     const db = getDb()
+    const user = db.prepare('SELECT password_hash FROM users WHERE id = ?').get(session.userId) as Record<string, unknown> | undefined
+
+    if (!user) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: 'Пользователь не найден' }, { status: 404 })
+    }
+
+    const valid = await verifyPassword(password, user.password_hash as string)
+    if (!valid) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: 'Неверный пароль' }, { status: 401 })
+    }
+
     db.prepare('UPDATE users SET totp_secret = NULL, totp_enabled = 0, recovery_codes = ? WHERE id = ?').run('[]', session.userId)
 
     return NextResponse.json<ApiResponse>({ ok: true })

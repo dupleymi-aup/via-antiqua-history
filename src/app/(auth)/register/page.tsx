@@ -6,10 +6,8 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Landmark, Eye, EyeOff, Loader2, AlertCircle, User, Mail, Lock, CheckCircle2, XCircle } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
-import { cn, passwordStrength } from '@/lib/utils'
+import { cn, passwordStrength, validateEmail, validatePassword } from '@/lib/utils'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -31,13 +29,25 @@ export default function RegisterPage() {
     e.preventDefault()
     setError('')
 
-    if (!EMAIL_REGEX.test(email)) {
-      setError('Укажите корректный email')
+    if (!name || !email || !password || !confirmPassword) {
+      setError('Заполните все поля')
       return
     }
 
-    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
-      setError('Пароль должен содержать минимум 8 символов, букву и цифру')
+    if (name.trim().length > 100) {
+      setError('Имя должно содержать не более 100 символов')
+      return
+    }
+
+    const emailError = validateEmail(email)
+    if (emailError) {
+      setError(emailError)
+      return
+    }
+
+    const passwordError = validatePassword(password)
+    if (passwordError) {
+      setError(passwordError)
       return
     }
 
@@ -154,6 +164,7 @@ export default function RegisterPage() {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ваше имя"
                   required
+                  maxLength={100}
                   autoComplete="name"
                   className="w-full h-11 pl-10 pr-4 rounded-xl border border-border/60 bg-background/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary/50 transition-all placeholder:text-muted-foreground/40"
                 />
@@ -193,6 +204,7 @@ export default function RegisterPage() {
                   placeholder="Минимум 8 символов"
                   required
                   minLength={8}
+                  maxLength={128}
                   autoComplete="new-password"
                   className="w-full h-11 pl-10 pr-11 rounded-xl border border-border/60 bg-background/60 text-sm focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary/50 transition-all placeholder:text-muted-foreground/40"
                 />

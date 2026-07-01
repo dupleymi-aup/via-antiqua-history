@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Landmark, Loader2, AlertCircle, MailCheck, Mail, KeyRound } from 'lucide-react'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
+import { validateEmail } from '@/lib/utils'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = React.useState('')
@@ -16,6 +17,18 @@ export default function ForgotPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
+    if (!email) {
+      setError('Укажите email')
+      return
+    }
+
+    const emailError = validateEmail(email)
+    if (emailError) {
+      setError(emailError)
+      return
+    }
+
     setLoading(true)
 
     try {

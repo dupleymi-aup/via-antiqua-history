@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { hashPassword } from '@/lib/auth/utils'
+import { validatePassword } from '@/lib/utils'
 import type { ApiResponse } from '@/lib/auth/types'
 
 export async function POST(req: NextRequest) {
@@ -11,8 +12,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Заполните все поля' }, { status: 400 })
     }
 
-    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
-      return NextResponse.json<ApiResponse>({ ok: false, error: 'Пароль должен содержать минимум 8 символов, букву и цифру' }, { status: 400 })
+    const passwordError = validatePassword(password)
+    if (passwordError) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: passwordError }, { status: 400 })
     }
 
     const db = getDb()
@@ -33,8 +35,13 @@ export async function POST(req: NextRequest) {
     }
 
     const passwordHash = await hashPassword(password)
-    db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(passwordHash, user.id)
-    db.prepare('UPDATE verification_tokens SET used = 1 WHERE id = ?').run(token.id)
+
+    const updateTransactions = db.transaction(() => {
+      db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(passwordHash, user.id)
+      db.prepare('UPDATE verification_tokens SET used = 1 WHERE id = ?').run(token.id)
+      db.prepare("UPDATE verification_tokens SET used = 1 WHERE user_id = ? AND type = 'password_reset' AND used = 0").run(user.id)
+    })
+    updateTransactions()
 
     return NextResponse.json<ApiResponse>({ ok: true, data: { message: 'Пароль успешно изменён' } })
   } catch (err) {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { cn, withAlpha, passwordStrength } from '../utils'
+import { cn, withAlpha, passwordStrength, validateEmail, validatePassword } from '../utils'
 
 describe('cn', () => {
   it('merges class names', () => {
@@ -48,5 +48,44 @@ describe('passwordStrength', () => {
     const mixed = passwordStrength('AbcdEfgh1!')
     expect(mixed.score).toBeGreaterThan(onlyUpper.score)
     expect(mixed.score).toBeGreaterThan(onlyLower.score)
+  })
+})
+
+describe('validateEmail', () => {
+  it('returns null for valid email', () => {
+    expect(validateEmail('user@example.com')).toBeNull()
+    expect(validateEmail('test.name@domain.co')).toBeNull()
+  })
+
+  it('returns error for invalid email', () => {
+    expect(validateEmail('')).not.toBeNull()
+    expect(validateEmail('notanemail')).not.toBeNull()
+    expect(validateEmail('@domain.com')).not.toBeNull()
+    expect(validateEmail('user@')).not.toBeNull()
+    expect(validateEmail('user @example.com')).not.toBeNull()
+  })
+})
+
+describe('validatePassword', () => {
+  it('returns null for valid password', () => {
+    expect(validatePassword('password1')).toBeNull()
+    expect(validatePassword('MyP4ssw0rd')).toBeNull()
+  })
+
+  it('requires minimum 8 characters', () => {
+    expect(validatePassword('Ab1')).toContain('8 символов')
+    expect(validatePassword('Abcdef1')).toContain('8 символов')
+  })
+
+  it('requires at least one letter', () => {
+    expect(validatePassword('12345678')).toContain('букву')
+  })
+
+  it('requires at least one digit', () => {
+    expect(validatePassword('abcdefgh')).toContain('цифру')
+  })
+
+  it('rejects passwords longer than 128 characters', () => {
+    expect(validatePassword('A'.repeat(130) + '1')).toContain('128 символов')
   })
 })
