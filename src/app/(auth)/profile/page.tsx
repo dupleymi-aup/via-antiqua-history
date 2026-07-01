@@ -527,7 +527,7 @@ export default function ProfilePage() {
                   Отсканируйте QR-код в приложении-аутентификаторе (Google Authenticator, Яндекс.Ключ и др.)
                 </p>
                 <div className="flex justify-center">
-                  <img src={qrCode} alt="QR-код для настройки двухфакторной аутентификации" className="h-48 w-48" />
+                  <img src={qrCode} alt="QR-код для настройки двухфакторной аутентификации" className="h-48 w-48" loading="lazy" />
                 </div>
                 <div>
                   <label htmlFor="totp-input" className="block text-sm font-medium mb-1.5">Код из приложения</label>

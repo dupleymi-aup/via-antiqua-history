@@ -114,7 +114,7 @@ export default function ForgotPasswordPage() {
             </motion.div>
 
             <motion.div variants={item} className="mt-6 text-center">
-              <Link href="/login" className="text-sm text-muted-foreground/70 hover:text-foreground transition-colors underline underline-offset-3">
+              <Link href="/login" prefetch={false} className="text-sm text-muted-foreground/70 hover:text-foreground transition-colors underline underline-offset-3">
                 Вернуться ко входу
               </Link>
             </motion.div>
@@ -224,7 +224,7 @@ export default function ForgotPasswordPage() {
           </motion.div>
 
           <motion.div variants={item} className="mt-6 text-center">
-            <Link href="/login" className="text-sm text-muted-foreground/70 hover:text-foreground transition-colors underline underline-offset-3">
+            <Link href="/login" prefetch={false} className="text-sm text-muted-foreground/70 hover:text-foreground transition-colors underline underline-offset-3">
               Вернуться ко входу
             </Link>
           </motion.div>

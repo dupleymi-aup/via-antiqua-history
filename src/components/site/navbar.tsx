@@ -156,6 +156,7 @@ export function Navbar() {
               ) : user ? (
                 <Link
                   href="/profile"
+                  prefetch={false}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 text-primary hover:from-primary/20 hover:to-accent/20 transition-all duration-200 shrink-0 hover:shadow-sm"
                   aria-label="Профиль"
                 >
@@ -164,6 +165,7 @@ export function Navbar() {
               ) : (
                 <Link
                   href="/login"
+                  prefetch={false}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors shrink-0"
                   aria-label="Войти"
                 >
@@ -204,6 +206,7 @@ export function Navbar() {
             {showLoginLink && (
               <Link
                 href="/login"
+                prefetch={false}
                 className="ml-1.5 px-3 py-1 text-[11px] font-medium rounded-md transition-all duration-200 whitespace-nowrap bg-gradient-to-r from-primary/10 to-accent/10 text-primary hover:from-primary/15 hover:to-accent/15 border border-primary/20 hover:border-primary/30"
               >
                 <span className="inline-flex items-center gap-1">
@@ -244,6 +247,7 @@ export function Navbar() {
                   {!user && PROTECTED_NAV.map((item) => (
                     <Link key={item.href}
                       href={item.href}
+                      prefetch={false}
                       onClick={() => setOpen(false)}
                       className="px-3 py-2.5 text-sm font-medium text-muted-foreground/60 hover:bg-accent/4 rounded-lg flex items-center justify-between"
                     >
@@ -254,6 +258,7 @@ export function Navbar() {
                   {user && (
                     <Link
                       href="/profile"
+                      prefetch={false}
                       onClick={() => setOpen(false)}
                       className="px-3 py-2.5 text-sm font-medium hover:bg-accent/4 rounded-lg flex items-center gap-2"
                     >

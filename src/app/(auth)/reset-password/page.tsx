@@ -110,6 +110,7 @@ function ResetPasswordForm() {
               <motion.div variants={item} className="text-center">
                 <Link
                   href="/login"
+                  prefetch={false}
                   className="inline-flex items-center justify-center h-11 px-6 rounded-xl bg-gradient-to-r from-primary to-accent text-primary-foreground font-medium hover:from-primary/90 hover:to-accent/90 transition-all duration-200 shadow-sm shadow-primary/20"
                 >
                   <Lock className="h-4 w-4 mr-2" />
@@ -283,7 +284,7 @@ function ResetPasswordForm() {
           </motion.div>
 
           <motion.div variants={item} className="mt-6 text-center">
-            <Link href="/login" className="text-sm text-muted-foreground/70 hover:text-foreground transition-colors underline underline-offset-3">
+            <Link href="/login" prefetch={false} className="text-sm text-muted-foreground/70 hover:text-foreground transition-colors underline underline-offset-3">
               Вернуться ко входу
             </Link>
           </motion.div>

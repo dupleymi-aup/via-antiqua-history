@@ -77,7 +77,8 @@ export async function POST(_request: NextRequest) {
     `).run(subId, session.userId, paymentId, amount)
 
     // Generate QR code URL (using a QR code API)
-    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(sbpQrData)}`
+    const qrApiBase = process.env.QR_CODE_API_URL || 'https://api.qrserver.com/v1/create-qr-code/'
+    const qrCodeUrl = `${qrApiBase}?size=300x300&data=${encodeURIComponent(sbpQrData)}`
 
     return NextResponse.json({
       ok: true,

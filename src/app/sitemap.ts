@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { DEFAULT_SITE_URL } from '@/lib/constants'
 
 const sections = [
   'greece', 'rome', 'mesopotamia', 'kuban', 'persons',
@@ -7,7 +8,7 @@ const sections = [
 ] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL
   const now = new Date()
 
   return [

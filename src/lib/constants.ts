@@ -1,5 +1,7 @@
 // Единые константы для всего проекта
 
+export const DEFAULT_SITE_URL = 'https://via-antiqua-history.vercel.app'
+
 export const REGION_COLORS: Record<string, string> = {
   greece: 'oklch(0.55 0.13 70)',
   rome: 'oklch(0.55 0.13 35)',

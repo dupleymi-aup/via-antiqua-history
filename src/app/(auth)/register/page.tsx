@@ -284,7 +284,7 @@ export default function RegisterPage() {
         <motion.div variants={item} className="mt-6 text-center">
           <p className="text-sm text-muted-foreground/60">
             Уже есть аккаунт?{' '}
-            <Link href="/login" className="text-primary hover:text-primary/80 hover:underline underline-offset-3 font-medium transition-colors">
+            <Link href="/login" prefetch={false} className="text-primary hover:text-primary/80 hover:underline underline-offset-3 font-medium transition-colors">
               Войти
             </Link>
           </p>

@@ -223,13 +223,14 @@ export default function LoginPage() {
             <>
               <Link
                 href="/forgot-password"
+                prefetch={false}
                 className="text-sm text-muted-foreground/70 hover:text-foreground transition-colors underline underline-offset-3"
               >
                 Забыли пароль?
               </Link>
               <p className="text-sm text-muted-foreground/60">
                 Нет аккаунта?{' '}
-                <Link href="/register" className="text-primary hover:text-primary/80 hover:underline underline-offset-3 font-medium transition-colors">
+                <Link href="/register" prefetch={false} className="text-primary hover:text-primary/80 hover:underline underline-offset-3 font-medium transition-colors">
                   Зарегистрироваться
                 </Link>
               </p>

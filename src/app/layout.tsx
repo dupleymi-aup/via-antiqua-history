@@ -21,9 +21,10 @@ import { ThemeProvider } from "@/components/site/theme-provider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { BookmarksProvider } from "@/components/site/bookmarks";
 import { ScrollToTop } from "@/components/site/scroll-to-top";
+import { DEFAULT_SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://via-antiqua-history.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL),
   title: {
     default: "История Древнего Пути — Интерактивный исторический лабиринт",
     template: "%s | История Древнего Пути"
