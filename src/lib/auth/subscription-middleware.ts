@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getSession } from './utils'
 import { getDb } from './db'
 
@@ -11,7 +11,7 @@ import { getDb } from './db'
  * 3. Если подписка активна - продолжайте обработку
  * 4. Если нет - возвращайте 402 Payment Required
  */
-export async function checkSubscription(_request: NextRequest): Promise<NextResponse | null> {
+export async function checkSubscription(): Promise<NextResponse | null> {
   try {
     // Получаем сессию пользователя
     const session = await getSession()

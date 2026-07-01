@@ -48,8 +48,8 @@ export async function POST(_request: NextRequest) {
 
     // Create payment record
     const paymentId = randomUUID()
-    const amount = 999.00
-    const phone = '+79150480249'
+    const amount = Number(process.env.SUBSCRIPTION_PRICE) || 999.00
+    const phone = process.env.FASTPAY_SBP_PHONE || ''
 
     // Generate SBP QR data (STUB format for SBP)
     // Format: https://qr.nspk.ru/[Account]/[Amount]/[Comment]

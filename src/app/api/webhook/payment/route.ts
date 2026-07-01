@@ -3,6 +3,12 @@ import { getDb } from '@/lib/auth/db'
 
 export async function POST(request: NextRequest) {
   try {
+    // Verify webhook secret
+    const secret = request.headers.get('X-Webhook-Secret')
+    if (!secret || secret !== process.env.FASTPAY_WEBHOOK_SECRET) {
+      return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
     const body = await request.json()
     const { paymentId, status, externalId } = body
 
