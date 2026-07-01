@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { getSession } from '@/lib/auth/utils'
-import { randomUUID } from 'crypto'
-
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     const session = await getSession()
     if (!session) {

@@ -2,21 +2,52 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Lock, BookOpen } from 'lucide-react'
+import { Lock, BookOpen, CreditCard, Crown } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+
+interface ContentGateProps {
+  title: string
+  subtitle: string
+  children: React.ReactNode
+  restricted?: boolean // Если true, требуется подписка, а не просто авторизация
+}
 
 export function ContentGate({
   title,
   subtitle,
   children,
-}: {
-  title: string
-  subtitle: string
-  children: React.ReactNode
-}) {
+  restricted = false,
+}: ContentGateProps) {
   const { user, loading } = useAuth()
+  const [hasSubscription, setHasSubscription] = React.useState<boolean>(false)
+  const [subscriptionLoading, setSubscriptionLoading] = React.useState(true)
 
-  if (loading) {
+  // Проверяем подписку пользователя
+  React.useEffect(() => {
+    if (!user || !restricted) {
+      setSubscriptionLoading(false)
+      return
+    }
+
+    async function checkSubscription() {
+      try {
+        const res = await fetch('/api/subscription/status')
+        const data = await res.json()
+        setHasSubscription(data.ok && data.data?.status === 'active')
+      } catch (error) {
+        console.error('Failed to check subscription:', error)
+        setHasSubscription(false)
+      } finally {
+        setSubscriptionLoading(false)
+      }
+    }
+
+    checkSubscription()
+  }, [user, restricted])
+
+  const isLoading = loading || (user && restricted && subscriptionLoading)
+
+  if (isLoading) {
     return (
       <section className="py-20 md:py-28 scroll-mt-20">
         <div className="container mx-auto max-w-7xl px-4">
@@ -31,7 +62,13 @@ export function ContentGate({
     )
   }
 
-  if (user) {
+  // Если нужна только авторизация и пользователь авторизован
+  if (user && !restricted) {
+    return <>{children}</>
+  }
+
+  // Если нужна подписка и она активна
+  if (user && restricted && hasSubscription) {
     return <>{children}</>
   }
 
@@ -52,28 +89,47 @@ export function ContentGate({
 
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-card/70 via-card/85 to-card/95 backdrop-blur-[2px]">
             <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 mb-5">
-              <Lock className="h-7 w-7 text-primary" />
+              {restricted ? <Crown className="h-7 w-7 text-primary" /> : <Lock className="h-7 w-7 text-primary" />}
             </span>
             <p className="font-display text-2xl md:text-3xl font-semibold mb-3 text-center px-4">
               {title}
             </p>
             <p className="text-sm md:text-base text-muted-foreground mb-6 max-w-md text-center px-4">
-              Войдите или зарегистрируйтесь, чтобы получить полный доступ
+              {restricted 
+                ? 'Требуется активная подписка для доступа к этому разделу'
+                : 'Войдите или зарегистрируйтесь, чтобы получить полный доступ'}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 px-4 w-full max-w-xs sm:max-w-sm">
-              <Link
-                href="/login"
-                className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors text-sm sm:text-base flex-1"
-              >
-                <BookOpen className="h-4 w-4" />
-                Войти
-              </Link>
-              <Link
-                href="/register"
-                className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg border border-border bg-card/60 font-medium hover:bg-accent/10 transition-colors text-sm sm:text-base flex-1"
-              >
-                Зарегистрироваться
-              </Link>
+              {restricted ? (
+                <>
+                  <Link
+                    href="/profile"
+                    className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-medium hover:from-amber-600 hover:to-yellow-600 transition-colors text-sm sm:text-base flex-1"
+                  >
+                    <CreditCard className="h-4 w-4" />
+                    Оформить подписку
+                  </Link>
+                  <p className="text-xs text-center text-muted-foreground mt-2">
+                    Всего 999 ₽/мес • Полный доступ ко всем разделам
+                  </p>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors text-sm sm:text-base flex-1"
+                  >
+                    <BookOpen className="h-4 w-4" />
+                    Войти
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="inline-flex items-center justify-center gap-2 h-11 px-5 sm:px-7 rounded-lg border border-border bg-card/60 font-medium hover:bg-accent/10 transition-colors text-sm sm:text-base flex-1"
+                  >
+                    Зарегистрироваться
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

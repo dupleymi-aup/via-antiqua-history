@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark, AlertTriangle, Crown, CreditCard, QrCode, Clock, CheckCircle2, XCircle } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useBookmarks } from '@/components/site/bookmarks'
@@ -44,7 +44,7 @@ export default function ProfilePage() {
     qrData: string
     expiresAt: string
   } | null>(null)
-  const [confirmLoadingSub, setConfirmLoadingSub] = React.useState(false)
+
   const [cancelLoading, setCancelLoading] = React.useState(false)
   const [confirmCancel, setConfirmCancel] = React.useState(false)
 
@@ -80,9 +80,7 @@ export default function ProfilePage() {
   // Poll for payment confirmation
   React.useEffect(() => {
     if (!paymentData) return
-    let interval: ReturnType<typeof setInterval>
-
-    interval = setInterval(async () => {
+    const interval: ReturnType<typeof setInterval> = setInterval(async () => {
       try {
         const res = await fetch('/api/subscription/status')
         const json = await res.json()
@@ -430,7 +428,6 @@ export default function ProfilePage() {
                   </button>
                   <button
                     onClick={() => setPaymentData(null)}
-                    disabled={confirmLoadingSub}
                     className="h-10 px-4 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 transition-colors"
                   >
                     Отмена

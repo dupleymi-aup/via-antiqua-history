@@ -14,7 +14,7 @@ import {
   BookmarksDialog,
 } from '@/components/site/bookmarks'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
-import { ScrollToTop } from '@/components/site/scroll-to-top'
+
 import { greece, rome, mesopotamia, kuban } from '@/lib/history-data'
 
 const PersonsSection = dynamic(() =>
@@ -85,30 +85,32 @@ export default function Home() {
             <WondersSection />
 
             {/* Архитектурные ордера */}
-            <ContentGate title="Архитектурные ордера" subtitle="Дорийский, ионический и коринфский — система пропорций, определившая облик античной архитектуры.">
+            <ContentGate title="Архитектурные ордера" subtitle="Дорийский, ионический и коринфский — система пропорций, определившая облик античной архитектуры." restricted>
               <OrdersSection />
             </ContentGate>
 
             {/* Исторические эпохи */}
-            <ContentGate title="Исторические эпохи" subtitle="Восемь ключевых эпох — от шумерских городов до падения Константинополя.">
+            <ContentGate title="Исторические эпохи" subtitle="Восемь ключевых эпох — от шумерских городов до падения Константинополя." restricted>
               <EpochsSection />
             </ContentGate>
 
             {/* Интерактивная лента времени */}
-            <TimelineSection />
+            <ContentGate title="Интерактивная лента времени" subtitle="Хронология античных цивилизаций от Древнего Египта до поздней Римской империи." restricted>
+              <TimelineSection />
+            </ContentGate>
 
             {/* Интерактивная карта */}
-            <ContentGate title="Интерактивная карта" subtitle="Нажмите на город, чтобы узнать о нём больше. Используйте фильтры для подсветки регионов.">
+            <ContentGate title="Интерактивная карта" subtitle="Нажмите на город, чтобы узнать о нём больше. Используйте фильтры для подсветки регионов." restricted>
               <MapSection />
             </ContentGate>
 
             {/* Сравнительная таблица цивилизаций */}
-            <ContentGate title="Сравнение цивилизаций" subtitle="Сопоставление Древней Греции, Рима, Месопотамии и Кубани по восьми ключевым параметрам.">
+            <ContentGate title="Сравнение цивилизаций" subtitle="Сопоставление Древней Греции, Рима, Месопотамии и Кубани по восьми ключевым параметрам." restricted>
               <ComparisonSection />
             </ContentGate>
 
             {/* Авторский раздел: исторический анализ */}
-            <ContentGate title="Исторический анализ" subtitle="Авторские размышления о связях между цивилизациями и их влиянии на современный мир.">
+            <ContentGate title="Исторический анализ" subtitle="Авторские размышления о связях между цивилизациями и их влиянии на современный мир." restricted>
               <AnalysisSection />
             </ContentGate>
 

@@ -3,7 +3,7 @@ import { getDb } from '@/lib/auth/db'
 import { getSession } from '@/lib/auth/utils'
 import { randomUUID } from 'crypto'
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     const session = await getSession()
     if (!session) {
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
 
     // Create pending subscription
     const subId = randomUUID()
-    const subExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days
+
     db.prepare(`
       INSERT INTO subscriptions (id, user_id, status, payment_id, amount, started_at, expires_at)
       VALUES (?, ?, 'pending', ?, ?, datetime('now'), datetime('now', '+30 days'))

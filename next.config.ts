@@ -5,9 +5,6 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
-  turbopack: {
-    root: process.cwd(),
-  },
   serverExternalPackages: ["better-sqlite3"],
   images: {
     formats: ['image/avif', 'image/webp'],
