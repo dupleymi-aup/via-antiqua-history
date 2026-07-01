@@ -70,6 +70,7 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
     const sync = async () => {
       try {
         const res = await fetch('/api/bookmarks')
+        if (!res.ok) { console.warn('Bookmarks sync: server returned', res.status); return }
         const json = await res.json()
         if (json.ok && Array.isArray(json.data)) {
           const server = json.data.map(serverToItem)
@@ -86,7 +87,7 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
           requestAnimationFrame(() => { syncRef.current = false })
         }
       } catch {
-        // Silent fail — bookmarks sync is best-effort
+        console.warn('Bookmarks sync: connection error')
       }
     }
     sync()
@@ -120,13 +121,14 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
     if (!hydrated || syncRef.current || !user) return
     const timer = setTimeout(async () => {
       try {
-        await fetch('/api/bookmarks', {
+        const res = await fetch('/api/bookmarks', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ bookmarks }),
         })
+        if (!res.ok) console.warn('Bookmarks save: server returned', res.status)
       } catch {
-        // Silent fail — bookmarks sync is best-effort
+        console.warn('Bookmarks save: connection error')
       }
     }, 1500)
     return () => clearTimeout(timer)
