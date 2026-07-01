@@ -14,6 +14,7 @@ import {
   BookmarksDialog,
 } from '@/components/site/bookmarks'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
+import { ScrollToTop } from '@/components/site/scroll-to-top'
 import { greece, rome, mesopotamia, kuban } from '@/lib/history-data'
 
 const PersonsSection = dynamic(() =>

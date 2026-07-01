@@ -3,8 +3,8 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark, AlertTriangle } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Shield, ShieldOff, LogOut, Loader2, Copy, Check, Smartphone, Bookmark, AlertTriangle, Crown, CreditCard, QrCode, Clock, CheckCircle2, XCircle } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useBookmarks } from '@/components/site/bookmarks'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
@@ -25,11 +25,119 @@ export default function ProfilePage() {
   const [copiedIdx, setCopiedIdx] = React.useState(-1)
   const [loggingOut, setLoggingOut] = React.useState(false)
 
+  // Subscription state
+  const [subscription, setSubscription] = React.useState<{
+    id: string
+    status: string
+    amount: number
+    startedAt: string
+    expiresAt: string
+    daysLeft: number
+  } | null>(null)
+  const [subLoading, setSubLoading] = React.useState(true)
+  const [createLoading, setCreateLoading] = React.useState(false)
+  const [paymentData, setPaymentData] = React.useState<{
+    paymentId: string
+    amount: number
+    phone: string
+    qrCodeUrl: string
+    qrData: string
+    expiresAt: string
+  } | null>(null)
+  const [confirmLoadingSub, setConfirmLoadingSub] = React.useState(false)
+  const [cancelLoading, setCancelLoading] = React.useState(false)
+  const [confirmCancel, setConfirmCancel] = React.useState(false)
+
   React.useEffect(() => {
     if (!loading && !user) {
       router.push('/login')
     }
   }, [user, loading, router])
+
+  // Load subscription status
+  React.useEffect(() => {
+    if (!user) return
+    let cancelled = false
+
+    async function loadSub() {
+      try {
+        const res = await fetch('/api/subscription/status')
+        const json = await res.json()
+        if (json.ok && !cancelled) {
+          setSubscription(json.data)
+        }
+      } catch (err) {
+        console.error('Failed to load subscription:', err)
+      } finally {
+        if (!cancelled) setSubLoading(false)
+      }
+    }
+
+    loadSub()
+    return () => { cancelled = true }
+  }, [user])
+
+  // Poll for payment confirmation
+  React.useEffect(() => {
+    if (!paymentData) return
+    let interval: ReturnType<typeof setInterval>
+
+    interval = setInterval(async () => {
+      try {
+        const res = await fetch('/api/subscription/status')
+        const json = await res.json()
+        if (json.ok && json.data) {
+          setSubscription(json.data)
+          setPaymentData(null)
+          clearInterval(interval)
+        }
+      } catch {
+        // Ignore polling errors
+      }
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [paymentData])
+
+  const handleCreateSubscription = async () => {
+    setError('')
+    setCreateLoading(true)
+    try {
+      const res = await fetch('/api/subscription/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      const json = await res.json()
+      if (json.ok) {
+        setPaymentData(json.data)
+      } else {
+        setError(json.error || 'Ошибка создания подписки')
+      }
+    } catch {
+      setError('Ошибка при создании подписки')
+    } finally {
+      setCreateLoading(false)
+    }
+  }
+
+  const handleCancelSubscription = async () => {
+    setCancelLoading(true)
+    try {
+      const res = await fetch('/api/subscription/cancel', { method: 'POST' })
+      const json = await res.json()
+      if (json.ok) {
+        setSubscription(null)
+        setConfirmCancel(false)
+        refresh()
+      } else {
+        setError(json.error || 'Ошибка отмены')
+      }
+    } catch {
+      setError('Ошибка при отмене подписки')
+    } finally {
+      setCancelLoading(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -155,6 +263,210 @@ export default function ProfilePage() {
           }}
           className="space-y-6"
         >
+          {/* Секция подписки */}
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+            className="relative rounded-xl border border-border bg-card p-4 sm:p-6"
+          >
+            <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600" />
+            <div className="flex items-center justify-between gap-2 mb-4">
+              <div className="flex items-center gap-2 min-w-0">
+                <Crown className="h-4 w-4 sm:h-5 sm:w-5 text-amber-500 shrink-0" />
+                <h2 className="font-display text-base sm:text-lg font-semibold truncate">Подписка «Исторический Лабиринт»</h2>
+              </div>
+              {subscription && (
+                <span className={`text-xs font-medium px-2.5 py-1 rounded-full flex items-center gap-1.5 ${
+                  subscription.status === 'active'
+                    ? 'bg-green-500/10 text-green-600 dark:text-green-400'
+                    : 'bg-muted text-muted-foreground'
+                }`}>
+                  {subscription.status === 'active' ? (
+                    <><CheckCircle2 className="h-3 w-3" /> Активна</>
+                  ) : (
+                    <><XCircle className="h-3 w-3" /> Неактивна</>
+                  )}
+                </span>
+              )}
+            </div>
+
+            {error && (
+              <p className="text-sm text-destructive mb-3">{error}</p>
+            )}
+
+            {subLoading ? (
+              <div className="flex items-center justify-center py-6">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : subscription?.status === 'active' ? (
+              <div className="space-y-4">
+                <div className="p-4 rounded-lg bg-gradient-to-br from-amber-50/50 to-yellow-50/50 dark:from-amber-500/5 dark:to-yellow-500/5 border border-amber-200/30 dark:border-amber-500/20">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500">
+                      <Crown className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">Полный доступ</p>
+                      <p className="text-xs text-muted-foreground">Действует до {new Date(subscription.expiresAt).toLocaleDateString('ru-RU')}</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <span>Осталось {subscription.daysLeft} дн.</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <CreditCard className="h-4 w-4" />
+                      <span>{subscription.amount} ₽/мес</span>
+                    </div>
+                  </div>
+                </div>
+
+                {confirmCancel ? (
+                  <div className="space-y-3 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
+                    <p className="text-sm font-medium text-destructive flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4 shrink-0" />
+                      Отменить подписку?
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Доступ сохранится до конца оплаченного периода.
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleCancelSubscription}
+                        disabled={cancelLoading}
+                        className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-destructive text-destructive-foreground text-sm font-medium hover:bg-destructive/90 disabled:opacity-50 transition-colors"
+                      >
+                        {cancelLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldOff className="h-4 w-4" />}
+                        Отменить
+                      </button>
+                      <button
+                        onClick={() => setConfirmCancel(false)}
+                        disabled={cancelLoading}
+                        className="inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 transition-colors"
+                      >
+                        Отмена
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setConfirmCancel(true)}
+                    disabled={cancelLoading}
+                    className="inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 disabled:opacity-50 transition-colors text-muted-foreground"
+                  >
+                    Отменить подписку
+                  </button>
+                )}
+              </div>
+            ) : paymentData ? (
+              <div className="space-y-4">
+                <div className="p-4 rounded-lg bg-gradient-to-br from-amber-50/50 to-yellow-50/50 dark:from-amber-500/5 dark:to-yellow-500/5 border border-amber-200/30 dark:border-amber-500/20">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500">
+                      <QrCode className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">Оплата через СБП</p>
+                      <p className="text-xs text-muted-foreground">Отсканируйте QR-код для оплаты</p>
+                    </div>
+                  </div>
+
+                  <div className="text-center mb-4">
+                    <p className="text-3xl font-bold bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
+                      {paymentData.amount} ₽
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Срок действия: 15 минут
+                    </p>
+                  </div>
+
+                  <div className="flex justify-center mb-4">
+                    <div className="p-3 rounded-xl bg-white border-2 border-border/50 shadow-lg">
+                      <img
+                        src={paymentData.qrCodeUrl}
+                        alt="QR-код для оплаты через СБП"
+                        className="h-48 w-48"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 text-sm text-muted-foreground">
+                    <p className="font-medium text-foreground text-center">Как оплатить:</p>
+                    <ol className="space-y-1.5 text-xs">
+                      <li className="flex items-start gap-2">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/10 text-amber-500 text-xs font-medium shrink-0">1</span>
+                        <span>Откройте приложение вашего банка</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/10 text-amber-500 text-xs font-medium shrink-0">2</span>
+                        <span>Выберите «Оплата по QR» или «СБП»</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/10 text-amber-500 text-xs font-medium shrink-0">3</span>
+                        <span>Наведите камеру на QR-код выше</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/10 text-amber-500 text-xs font-medium shrink-0">4</span>
+                        <span>Подтвердите оплату на {paymentData.phone}</span>
+                      </li>
+                    </ol>
+                  </div>
+
+                  <div className="mt-3 p-2.5 rounded-lg bg-blue-50 dark:bg-blue-500/5 border border-blue-200/30 dark:border-blue-500/20">
+                    <p className="text-xs text-blue-600 dark:text-blue-400 text-center">
+                      ⏳ Подтверждение оплаты поступит автоматически в течение 1–5 минут
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleCreateSubscription}
+                    disabled={createLoading}
+                    className="flex-1 h-10 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors inline-flex items-center justify-center gap-2"
+                  >
+                    {createLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <QrCode className="h-4 w-4" />}
+                    Новый QR-код
+                  </button>
+                  <button
+                    onClick={() => setPaymentData(null)}
+                    disabled={confirmLoadingSub}
+                    className="h-10 px-4 rounded-lg border border-border text-sm font-medium hover:bg-accent/10 transition-colors"
+                  >
+                    Отмена
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="p-4 rounded-lg bg-muted/30 border border-border/50">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <Crown className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">Полный доступ ко всем разделам</p>
+                      <p className="text-xs text-muted-foreground">Рим, Месопотамия, ордера, эпохи, карта и анализ</p>
+                    </div>
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-bold text-foreground">999</span>
+                    <span className="text-lg text-muted-foreground">₽/мес</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleCreateSubscription}
+                  disabled={createLoading}
+                  className="w-full h-11 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-medium hover:from-amber-600 hover:to-yellow-600 disabled:opacity-50 transition-all duration-200 inline-flex items-center justify-center gap-2 shadow-sm shadow-amber-500/20 hover:shadow-md hover:shadow-amber-500/30"
+                >
+                  {createLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <QrCode className="h-4 w-4" />}
+                  Оформить подписку
+                </button>
+              </div>
+            )}
+          </motion.div>
+
           {/* 2FA секция */}
           <motion.div
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
