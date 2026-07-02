@@ -13,11 +13,17 @@ export async function GET() {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Не авторизован' }, { status: 401 })
     }
 
+    const db = getDb()
+    const user = db.prepare('SELECT totp_enabled FROM users WHERE id = ?').get(session.userId) as Record<string, unknown> | undefined
+
+    if (user && user.totp_enabled) {
+      return NextResponse.json<ApiResponse>({ ok: false, error: '2FA уже включена. Сначала отключите её в профиле' }, { status: 400 })
+    }
+
     const secret = totp.generateSecret()
     const uri = totp.toURI({ label: session.email, issuer: 'Исторический Лабиринт', secret })
     const qrCode = await toDataURL(uri)
 
-    const db = getDb()
     db.prepare('UPDATE users SET totp_secret = ? WHERE id = ?').run(secret, session.userId)
 
     return NextResponse.json<ApiResponse>({

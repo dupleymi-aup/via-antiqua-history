@@ -22,7 +22,9 @@ export async function POST(req: NextRequest) {
     }
 
     const db = getDb()
-    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase()) as Record<string, unknown> | undefined
+    const user = db.prepare(
+      'SELECT id, email, password_hash, name, email_verified, totp_secret, totp_enabled, password_changed_at FROM users WHERE email = ?'
+    ).get(email.toLowerCase()) as Record<string, unknown> | undefined
 
     if (!user) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Неверный email или пароль' }, { status: 401 })
@@ -48,7 +50,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    await createSession(user.id as string, user.email as string)
+    await createSession(user.id as string, user.email as string, user.password_changed_at as string | null)
 
     return NextResponse.json<ApiResponse>({
       ok: true,

@@ -25,6 +25,7 @@ const SESSION_MAX_AGE = 7 * 24 * 60 * 60 // 7 days in seconds
 export type SessionPayload = {
   userId: string
   email: string
+  passwordChangedAt?: string
 }
 
 export async function hashPassword(password: string): Promise<string> {
@@ -59,8 +60,8 @@ export function verifyJwt(token: string): SessionPayload | null {
   }
 }
 
-export async function createSession(userId: string, email: string) {
-  const token = signJwt({ userId, email })
+export async function createSession(userId: string, email: string, passwordChangedAt?: string | null) {
+  const token = signJwt({ userId, email, passwordChangedAt: passwordChangedAt || undefined })
   const cookieStore = await cookies()
   cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
@@ -87,5 +88,15 @@ export async function getSession(): Promise<SessionPayload | null> {
   const cookieStore = await cookies()
   const token = cookieStore.get(SESSION_COOKIE)?.value
   if (!token) return null
-  return verifyJwt(token)
+  const payload = verifyJwt(token)
+  if (!payload) return null
+  if (payload.passwordChangedAt) {
+    const { getDb } = await import('@/lib/auth/db')
+    const db = getDb()
+    const user = db.prepare('SELECT password_changed_at FROM users WHERE id = ?').get(payload.userId) as Record<string, unknown> | undefined
+    if (!user || (user.password_changed_at || null) !== payload.passwordChangedAt) {
+      return null
+    }
+  }
+  return payload
 }

@@ -34,20 +34,10 @@ function initSchema(db: Database.Database) {
       totp_secret TEXT,
       totp_enabled INTEGER NOT NULL DEFAULT 0,
       recovery_codes TEXT DEFAULT '[]',
+      password_changed_at TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
-
-    CREATE TABLE IF NOT EXISTS sessions (
-      id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      expires_at TEXT NOT NULL,
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
-    );
-
-    -- NOTE: sessions table is defined for potential future database-backed sessions.
-    -- Current implementation uses JWT cookies (see utils.ts), so this table is not actively used.
-    -- The DELETE FROM sessions in reset-password was removed since the table is always empty.
 
     CREATE TABLE IF NOT EXISTS verification_tokens (
       id TEXT PRIMARY KEY,
@@ -97,7 +87,6 @@ function initSchema(db: Database.Database) {
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
-    CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
     CREATE INDEX IF NOT EXISTS idx_verification_tokens_user_id ON verification_tokens(user_id);
     CREATE INDEX IF NOT EXISTS idx_bookmarks_user_id ON bookmarks(user_id);
     CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id);

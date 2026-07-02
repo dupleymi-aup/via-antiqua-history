@@ -6,6 +6,7 @@ import { checkRateLimit, rateLimitResponse } from '@/lib/auth/rate-limit'
 import type { ApiResponse } from '@/lib/auth/types'
 
 const RATE_LIMIT = { windowMs: 15 * 60 * 1000, max: 3 }
+const USER_RATE_LIMIT = { windowMs: 60 * 60 * 1000, max: 5 }
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,6 +20,11 @@ export async function POST(req: NextRequest) {
     const rl = checkRateLimit(`forgot:${ip}:${email.toLowerCase()}`, RATE_LIMIT)
     if (!rl.allowed) {
       return rateLimitResponse(rl.resetMs)
+    }
+
+    const userRl = checkRateLimit(`forgot-user:${email.toLowerCase()}`, USER_RATE_LIMIT)
+    if (!userRl.allowed) {
+      return NextResponse.json<ApiResponse>({ ok: true, data: { message: 'Если пользователь с таким email существует, код отправлен' } })
     }
 
     const db = getDb()
@@ -41,7 +47,7 @@ export async function POST(req: NextRequest) {
 
     await sendPasswordResetEmail(email.toLowerCase(), code)
 
-    const testMode = process.env.NODE_ENV !== 'production' || process.env.EMAIL_TEST_MODE === 'true'
+    const testMode = process.env.NODE_ENV !== 'production'
 
     return NextResponse.json<ApiResponse>({
       ok: true,
