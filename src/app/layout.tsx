@@ -23,6 +23,35 @@ import { BookmarksProvider } from "@/components/site/bookmarks";
 import { ScrollToTop } from "@/components/site/scroll-to-top";
 import { DEFAULT_SITE_URL } from "@/lib/constants";
 
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "История Древнего Пути",
+  description: "Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство.",
+  url: process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL,
+  applicationCategory: "EducationalApplication",
+  operatingSystem: "Web Browser",
+  author: {
+    "@type": "Person",
+    name: "Дуплей Максим Игоревич",
+  },
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "RUB",
+  },
+  featureList: [
+    "18 городов античности",
+    "32+ памятников архитектуры",
+    "12 исторических персоналий",
+    "7 чудес света",
+    "Интерактивная лента времени",
+    "Интерактивная карта",
+    "Квиз на 20 вопросов",
+    "Глоссарий терминов",
+  ],
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL),
   title: {
@@ -107,6 +136,10 @@ export default function RootLayout({
   return (
     <html lang="ru" suppressHydrationWarning>
       <body className={`${Cormorant.variable} ${EB.variable} font-body antialiased bg-background text-foreground`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+        />
         <a href="#main-content" className="skip-link">
           Перейти к основному содержанию
         </a>

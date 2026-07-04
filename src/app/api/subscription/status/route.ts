@@ -25,16 +25,17 @@ export async function GET(_request: NextRequest) {
       expires_at: string
     } | undefined
 
-    return NextResponse.json({
-      ok: true,
-      data: sub ? {
-        id: sub.id,
-        status: sub.status,
-        amount: sub.amount,
-        startedAt: sub.started_at,
-        expiresAt: sub.expires_at,
-        daysLeft: Math.max(0, Math.ceil((new Date(sub.expires_at).getTime() - Date.now()) / 86400000)),
-      } : null,
+    const data = sub ? {
+      id: sub.id,
+      status: sub.status,
+      amount: sub.amount,
+      startedAt: sub.started_at,
+      expiresAt: sub.expires_at,
+      daysLeft: Math.max(0, Math.ceil((new Date(sub.expires_at).getTime() - Date.now()) / 86400000)),
+    } : null
+
+    return NextResponse.json({ ok: true, data }, {
+      headers: { 'Cache-Control': 'private, max-age=30, stale-while-revalidate=60' },
     })
   } catch (err) {
     console.error('GET /api/subscription/status error:', err)

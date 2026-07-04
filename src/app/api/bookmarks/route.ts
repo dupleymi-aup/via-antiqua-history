@@ -13,7 +13,9 @@ export async function GET() {
     const db = getDb()
     const rows = db.prepare('SELECT * FROM bookmarks WHERE user_id = ? ORDER BY created_at DESC').all(session.userId) as BookmarkRow[]
 
-    return NextResponse.json<ApiResponse>({ ok: true, data: rows })
+    return NextResponse.json<ApiResponse>({ ok: true, data: rows }, {
+      headers: { 'Cache-Control': 'private, max-age=10, stale-while-revalidate=30' },
+    })
   } catch (err) {
     console.error('Bookmarks GET error:', err)
     return NextResponse.json<ApiResponse>({ ok: false, error: 'Внутренняя ошибка сервера' }, { status: 500 })

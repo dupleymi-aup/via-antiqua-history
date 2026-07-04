@@ -15,6 +15,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { BookmarkButton } from '@/components/site/bookmarks'
+import { ShareButton } from '@/components/site/share-button'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -361,18 +362,26 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
                   {activeLandmark?.name}
                 </DialogTitle>
               </div>
-              {activeLandmark && (
-                <BookmarkButton
-                  item={{
-                    id: `landmark:${activeLandmark.id}`,
-                    type: 'landmark',
-                    title: activeLandmark.name,
-                    subtitle: `${activeCity.name} — ${activeLandmark.period}`,
-                    href: `#${region.id}`,
-                    region: region.id,
-                  }}
-                />
-              )}
+              <div className="flex items-center gap-1 shrink-0">
+                {activeLandmark && (
+                  <ShareButton
+                    title={activeLandmark.name}
+                    href={`#${region.id}`}
+                  />
+                )}
+                {activeLandmark && (
+                  <BookmarkButton
+                    item={{
+                      id: `landmark:${activeLandmark.id}`,
+                      type: 'landmark',
+                      title: activeLandmark.name,
+                      subtitle: `${activeCity.name} — ${activeLandmark.period}`,
+                      href: `#${region.id}`,
+                      region: region.id,
+                    }}
+                  />
+                )}
+              </div>
             </div>
             <DialogDescription className="text-xs sm:text-base">
               {activeLandmark?.shortDesc}

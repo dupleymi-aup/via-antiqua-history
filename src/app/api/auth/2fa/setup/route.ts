@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { randomBytes } from 'crypto'
-import { toDataURL } from 'qrcode'
 import { getDb } from '@/lib/auth/db'
 import { getSession, verifyPassword } from '@/lib/auth/utils'
 import { totp } from '@/lib/auth/totp'
@@ -22,6 +21,7 @@ export async function GET() {
 
     const secret = totp.generateSecret()
     const uri = totp.toURI({ label: session.email, issuer: 'Исторический Лабиринт', secret })
+    const { toDataURL } = await import('qrcode')
     const qrCode = await toDataURL(uri)
 
     db.prepare('UPDATE users SET totp_secret = ? WHERE id = ?').run(secret, session.userId)

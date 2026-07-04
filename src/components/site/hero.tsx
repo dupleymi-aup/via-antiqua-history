@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { allRegions, timeline, persons } from '@/lib/history-data'
 import { useAnimatedCounter } from '@/hooks/use-animated-counter'
 import { REGION_COLORS } from '@/lib/constants'
+import { ShareButton } from '@/components/site/share-button'
 
 const regionChips = [
   { label: 'Греция', color: REGION_COLORS.greece },
@@ -112,6 +113,8 @@ export function Hero() {
             <span className="text-[10px] sm:text-[11px] text-muted-foreground/70">
               Образовательный ресурс
             </span>
+            <span className="text-border">·</span>
+            <ShareButton title="Исторический Лабиринт — От Эллады до Римских Пределов" />
           </div>
         </motion.div>
 
