@@ -14,6 +14,8 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { BookmarkButton } from '@/components/site/bookmarks'
+import { ShareButton } from '@/components/site/share-button'
+import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 import { withAlpha } from '@/lib/utils'
 
@@ -50,6 +52,7 @@ export function WondersSection() {
             Знаменитый список, составленный эллинистическими греками. Из семи
             чудес до наших дней сохранилась только Пирамида Хеопса.
           </p>
+          <ReadingTime text={wonders.map((w) => w.fullDesc)} className="justify-center mt-2" />
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">

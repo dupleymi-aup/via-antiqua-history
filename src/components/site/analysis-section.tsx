@@ -4,6 +4,7 @@ import * as React from 'react'
 import { motion } from 'framer-motion'
 import { Quote, Feather } from 'lucide-react'
 import { authorAnalysis } from '@/lib/history-data'
+import { ReadingTime } from '@/components/site/reading-time'
 
 export function AnalysisSection() {
   return (
@@ -38,6 +39,7 @@ export function AnalysisSection() {
           <p className="text-[11px] sm:text-xs text-muted-foreground uppercase tracking-widest mb-4 sm:mb-6">
             Автор: {authorAnalysis.author}
           </p>
+          <ReadingTime text={authorAnalysis.intro} className="justify-center mb-4 sm:mb-5" />
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed font-body max-w-3xl mx-auto">
             {authorAnalysis.intro}
           </p>
@@ -84,6 +86,9 @@ export function AnalysisSection() {
                     </p>
                   ))}
                 </div>
+              </div>
+              <div className="mt-4 md:mt-6 pl-14">
+                <ReadingTime text={section.body} />
               </div>
             </motion.article>
           ))}

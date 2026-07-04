@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { GitCompareArrows } from 'lucide-react'
 import { comparisonRows } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
+import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 
 const columns = [
@@ -43,6 +44,7 @@ export function ComparisonSection() {
             Сопоставление Древней Греции, Рима, Месопотамии и Кубани по восьми
             ключевым параметрам. Наведите на колонку, чтобы её подсветить.
           </p>
+          <ReadingTime text={comparisonRows.map((r) => `${r.criterion} ${r.greece} ${r.rome} ${r.mesopotamia} ${r.kuban}`)} className="justify-center mt-2" />
         </motion.div>
 
         <motion.div

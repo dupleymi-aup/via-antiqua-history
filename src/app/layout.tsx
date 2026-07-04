@@ -21,6 +21,7 @@ import { ThemeProvider } from "@/components/site/theme-provider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { BookmarksProvider } from "@/components/site/bookmarks";
 import { ScrollToTop } from "@/components/site/scroll-to-top";
+import { ServiceWorkerRegistration } from "@/components/site/service-worker-registration";
 import { DEFAULT_SITE_URL } from "@/lib/constants";
 import { FAQSchema } from "@/components/seo/faq-schema";
 
@@ -116,6 +117,15 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "История Древнего Пути — Интерактивный исторический лабиринт",
+    description:
+      "Интерактивная энциклопедия античного мира — 18 городов, 32+ памятников, 12 персоналий, 7 чудес света.",
+    images: ["/logo.svg"],
+    creator: "@QuadDarv1ne",
+    site: "@QuadDarv1ne",
+  },
   category: "education",
   alternates: {
     canonical: "/",
@@ -170,6 +180,7 @@ export default function RootLayout({
             </BookmarksProvider>
           </AuthProvider>
         </ThemeProvider>
+        <ServiceWorkerRegistration />
       </body>
     </html>
   );

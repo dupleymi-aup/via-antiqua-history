@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { ExternalLink, BookOpen, Landmark, Globe, Scroll, BookText } from 'lucide-react'
 import { sources, type SourceRef } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
+import { ReadingTime } from '@/components/site/reading-time'
 
 const categoryMeta: Record<
   SourceRef['category'],
@@ -67,6 +68,7 @@ export function SourcesSection() {
             материалов сайта. Стартовая точка проекта — статья о прогулке по
             афинскому Акрополю из «Яндекс.Путешествий».
           </p>
+          <ReadingTime text={sources.map((s) => `${s.title} ${s.description}`)} className="justify-center mt-2" />
         </motion.div>
 
         <div className="space-y-10">

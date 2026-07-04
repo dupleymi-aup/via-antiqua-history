@@ -1,7 +1,7 @@
 {
-  "name": "История Древнего Пути — Интерактивная историческая энциклопедия",
-  "short_name": "Виа Антиква",
-  "description": "Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство.",
+  "name": "История Древнего Пути — Интерактивный исторический лабиринт",
+  "short_name": "Древний Путь",
+  "description": "Интерактивная историческая энциклопедия античного мира — Древняя Греция, Римская империя, Месопотамия и Кубань как единое культурное пространство. 18 городов, 32+ памятников, 12 персоналий, 7 чудес света.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F7F4EE",
@@ -10,12 +10,48 @@
   "categories": ["education", "reference"],
   "lang": "ru",
   "dir": "ltr",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/logo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
+    },
+    {
+      "src": "/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Древняя Греция",
+      "short_name": "Греция",
+      "description": "Раздел о Древней Греции",
+      "url": "#greece",
+      "icons": [{ "src": "/logo.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Римская империя",
+      "short_name": "Рим",
+      "description": "Раздел о Римской империи",
+      "url": "#rome",
+      "icons": [{ "src": "/logo.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Интерактивная карта",
+      "short_name": "Карта",
+      "description": "Интерактивная карта античного мира",
+      "url": "#map",
+      "icons": [{ "src": "/logo.svg", "sizes": "96x96" }]
     }
   ]
 }

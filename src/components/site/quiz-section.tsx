@@ -7,6 +7,7 @@ import { quizQuestions } from '@/lib/history-data'
 import { cn, withAlpha } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
+import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 
 export function QuizSection() {
@@ -283,6 +284,7 @@ export function QuizSection() {
             {quizQuestions.length} вопросов о Греции, Риме, Месопотамии и
             Кубани. Проверьте, насколько хорошо вы усвоили материал.
           </p>
+          <ReadingTime text={quizQuestions.map((q) => `${q.question} ${q.explanation}`)} className="justify-center mt-2" />
         </motion.div>
 
         {/* Прогресс */}

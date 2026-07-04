@@ -1,10 +1,22 @@
 'use client'
 
 import * as React from 'react'
-import { motion } from 'framer-motion'
-import { Hourglass } from 'lucide-react'
-import { epochs } from '@/lib/history-data'
+import { motion, AnimatePresence } from 'framer-motion'
+import { History, Clock, Info } from 'lucide-react'
+import { epochs, type Epoch } from '@/lib/history-data'
 import { cn, withAlpha } from '@/lib/utils'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import { Badge } from '@/components/ui/badge'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { BookmarkButton } from '@/components/site/bookmarks'
+import { ShareButton } from '@/components/site/share-button'
+import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 
 export function EpochsSection() {
@@ -35,10 +47,9 @@ export function EpochsSection() {
             Карта эпох античности
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Восемь ключевых эпох — от шумерских городов до падения
-            Константинополя. Цветными метками отмечены регионы, затронутые
-            каждой эпохой.
+            Восемь ключевых эпох — от шумерских городов до падения Константинополя.
           </p>
+          <ReadingTime text={epochs.map((e) => e.highlights.join(' '))} className="justify-center mt-2" />
         </motion.div>
 
         {/* Таймлайн эпох */}

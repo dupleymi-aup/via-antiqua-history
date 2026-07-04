@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { BookmarkButton } from '@/components/site/bookmarks'
+import { ReadingTime } from '@/components/site/reading-time'
 
 // SVG-схемы капителей для каждого ордера
 function DoricCapital() {
@@ -139,6 +140,7 @@ export function OrdersSection() {
             определившая облик античной архитектуры и всю европейскую традицию
             после.
           </p>
+          <ReadingTime text={architecturalOrders.map((o) => o.visualDescription)} className="justify-center mt-2" />
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

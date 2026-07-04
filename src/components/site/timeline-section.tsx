@@ -2,10 +2,11 @@
 
 import * as React from 'react'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Calendar, Play, Pause } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Calendar, Play, Pause, Clock } from 'lucide-react'
 import { timeline, additionalTimelineEvents } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS, REGION_SHORT } from '@/lib/constants'
 
 // Объединяем и сортируем события по году
@@ -113,6 +114,7 @@ export function TimelineSection() {
             шумерских городов до падения Константинополя. Нажимайте на события
             или используйте стрелки.
           </p>
+          <ReadingTime text={allTimeline.map((e) => `${e.greece || ''} ${e.rome || ''} ${e.mesopotamia || ''} ${e.kuban || ''}`)} className="justify-center mt-2" />
         </motion.div>
 
         {/* Лента снизу — дорожка с событиями */}
