@@ -209,7 +209,7 @@ const typeLabels: Record<BookmarkItem['type'], string> = {
 const getRegionColor = (region: string) => REGION_COLORS[region] || REGION_COLORS.general
 
 // Кнопка-переключатель закладки
-export function BookmarkButton({ item }: { item: BookmarkItem }) {
+export const BookmarkButton = React.memo(function BookmarkButton({ item }: { item: BookmarkItem }) {
   const { isBookmarked, toggle } = useBookmarks()
   const active = isBookmarked(item.id)
 
@@ -237,7 +237,7 @@ export function BookmarkButton({ item }: { item: BookmarkItem }) {
       )}
     </motion.button>
   )
-}
+})
 
 // Плавающая кнопка для открытия панели закладок
 export function BookmarksFloatingButton({

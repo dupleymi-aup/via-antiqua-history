@@ -23,7 +23,7 @@ export function Navbar() {
   const { user, loading: authLoading } = useAuth()
 
   // Section progress tracking
-  const SECTION_IDS = ['greece', 'rome', 'mesopotamia', 'kuban', 'persons', 'wonders', 'orders', 'epochs', 'timeline', 'map', 'comparison', 'analysis', 'glossary', 'quiz', 'sources']
+  const SECTION_IDS = React.useMemo(() => ['greece', 'rome', 'mesopotamia', 'kuban', 'persons', 'wonders', 'orders', 'epochs', 'timeline', 'map', 'comparison', 'analysis', 'glossary', 'quiz', 'sources'], [])
   const { progressPercent } = useSectionProgress(SECTION_IDS)
 
   React.useEffect(() => {

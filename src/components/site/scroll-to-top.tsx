@@ -13,9 +13,9 @@ export function ScrollToTop() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const scrollToTop = () => {
+  const scrollToTop = React.useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  }, [])
 
   return (
     <AnimatePresence>

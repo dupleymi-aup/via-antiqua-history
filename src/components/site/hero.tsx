@@ -25,21 +25,22 @@ export function Hero() {
   const parallaxY3 = useTransform(scrollY, [0, 500], [0, -40])
   const opacity1 = useTransform(scrollY, [0, 300], [1, 0.6])
 
-  const citiesCount = allRegions.reduce(
-    (acc, r) => acc + r.cities.length,
-    0
-  )
-  const landmarksCount = allRegions.reduce(
-    (acc, r) => acc + r.cities.reduce((a, c) => a + c.landmarks.length, 0),
-    0
-  )
-
-  const stats = [
-    { icon: <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, value: citiesCount, label: 'городов' },
-    { icon: <Landmark className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, value: landmarksCount, label: 'памятников' },
-    { icon: <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, value: timeline.length, label: 'событий' },
-    { icon: <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, value: persons.length, label: 'персоналий' },
-  ]
+  const stats = React.useMemo(() => {
+    const citiesCount = allRegions.reduce(
+      (acc, r) => acc + r.cities.length,
+      0
+    )
+    const landmarksCount = allRegions.reduce(
+      (acc, r) => acc + r.cities.reduce((a, c) => a + c.landmarks.length, 0),
+      0
+    )
+    return [
+      { icon: <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, value: citiesCount, label: 'городов' },
+      { icon: <Landmark className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, value: landmarksCount, label: 'памятников' },
+      { icon: <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, value: timeline.length, label: 'событий' },
+      { icon: <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, value: persons.length, label: 'персоналий' },
+    ]
+  }, [])
 
   return (
     <section
@@ -101,6 +102,7 @@ export function Hero() {
               alt="Дуплей Максим Игоревич"
               width={28}
               height={28}
+              priority
               className="rounded-full object-cover ring-2 ring-primary/15 shrink-0"
             />
             <span className="text-[11px] sm:text-xs font-medium text-foreground/70">

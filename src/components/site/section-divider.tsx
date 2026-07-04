@@ -1,8 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import * as React from 'react'
 
-export function SectionDivider() {
+export const SectionDivider = React.memo(function SectionDivider() {
   return (
     <div className="relative h-16 sm:h-20 md:h-24 overflow-hidden bg-background" aria-hidden="true">
       <div className="absolute inset-0 flex items-center justify-center">
@@ -34,4 +35,4 @@ export function SectionDivider() {
       />
     </div>
   )
-}
+})

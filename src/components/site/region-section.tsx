@@ -18,14 +18,14 @@ import { BookmarkButton } from '@/components/site/bookmarks'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 
-const regionIconMap: Record<string, React.ReactNode> = {
-  temple: <span className="text-xl">🏛️</span>,
-  crown: <span className="text-xl">👑</span>,
-  tablets: <span className="text-xl">📜</span>,
-  amphora: <span className="text-xl">🏺</span>,
-}
-
 export function RegionSection({ region, restricted }: { region: Region; restricted?: boolean }) {
+  const regionIconMap = React.useMemo<Record<string, React.ReactNode>>(() => ({
+    temple: <span className="text-xl">🏛️</span>,
+    crown: <span className="text-xl">👑</span>,
+    tablets: <span className="text-xl">📜</span>,
+    amphora: <span className="text-xl">🏺</span>,
+  }), [])
+
   const [activeCityId, setActiveCityId] = React.useState(region.cities[0]?.id)
   const [activeLandmark, setActiveLandmark] = React.useState<Landmark | null>(
     null

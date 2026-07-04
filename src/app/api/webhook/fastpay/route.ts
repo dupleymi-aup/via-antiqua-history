@@ -54,23 +54,19 @@ export async function POST(request: NextRequest) {
  * Проверка подписи webhook
  */
 function verifyWebhookSignature(_payload: unknown, _signature: string): boolean {
-  // const webhookSecret = process.env.FASTPAY_WEBHOOK_SECRET || 'your-webhook-secret'
-  
-  // В реальной интеграции здесь была бы проверка подписи HMAC
-  // Пример для FastPay Connect:
+  if (process.env.NODE_ENV === 'production') {
+    console.error('CRITICAL: Webhook signature verification is DISABLED. Configure proper HMAC verification before production use.')
+  }
+
+  // TODO: Implement HMAC verification for production
+  // const webhookSecret = process.env.FASTPAY_WEBHOOK_SECRET || ''
   // const expectedSignature = crypto
   //   .createHmac('sha256', webhookSecret)
   //   .update(JSON.stringify(payload))
   //   .digest('hex')
-  
-  // return crypto.timingSafeEqual(
-  //   Buffer.from(signature),
-  //   Buffer.from(expectedSignature)
-  // )
+  // return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
 
-  // Для демо всегда возвращаем true
-  // В продакшене обязательно используйте настоящую проверку!
-  return true
+  return true // DEMO ONLY
 }
 
 /**

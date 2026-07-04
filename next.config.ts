@@ -13,7 +13,9 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60,
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: process.env.NODE_ENV === 'production'
+      ? { exclude: ['warn', 'error'] }
+      : false,
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
