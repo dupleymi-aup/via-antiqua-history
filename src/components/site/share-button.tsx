@@ -53,18 +53,6 @@ export function ShareButton({ title, href, className }: ShareButtonProps) {
     }
   }, [shareUrl])
 
-  const handleShare = React.useCallback(async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData)
-      } catch {
-        // User cancelled or share failed — no action needed
-      }
-    } else {
-      setOpen(true)
-    }
-  }, [shareData])
-
   const socials = [
     {
       name: 'Telegram',

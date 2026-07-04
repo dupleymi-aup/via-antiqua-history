@@ -167,18 +167,26 @@ export function PersonsSection() {
                   </p>
                 )}
               </div>
-              {active && (
-                <BookmarkButton
-                  item={{
-                    id: `person:${active.id}`,
-                    type: 'person',
-                    title: active.name,
-                    subtitle: `${active.role} · ${active.era}`,
-                    href: '#persons',
-                    region: active.region,
-                  }}
-                />
-              )}
+              <div className="flex items-center gap-1 shrink-0">
+                {active && (
+                  <ShareButton
+                    title={active.name}
+                    href="#persons"
+                  />
+                )}
+                {active && (
+                  <BookmarkButton
+                    item={{
+                      id: `person:${active.id}`,
+                      type: 'person',
+                      title: active.name,
+                      subtitle: `${active.role} · ${active.era}`,
+                      href: '#persons',
+                      region: active.region,
+                    }}
+                  />
+                )}
+              </div>
             </div>
             <DialogDescription className="text-xs sm:text-base">
               {active?.role}
