@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Calendar, Play, Pause, Clock } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Calendar, Play, Pause } from 'lucide-react'
 import { timeline, additionalTimelineEvents } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'

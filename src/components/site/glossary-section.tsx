@@ -7,7 +7,6 @@ import { glossary } from '@/lib/history-data'
 import { cn, withAlpha } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { BookmarkButton } from '@/components/site/bookmarks'
-import { ShareButton } from '@/components/site/share-button'
 import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS, FILTER_LABELS } from '@/lib/constants'
 

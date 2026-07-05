@@ -6,8 +6,7 @@ const ASSETS_TO_CACHE = [
   '/',
   '/manifest.json',
   '/logo.svg',
-  '/logo-192.png',
-  '/logo-512.png',
+
 ]
 
 // Install event — кэшируем статические ресурсы
@@ -93,7 +92,7 @@ self.addEventListener('sync', (event) => {
 
 async function syncBookmarks() {
   // Логика синхронизации закладок в фоне
-  console.log('Background sync: bookmarks')
+  console.warn('Background sync: bookmarks')
 }
 
 // Push notifications

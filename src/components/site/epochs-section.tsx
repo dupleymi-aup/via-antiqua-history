@@ -1,21 +1,10 @@
 'use client'
 
 import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { History, Clock, Info } from 'lucide-react'
-import { epochs, type Epoch } from '@/lib/history-data'
+import { motion } from 'framer-motion'
+import { Hourglass } from 'lucide-react'
+import { epochs } from '@/lib/history-data'
 import { cn, withAlpha } from '@/lib/utils'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { BookmarkButton } from '@/components/site/bookmarks'
-import { ShareButton } from '@/components/site/share-button'
 import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 

@@ -16,7 +16,6 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { BookmarkButton } from '@/components/site/bookmarks'
 import { ShareButton } from '@/components/site/share-button'
-import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 
 const filters: { key: string; label: string }[] = [

@@ -160,24 +160,23 @@ The author's historical analysis reveals connections between civilizations throu
 | **Lucide React** | — | Icons |
 | **next-themes** | — | Theme switching |
 | **Radix UI** | — | Accessible components |
-| **Prisma** | 6 | Database ORM |
-| **Zustand** | 5 | State management |
-| **React Syntax Highlighter** | — | Code highlighting |
-| **react-markdown** | — | Markdown rendering |
-| **recharts** | — | Charts and diagrams |
-| **date-fns** | 4 | Date handling |
-| **zod** | 4 | Data validation |
-| **react-hook-form** | 7 | Form management |
-| **embla-carousel-react** | 8 | Carousels |
-| **react-resizable-panels** | 3 | Resizable panels |
-| **cmdk** | 1 | Quick search (command palette) |
+| **better-sqlite3** | 12 | Local database engine |
+| **bcryptjs** | 3 | Password hashing |
+| **jsonwebtoken** | 9 | JWT authentication |
+| **nodemailer** | 9 | Email sending |
+| **otplib** | 13 | Two-factor authentication (TOTP) |
+| **qrcode** | 1 | QR code generation for 2FA |
+| **sharp** | 0.34 | Image processing |
+| **class-variance-authority** | 0.7 | Component variants |
+| **clsx** | 2 | Class name utility |
+| **tailwind-merge** | 3 | Tailwind class merging |
 
 ## Installation and Setup
 
 ### Prerequisites
 
 - **Node.js** version 18.17 or higher (20+ recommended)
-- **bun** (recommended) or **npm**, **yarn**, **pnpm**
+- **npm** (or **yarn**, **pnpm**)
 
 ### Installation
 
@@ -187,20 +186,13 @@ git clone https://github.com/QuadDarv1ne/via-antiqua-history.git
 cd via-antiqua-history
 
 # Install dependencies
-bun install
+npm install
 
-# Setup database (PostgreSQL)
-# Option 1: Use Docker (recommended)
-docker compose up -d postgres
-
-# Option 2: Use cloud PostgreSQL (Neon, Supabase)
-# Copy .env.example to .env.local and set DATABASE_URL
-
-# Apply migrations
-bun run db:migrate
+# Copy environment file
+cp .env.example .env.local
 
 # Run in development mode
-bun run dev
+npm run dev
 ```
 
 The application will be available at [http://localhost:3000](http://localhost:3000)
@@ -209,17 +201,17 @@ The application will be available at [http://localhost:3000](http://localhost:30
 
 ```bash
 # Build the project
-bun run build
+npm run build
 
 # Run the built application
-bun start
+npm start
 ```
 
 ### Linting
 
 ```bash
 # Check code
-bun run lint
+npm run lint
 ```
 
 ## Project Structure
@@ -227,53 +219,109 @@ bun run lint
 ```
 via-antiqua-history/
 ├── public/                         # Static files
-│   └── robots.txt
+│   ├── img/
+│   │   └── dupley_maxim.jpg        # Author photo
+│   ├── logo.svg                    # App icon
+│   ├── logo-192.png                # PWA icon (192×192)
+│   ├── logo-512.png                # PWA icon (512×512)
+│   ├── manifest.json               # PWA manifest
+│   ├── robots.txt
+│   ├── sitemap.xml
+│   └── sw.js                       # Service Worker
 ├── src/
-│   ├── app/
-│   │   ├── layout.tsx              # Root layout: fonts, theme, Toaster
+│   ├── app/                        # Next.js App Router
+│   │   ├── (auth)/                 # Auth route group
+│   │   │   ├── layout.tsx
+│   │   │   ├── login/
+│   │   │   ├── register/
+│   │   │   ├── profile/
+│   │   │   ├── forgot-password/
+│   │   │   └── reset-password/
+│   │   ├── api/                    # API routes
+│   │   │   ├── auth/               # Auth handlers
+│   │   │   ├── bookmarks/route.ts
+│   │   │   ├── subscription/       # Payment/subscription
+│   │   │   └── webhook/fastpay/    # Payment webhook
+│   │   ├── error.tsx               # Error boundary
 │   │   ├── globals.css             # Antique theme + utilities
-│   │   └── page.tsx                # Main page — assembly of all sections
-│   │   └── api/
-│   │       └── route.ts            # API route
+│   │   ├── layout.tsx              # Root layout
+│   │   ├── loading.tsx             # Loading state
+│   │   ├── not-found.tsx           # 404 page
+│   │   ├── page.tsx                # Main page
+│   │   ├── robots.ts               # Dynamic robots.txt
+│   │   └── sitemap.ts              # Dynamic sitemap
 │   ├── components/
-│   │   ├── site/                   # Site components (20 items)
-│   │   │   ├── Navbar.tsx          # Navigation bar
-│   │   │   ├── Hero.tsx            # Main screen with animated counters
-│   │   │   ├── RegionSection.tsx   # Region section (Greece, Rome, Mesopotamia, Kuban)
-│   │   │   ├── PersonsSection.tsx  # Ancient personalities
-│   │   │   ├── WondersSection.tsx  # 7 Wonders of the World
-│   │   │   ├── OrdersSection.tsx   # Architectural orders
-│   │   │   ├── EpochsSection.tsx   # Historical epochs
-│   │   │   ├── TimelineSection.tsx # Interactive timeline
-│   │   │   ├── MapSection.tsx      # Interactive map
-│   │   │   ├── ComparisonSection.tsx # Comparative table
-│   │   │   ├── AnalysisSection.tsx # Author's analysis
-│   │   │   ├── GlossarySection.tsx # Glossary of terms
-│   │   │   ├── QuizSection.tsx     # Interactive quiz
-│   │   │   ├── SourcesSection.tsx  # Sources and links
-│   │   │   ├── Footer.tsx          # Site footer
-│   │   │   ├── ScrollToTop.tsx     # Scroll to top button
-│   │   │   ├── ReadingProgress.tsx # Reading progress
-│   │   │   ├── SearchDialog.tsx    # Global search (Ctrl+K)
-│   │   │   ├── Bookmarks.tsx       # Bookmarks system
-│   │   │   └── ThemeProvider.tsx   # Theme provider
-│   │   └── ui/                     # shadcn/ui components (40+ items)
-│   ├── lib/
-│   │   ├── history-data.ts         # All historical data (2600+ lines)
-│   │   ├── utils.ts                # cn() and common utilities
-│   │   └── db.ts                   # Prisma client
-│   └── hooks/
-│       ├── use-toast.ts            # Toast notification hook
-│       ├── use-mobile.ts           # Mobile device detection hook
-│       └── use-animated-counter.ts # Animated counter hook
-├── prisma/
-│   └── schema.prisma               # Database schema
-├── scripts/                        # Scripts
-├── package.json                    # Dependencies and scripts
+│   │   ├── seo/                    # SEO components
+│   │   │   └── faq-schema.tsx
+│   │   ├── site/                   # Site components (25+ items)
+│   │   │   ├── analysis-section.tsx
+│   │   │   ├── bookmarks.tsx
+│   │   │   ├── comparison-section.tsx
+│   │   │   ├── content-gate.tsx
+│   │   │   ├── epochs-section.tsx
+│   │   │   ├── footer.tsx
+│   │   │   ├── glossary-section.tsx
+│   │   │   ├── hero.tsx
+│   │   │   ├── map-section.tsx
+│   │   │   ├── navbar.tsx
+│   │   │   ├── orders-section.tsx
+│   │   │   ├── persons-section.tsx
+│   │   │   ├── quiz-section.tsx
+│   │   │   ├── reading-progress.tsx
+│   │   │   ├── reading-time.tsx
+│   │   │   ├── region-section.tsx
+│   │   │   ├── scroll-to-top.tsx
+│   │   │   ├── search-dialog.tsx
+│   │   │   ├── section-divider.tsx
+│   │   │   ├── service-worker-registration.tsx
+│   │   │   ├── share-button.tsx
+│   │   │   ├── sources-section.tsx
+│   │   │   ├── theme-provider.tsx
+│   │   │   ├── timeline-section.tsx
+│   │   │   └── wonders-section.tsx
+│   │   └── ui/                     # shadcn/ui primitives
+│   │       ├── badge.tsx
+│   │       ├── button.tsx
+│   │       ├── dialog.tsx
+│   │       ├── error-boundary.tsx
+│   │       ├── input.tsx
+│   │       ├── popover.tsx
+│   │       ├── progress.tsx
+│   │       ├── scroll-area.tsx
+│   │       ├── skeleton.tsx
+│   │       └── toast.tsx
+│   ├── contexts/
+│   │   └── AuthContext.tsx          # Auth state management
+│   ├── hooks/
+│   │   ├── use-animated-counter.ts
+│   │   └── use-section-progress.ts
+│   └── lib/
+│       ├── __tests__/
+│       │   └── utils.test.ts       # Unit tests
+│       ├── auth/                   # Auth backend
+│       │   ├── db.ts
+│       │   ├── email.ts
+│       │   ├── rate-limit.ts
+│       │   ├── subscription-middleware.ts
+│       │   ├── totp.ts
+│       │   ├── types.ts
+│       │   └── utils.ts
+│       ├── history-data/           # Historical data (18 files)
+│       └── utils.ts                # cn() and common utilities
+├── scripts/
+│   ├── copy-assets.sh
+│   └── make-archive.sh
+├── .dockerignore
+├── .env.example
+├── amvera.yaml                     # Amvera cloud deployment
+├── Caddyfile                       # Reverse proxy config
+├── components.json                 # shadcn/ui config
+├── Dockerfile                      # Production Docker build
+├── eslint.config.mjs               # ESLint flat config
 ├── next.config.ts                  # Next.js configuration
 ├── tsconfig.json                   # TypeScript configuration
-├── tailwind.config.ts              # Tailwind CSS configuration
-├── Caddyfile                       # Caddy server configuration
+├── vitest.config.ts                # Vitest configuration
+├── package.json                    # Dependencies and scripts
 ├── README.md                       # Brief documentation (RU)
 ├── README_RU.md                    # Full documentation in Russian
 ├── README_EN.md                    # Full documentation in English

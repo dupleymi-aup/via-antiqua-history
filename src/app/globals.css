@@ -195,7 +195,6 @@ html {
    Print Styles
    ============================================ */
 @media print {
-  /* Скрываем интерактивные элементы */
   header,
   footer,
   .skip-link,
@@ -210,7 +209,6 @@ html {
     display: none !important;
   }
 
-  /* Оптимизация для печати */
   body {
     background: white !important;
     color: black !important;
@@ -229,7 +227,6 @@ html {
     color: #666;
   }
 
-  /* Разрыв страницы после секций */
   section {
     page-break-inside: avoid;
     break-inside: avoid;
@@ -240,7 +237,6 @@ html {
     break-after: avoid;
   }
 
-  /* Убираем тени и фоны */
   * {
     box-shadow: none !important;
     text-shadow: none !important;
@@ -256,7 +252,6 @@ html {
     -webkit-text-fill-color: black !important;
   }
 
-  /* Оптимизация сеток */
   .grid {
     display: block !important;
   }
@@ -267,13 +262,11 @@ html {
     page-break-inside: avoid;
   }
 
-  /* Скрываем декоративные элементы */
   .meander-border,
   [aria-hidden="true"] {
     display: none !important;
   }
 
-  /* Добавляем заголовок на каждую страницу */
   @page {
     margin: 2cm;
     @bottom-center {
@@ -315,467 +308,11 @@ html {
   }
 }
 
-/* ============================================
-   Print Styles
-   ============================================ */
-@media print {
-  /* Скрываем интерактивные элементы */
-  header,
-  footer,
-  .skip-link,
-  .scroll-to-top,
-  .bookmarks-floating-button,
-  .reading-progress,
-  [role="dialog"],
-  [role="button"],
-  button,
-  nav,
-  .no-print {
-    display: none !important;
-  }
-
-  /* Оптимизация для печати */
-  body {
-    background: white !important;
-    color: black !important;
-    font-size: 12pt;
-    line-height: 1.5;
-  }
-
-  a {
-    color: black !important;
-    text-decoration: underline;
-  }
-
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.8em;
-    color: #666;
-  }
-
-  /* Разрыв страницы после секций */
-  section {
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  h2, h3, h4 {
-    page-break-after: avoid;
-    break-after: avoid;
-  }
-
-  /* Убираем тени и фоны */
-  * {
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-
-  .parchment-bg,
-  .gold-text {
-    background: none !important;
-  }
-
-  .gold-text {
-    color: black !important;
-    -webkit-text-fill-color: black !important;
-  }
-
-  /* Оптимизация сеток */
-  .grid {
-    display: block !important;
-  }
-
-  .grid > * {
-    display: block !important;
-    margin-bottom: 1rem;
-    page-break-inside: avoid;
-  }
-
-  /* Скрываем декоративные элементы */
-  .meander-border,
-  [aria-hidden="true"] {
-    display: none !important;
-  }
-
-  /* Добавляем заголовок на каждую страницу */
-  @page {
-    margin: 2cm;
-    @bottom-center {
-      content: "История Древнего Пути — " counter(page) " стр.";
-      font-size: 8pt;
-      color: #999;
-    }
-  }
-}
-
-/* ============================================
-   Stagger Animation Utilities
-   ============================================ */
-.stagger-children > * {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.stagger-children.animate > *:nth-child(1) { animation: fadeInUp 0.4s ease-out 0.05s forwards; }
-.stagger-children.animate > *:nth-child(2) { animation: fadeInUp 0.4s ease-out 0.1s forwards; }
-.stagger-children.animate > *:nth-child(3) { animation: fadeInUp 0.4s ease-out 0.15s forwards; }
-.stagger-children.animate > *:nth-child(4) { animation: fadeInUp 0.4s ease-out 0.2s forwards; }
-.stagger-children.animate > *:nth-child(5) { animation: fadeInUp 0.4s ease-out 0.25s forwards; }
-.stagger-children.animate > *:nth-child(6) { animation: fadeInUp 0.4s ease-out 0.3s forwards; }
-.stagger-children.animate > *:nth-child(7) { animation: fadeInUp 0.4s ease-out 0.35s forwards; }
-.stagger-children.animate > *:nth-child(8) { animation: fadeInUp 0.4s ease-out 0.4s forwards; }
-.stagger-children.animate > *:nth-child(9) { animation: fadeInUp 0.4s ease-out 0.45s forwards; }
-.stagger-children.animate > *:nth-child(10) { animation: fadeInUp 0.4s ease-out 0.5s forwards; }
-.stagger-children.animate > *:nth-child(n+11) { animation: fadeInUp 0.4s ease-out 0.55s forwards; }
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
+/* Reduced motion support for stagger animations */
+@media (prefers-reduced-motion: reduce) {
+  .stagger-children > * {
     opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ============================================
-   Print Styles
-   ============================================ */
-@media print {
-  /* Скрываем интерактивные элементы */
-  header,
-  footer,
-  .skip-link,
-  .scroll-to-top,
-  .bookmarks-floating-button,
-  .reading-progress,
-  [role="dialog"],
-  [role="button"],
-  button,
-  nav,
-  .no-print {
-    display: none !important;
-  }
-
-  /* Оптимизация для печати */
-  body {
-    background: white !important;
-    color: black !important;
-    font-size: 12pt;
-    line-height: 1.5;
-  }
-
-  a {
-    color: black !important;
-    text-decoration: underline;
-  }
-
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.8em;
-    color: #666;
-  }
-
-  /* Разрыв страницы после секций */
-  section {
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  h2, h3, h4 {
-    page-break-after: avoid;
-    break-after: avoid;
-  }
-
-  /* Убираем тени и фоны */
-  * {
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-
-  .parchment-bg,
-  .gold-text {
-    background: none !important;
-  }
-
-  .gold-text {
-    color: black !important;
-    -webkit-text-fill-color: black !important;
-  }
-
-  /* Оптимизация сеток */
-  .grid {
-    display: block !important;
-  }
-
-  .grid > * {
-    display: block !important;
-    margin-bottom: 1rem;
-    page-break-inside: avoid;
-  }
-
-  /* Скрываем декоративные элементы */
-  .meander-border,
-  [aria-hidden="true"] {
-    display: none !important;
-  }
-
-  /* Добавляем заголовок на каждую страницу */
-  @page {
-    margin: 2cm;
-    @bottom-center {
-      content: "История Древнего Пути — " counter(page) " стр.";
-      font-size: 8pt;
-      color: #999;
-    }
-  }
-}
-
-/* ============================================
-   Stagger Animation Utilities
-   ============================================ */
-.stagger-children > * {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.stagger-children.animate > *:nth-child(1) { animation: fadeInUp 0.4s ease-out 0.05s forwards; }
-.stagger-children.animate > *:nth-child(2) { animation: fadeInUp 0.4s ease-out 0.1s forwards; }
-.stagger-children.animate > *:nth-child(3) { animation: fadeInUp 0.4s ease-out 0.15s forwards; }
-.stagger-children.animate > *:nth-child(4) { animation: fadeInUp 0.4s ease-out 0.2s forwards; }
-.stagger-children.animate > *:nth-child(5) { animation: fadeInUp 0.4s ease-out 0.25s forwards; }
-.stagger-children.animate > *:nth-child(6) { animation: fadeInUp 0.4s ease-out 0.3s forwards; }
-.stagger-children.animate > *:nth-child(7) { animation: fadeInUp 0.4s ease-out 0.35s forwards; }
-.stagger-children.animate > *:nth-child(8) { animation: fadeInUp 0.4s ease-out 0.4s forwards; }
-.stagger-children.animate > *:nth-child(9) { animation: fadeInUp 0.4s ease-out 0.45s forwards; }
-.stagger-children.animate > *:nth-child(10) { animation: fadeInUp 0.4s ease-out 0.5s forwards; }
-.stagger-children.animate > *:nth-child(n+11) { animation: fadeInUp 0.4s ease-out 0.55s forwards; }
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ============================================
-   Print Styles
-   ============================================ */
-@media print {
-  /* Скрываем интерактивные элементы */
-  header,
-  footer,
-  .skip-link,
-  .scroll-to-top,
-  .bookmarks-floating-button,
-  .reading-progress,
-  [role="dialog"],
-  [role="button"],
-  button,
-  nav,
-  .no-print {
-    display: none !important;
-  }
-
-  /* Оптимизация для печати */
-  body {
-    background: white !important;
-    color: black !important;
-    font-size: 12pt;
-    line-height: 1.5;
-  }
-
-  a {
-    color: black !important;
-    text-decoration: underline;
-  }
-
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.8em;
-    color: #666;
-  }
-
-  /* Разрыв страницы после секций */
-  section {
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  h2, h3, h4 {
-    page-break-after: avoid;
-    break-after: avoid;
-  }
-
-  /* Убираем тени и фоны */
-  * {
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-
-  .parchment-bg,
-  .gold-text {
-    background: none !important;
-  }
-
-  .gold-text {
-    color: black !important;
-    -webkit-text-fill-color: black !important;
-  }
-
-  /* Оптимизация сеток */
-  .grid {
-    display: block !important;
-  }
-
-  .grid > * {
-    display: block !important;
-    margin-bottom: 1rem;
-    page-break-inside: avoid;
-  }
-
-  /* Скрываем декоративные элементы */
-  .meander-border,
-  [aria-hidden="true"] {
-    display: none !important;
-  }
-
-  /* Добавляем заголовок на каждую страницу */
-  @page {
-    margin: 2cm;
-    @bottom-center {
-      content: "История Древнего Пути — " counter(page) " стр.";
-      font-size: 8pt;
-      color: #999;
-    }
-  }
-}
-
-/* ============================================
-   Stagger Animation Utilities
-   ============================================ */
-.stagger-children > * {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.stagger-children.animate > *:nth-child(1) { animation: fadeInUp 0.4s ease-out 0.05s forwards; }
-.stagger-children.animate > *:nth-child(2) { animation: fadeInUp 0.4s ease-out 0.1s forwards; }
-.stagger-children.animate > *:nth-child(3) { animation: fadeInUp 0.4s ease-out 0.15s forwards; }
-.stagger-children.animate > *:nth-child(4) { animation: fadeInUp 0.4s ease-out 0.2s forwards; }
-.stagger-children.animate > *:nth-child(5) { animation: fadeInUp 0.4s ease-out 0.25s forwards; }
-.stagger-children.animate > *:nth-child(6) { animation: fadeInUp 0.4s ease-out 0.3s forwards; }
-.stagger-children.animate > *:nth-child(7) { animation: fadeInUp 0.4s ease-out 0.35s forwards; }
-.stagger-children.animate > *:nth-child(8) { animation: fadeInUp 0.4s ease-out 0.4s forwards; }
-.stagger-children.animate > *:nth-child(9) { animation: fadeInUp 0.4s ease-out 0.45s forwards; }
-.stagger-children.animate > *:nth-child(10) { animation: fadeInUp 0.4s ease-out 0.5s forwards; }
-.stagger-children.animate > *:nth-child(n+11) { animation: fadeInUp 0.4s ease-out 0.55s forwards; }
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ============================================
-   Print Styles
-   ============================================ */
-@media print {
-  /* Скрываем интерактивные элементы */
-  header,
-  footer,
-  .skip-link,
-  .scroll-to-top,
-  .bookmarks-floating-button,
-  .reading-progress,
-  [role="dialog"],
-  [role="button"],
-  button,
-  nav,
-  .no-print {
-    display: none !important;
-  }
-
-  /* Оптимизация для печати */
-  body {
-    background: white !important;
-    color: black !important;
-    font-size: 12pt;
-    line-height: 1.5;
-  }
-
-  a {
-    color: black !important;
-    text-decoration: underline;
-  }
-
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.8em;
-    color: #666;
-  }
-
-  /* Разрыв страницы после секций */
-  section {
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  h2, h3, h4 {
-    page-break-after: avoid;
-    break-after: avoid;
-  }
-
-  /* Убираем тени и фоны */
-  * {
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-
-  .parchment-bg,
-  .gold-text {
-    background: none !important;
-  }
-
-  .gold-text {
-    color: black !important;
-    -webkit-text-fill-color: black !important;
-  }
-
-  /* Оптимизация сеток */
-  .grid {
-    display: block !important;
-  }
-
-  .grid > * {
-    display: block !important;
-    margin-bottom: 1rem;
-    page-break-inside: avoid;
-  }
-
-  /* Скрываем декоративные элементы */
-  .meander-border,
-  [aria-hidden="true"] {
-    display: none !important;
-  }
-
-  /* Добавляем заголовок на каждую страницу */
-  @page {
-    margin: 2cm;
-    @bottom-center {
-      content: "История Древнего Пути — " counter(page) " стр.";
-      font-size: 8pt;
-      color: #999;
-    }
+    transform: none;
+    animation: none !important;
   }
 }

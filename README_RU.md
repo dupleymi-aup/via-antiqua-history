@@ -160,24 +160,23 @@
 | **Lucide React** | — | Иконки |
 | **next-themes** | — | Переключение тем |
 | **Radix UI** | — | Доступные компоненты |
-| **Prisma** | 6 | ORM для базы данных |
-| **Zustand** | 5 | Управление состоянием |
-| **React Syntax Highlighter** | — | Подсветка кода |
-| **react-markdown** | — | Рендеринг Markdown |
-| **recharts** | — | Графики и диаграммы |
-| **date-fns** | 4 | Работа с датами |
-| **zod** | 4 | Валидация данных |
-| **react-hook-form** | 7 | Управление формами |
-| **embla-carousel-react** | 8 | Карусели |
-| **react-resizable-panels** | 3 | Резиновые панели |
-| **cmdk** | 1 | Быстрый поиск (command palette) |
+| **better-sqlite3** | 12 | Локальный движок базы данных |
+| **bcryptjs** | 3 | Хеширование паролей |
+| **jsonwebtoken** | 9 | JWT-аутентификация |
+| **nodemailer** | 9 | Отправка email |
+| **otplib** | 13 | Двухфакторная аутентификация (TOTP) |
+| **qrcode** | 1 | Генерация QR-кодов для 2FA |
+| **sharp** | 0.34 | Обработка изображений |
+| **class-variance-authority** | 0.7 | Варианты компонентов |
+| **clsx** | 2 | Утилита для классов |
+| **tailwind-merge** | 3 | Слияние Tailwind-классов |
 
 ## Установка и запуск
 
 ### Предварительные требования
 
 - **Node.js** версии 18.17 или выше (рекомендуется 20+)
-- **bun** (рекомендуется) или **npm**, **yarn**, **pnpm**
+- **npm** (или **yarn**, **pnpm**)
 
 ### Установка
 
@@ -187,20 +186,13 @@ git clone https://github.com/QuadDarv1ne/via-antiqua-history.git
 cd via-antiqua-history
 
 # Установить зависимости
-bun install
+npm install
 
-# Настроить базу данных (PostgreSQL)
-# Вариант 1: Использовать Docker (рекомендуется)
-docker compose up -d postgres
-
-# Вариант 2: Использовать облачный PostgreSQL (Neon, Supabase)
-# Скопировать .env.example в .env.local и указать DATABASE_URL
-
-# Применить миграции
-bun run db:migrate
+# Скопировать файл окружения
+cp .env.example .env.local
 
 # Запустить в режиме разработки
-bun run dev
+npm run dev
 ```
 
 Приложение будет доступно по адресу [http://localhost:3000](http://localhost:3000)
@@ -209,17 +201,17 @@ bun run dev
 
 ```bash
 # Сборка проекта
-bun run build
+npm run build
 
 # Запуск собранного приложения
-bun start
+npm start
 ```
 
 ### Линтинг
 
 ```bash
 # Проверка кода
-bun run lint
+npm run lint
 ```
 
 ## Структура проекта
@@ -227,56 +219,112 @@ bun run lint
 ```
 via-antiqua-history/
 ├── public/                         # Статические файлы
-│   └── robots.txt
+│   ├── img/
+│   │   └── dupley_maxim.jpg        # Фото автора
+│   ├── logo.svg                    # Иконка приложения
+│   ├── logo-192.png                # PWA-иконка (192×192)
+│   ├── logo-512.png                # PWA-иконка (512×512)
+│   ├── manifest.json               # PWA-манифест
+│   ├── robots.txt
+│   ├── sitemap.xml
+│   └── sw.js                       # Service Worker
 ├── src/
-│   ├── app/
-│   │   ├── layout.tsx              # Корневой layout: шрифты, тема, Toaster
+│   ├── app/                        # Next.js App Router
+│   │   ├── (auth)/                 # Группа маршрутов аутентификации
+│   │   │   ├── layout.tsx
+│   │   │   ├── login/
+│   │   │   ├── register/
+│   │   │   ├── profile/
+│   │   │   ├── forgot-password/
+│   │   │   └── reset-password/
+│   │   ├── api/                    # API-маршруты
+│   │   │   ├── auth/               # Обработчики аутентификации
+│   │   │   ├── bookmarks/route.ts
+│   │   │   ├── subscription/       # Платежи/подписка
+│   │   │   └── webhook/fastpay/    # Webhook платежей
+│   │   ├── error.tsx               # Error boundary
 │   │   ├── globals.css             # Античная тема + утилиты
-│   │   └── page.tsx                # Главная страница — сборка всех секций
-│   │   └── api/
-│   │       └── route.ts            # API-маршрут
+│   │   ├── layout.tsx              # Корневой layout
+│   │   ├── loading.tsx             # Состояние загрузки
+│   │   ├── not-found.tsx           # Страница 404
+│   │   ├── page.tsx                # Главная страница
+│   │   ├── robots.ts               # Динамический robots.txt
+│   │   └── sitemap.ts              # Динамическая карта сайта
 │   ├── components/
-│   │   ├── site/                   # Компоненты сайта (20 шт.)
-│   │   │   ├── Navbar.tsx          # Навигационная панель
-│   │   │   ├── Hero.tsx            # Главный экран с анимированными счётчиками
-│   │   │   ├── RegionSection.tsx   # Секция региона (Греция, Рим, Месопотамия, Кубань)
-│   │   │   ├── PersonsSection.tsx  # Персоналии античности
-│   │   │   ├── WondersSection.tsx  # 7 чудес света
-│   │   │   ├── OrdersSection.tsx   # Архитектурные ордера
-│   │   │   ├── EpochsSection.tsx   # Исторические эпохи
-│   │   │   ├── TimelineSection.tsx # Интерактивная лента времени
-│   │   │   ├── MapSection.tsx      # Интерактивная карта
-│   │   │   ├── ComparisonSection.tsx # Сравнительная таблица
-│   │   │   ├── AnalysisSection.tsx # Авторский анализ
-│   │   │   ├── GlossarySection.tsx # Глоссарий терминов
-│   │   │   ├── QuizSection.tsx     # Интерактивный квиз
-│   │   │   ├── SourcesSection.tsx  # Источники и ссылки
-│   │   │   ├── Footer.tsx          # Подвал сайта
-│   │   │   ├── ScrollToTop.tsx     # Кнопка «наверх»
-│   │   │   ├── ReadingProgress.tsx # Прогресс чтения
-│   │   │   ├── SearchDialog.tsx    # Глобальный поиск (Ctrl+K)
-│   │   │   ├── Bookmarks.tsx       # Система закладок
-│   │   │   └── ThemeProvider.tsx   # Провайдер темы
-│   │   └── ui/                     # shadcn/ui компоненты (40+ шт.)
-│   ├── lib/
-│   │   ├── history-data.ts         # Все исторические данные (2600+ строк)
-│   │   ├── utils.ts                # cn() и общие утилиты
-│   │   └── db.ts                   # Prisma-клиент
-│   └── hooks/
-│       ├── use-toast.ts            # Хук для уведомлений
-│       ├── use-mobile.ts           # Хук для определения мобильного устройства
-│       └── use-animated-counter.ts # Хук анимированных счётчиков
-├── prisma/
-│   └── schema.prisma               # Схема базы данных
-├── scripts/                        # Скрипты
-├── package.json                    # Зависимости и скрипты
+│   │   ├── seo/                    # SEO-компоненты
+│   │   │   └── faq-schema.tsx
+│   │   ├── site/                   # Компоненты сайта (25+ элементов)
+│   │   │   ├── analysis-section.tsx
+│   │   │   ├── bookmarks.tsx
+│   │   │   ├── comparison-section.tsx
+│   │   │   ├── content-gate.tsx
+│   │   │   ├── epochs-section.tsx
+│   │   │   ├── footer.tsx
+│   │   │   ├── glossary-section.tsx
+│   │   │   ├── hero.tsx
+│   │   │   ├── map-section.tsx
+│   │   │   ├── navbar.tsx
+│   │   │   ├── orders-section.tsx
+│   │   │   ├── persons-section.tsx
+│   │   │   ├── quiz-section.tsx
+│   │   │   ├── reading-progress.tsx
+│   │   │   ├── reading-time.tsx
+│   │   │   ├── region-section.tsx
+│   │   │   ├── scroll-to-top.tsx
+│   │   │   ├── search-dialog.tsx
+│   │   │   ├── section-divider.tsx
+│   │   │   ├── service-worker-registration.tsx
+│   │   │   ├── share-button.tsx
+│   │   │   ├── sources-section.tsx
+│   │   │   ├── theme-provider.tsx
+│   │   │   ├── timeline-section.tsx
+│   │   │   └── wonders-section.tsx
+│   │   └── ui/                     # shadcn/ui примитивы
+│   │       ├── badge.tsx
+│   │       ├── button.tsx
+│   │       ├── dialog.tsx
+│   │       ├── error-boundary.tsx
+│   │       ├── input.tsx
+│   │       ├── popover.tsx
+│   │       ├── progress.tsx
+│   │       ├── scroll-area.tsx
+│   │       ├── skeleton.tsx
+│   │       └── toast.tsx
+│   ├── contexts/
+│   │   └── AuthContext.tsx          # Управление состоянием аутентификации
+│   ├── hooks/
+│   │   ├── use-animated-counter.ts
+│   │   └── use-section-progress.ts
+│   └── lib/
+│       ├── __tests__/
+│       │   └── utils.test.ts       # Модульные тесты
+│       ├── auth/                   # Бэкенд аутентификации
+│       │   ├── db.ts
+│       │   ├── email.ts
+│       │   ├── rate-limit.ts
+│       │   ├── subscription-middleware.ts
+│       │   ├── totp.ts
+│       │   ├── types.ts
+│       │   └── utils.ts
+│       ├── history-data/           # Исторические данные (18 файлов)
+│       └── utils.ts                # cn() и общие утилиты
+├── scripts/
+│   ├── copy-assets.sh
+│   └── make-archive.sh
+├── .dockerignore
+├── .env.example
+├── amvera.yaml                     # Деплой на Amvera
+├── Caddyfile                       # Конфигурация обратного прокси
+├── components.json                 # Конфигурация shadcn/ui
+├── Dockerfile                      # Docker-сборка для продакшена
+├── eslint.config.mjs               # ESLint flat config
 ├── next.config.ts                  # Конфигурация Next.js
 ├── tsconfig.json                   # Конфигурация TypeScript
-├── tailwind.config.ts              # Конфигурация Tailwind CSS
-├── Caddyfile                       # Конфигурация сервера Caddy
+├── vitest.config.ts                # Конфигурация Vitest
+├── package.json                    # Зависимости и скрипты
 ├── README.md                       # Краткая документация (RU)
 ├── README_RU.md                    # Полная документация на русском
-├── README_EN.md                    # Full documentation in English
+├── README_EN.md                    # Полная документация на английском
 ├── LICENSE                         # Лицензия
 └── .gitignore                      # Исключения Git
 ```
