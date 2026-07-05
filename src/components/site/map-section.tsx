@@ -7,6 +7,8 @@ import { mapRegions } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 import { useTheme } from 'next-themes'
+import { SectionHeader } from '@/components/site/section-header'
+import { FilterBar } from '@/components/site/filter-bar'
 
 type FilterKey = 'all' | 'greece' | 'rome' | 'mesopotamia' | 'kuban'
 
@@ -39,70 +41,27 @@ export function MapSection() {
       }}
     >
       <div className="container mx-auto max-w-7xl px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 sm:mb-8 md:mb-14 text-center"
-        >
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
-            <MapPin className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-medium">
-              География античного мира
-            </span>
-          </div>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 sm:mb-4">
-            Интерактивная карта
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Нажмите на город, чтобы узнать о нём больше. Используйте фильтры
-            ниже, чтобы подсветить отдельные регионы.
-          </p>
-        </motion.div>
+        <SectionHeader
+          icon={<MapPin className="h-3.5 w-3.5 text-primary" />}
+          label="География античного мира"
+          title="Интерактивная карта"
+          description="Нажмите на город, чтобы узнать о нём больше. Используйте фильтры ниже, чтобы подсветить отдельные регионы."
+          className="mb-14"
+        />
 
         {/* Фильтры */}
-        <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center mb-4 sm:mb-6">
-          <button
-            type="button"
-            onClick={() => setFilter('all')}
-            className={cn(
-              'px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
-              filter === 'all'
-                ? 'bg-primary text-primary-foreground border-primary'
-                : 'bg-card border-border hover:border-primary/40'
-            )}
-          >
-            Все
-          </button>
-          {(['greece', 'rome', 'mesopotamia', 'kuban'] as const).map((key) => (
-            <button
-              type="button"
-              key={key}
-              onClick={() => setFilter(key)}
-              className={cn(
-                'px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border transition-all flex items-center gap-1.5 sm:gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
-                filter === key
-                  ? 'text-white border-transparent'
-                  : 'bg-card border-border hover:border-primary/40'
-              )}
-              style={
-                filter === key
-                  ? { backgroundColor: REGION_COLORS[key] }
-                  : { color: REGION_COLORS[key] }
-              }
-            >
-              <span
-                className="inline-block h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full"
-                style={{
-                  backgroundColor:
-                    filter === key ? 'white' : REGION_COLORS[key],
-                }}
-              />
-              {REGION_LABELS[key]}
-            </button>
-          ))}
-        </div>
+        <FilterBar
+          options={[
+            { key: 'all', label: 'Все' },
+            { key: 'greece', label: REGION_LABELS.greece, color: REGION_COLORS.greece },
+            { key: 'rome', label: REGION_LABELS.rome, color: REGION_COLORS.rome },
+            { key: 'mesopotamia', label: REGION_LABELS.mesopotamia, color: REGION_COLORS.mesopotamia },
+            { key: 'kuban', label: REGION_LABELS.kuban, color: REGION_COLORS.kuban },
+          ]}
+          active={filter}
+          onChange={(key) => setFilter(key as FilterKey)}
+          className="justify-center mb-6"
+        />
 
         <div className="grid lg:grid-cols-12 gap-4 sm:gap-6">
           {/* Карта */}

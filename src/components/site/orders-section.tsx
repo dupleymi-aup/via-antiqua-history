@@ -14,6 +14,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { BookmarkButton } from '@/components/site/bookmarks'
 import { ReadingTime } from '@/components/site/reading-time'
+import { SectionHeader } from '@/components/site/section-header'
 
 // SVG-схемы капителей для каждого ордера
 function DoricCapital() {
@@ -119,29 +120,13 @@ export function OrdersSection() {
       className="py-20 md:py-28 scroll-mt-20"
     >
       <div className="container mx-auto max-w-7xl px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 sm:mb-8 md:mb-10 text-center"
-        >
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
-            <Columns3 className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-medium">
-              Архитектура
-            </span>
-          </div>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 sm:mb-4">
-            Три архитектурных ордера
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Дорийский, ионический и коринфский — система пропорций и деталей,
-            определившая облик античной архитектуры и всю европейскую традицию
-            после.
-          </p>
-          <ReadingTime text={architecturalOrders.map((o) => o.visualDescription)} className="justify-center mt-2" />
-        </motion.div>
+        <SectionHeader
+          icon={<Columns3 className="h-3.5 w-3.5 text-primary" />}
+          label="Архитектура"
+          title="Три архитектурных ордера"
+          description="Дорийский, ионический и коринфский — система пропорций и деталей, определившая облик античной архитектуры и всю европейскую традицию после."
+          readingTime={<ReadingTime text={architecturalOrders.map((o) => o.visualDescription)} className="justify-center mt-2" />}
+        />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {architecturalOrders.map((order, idx) => {

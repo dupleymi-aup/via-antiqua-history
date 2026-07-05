@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { BookmarkButton } from '@/components/site/bookmarks'
 import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS, FILTER_LABELS } from '@/lib/constants'
+import { SectionHeader } from '@/components/site/section-header'
 
 const filterOptions = Object.entries(FILTER_LABELS).map(([key, label]) => ({
   key,
@@ -45,29 +46,13 @@ export function GlossarySection() {
       }}
     >
       <div className="container mx-auto max-w-7xl px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 sm:mb-8 md:mb-10 text-center"
-        >
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
-            <BookMarked className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-medium">
-              Справочный раздел
-            </span>
-          </div>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 sm:mb-4">
-            Глоссарий ключевых терминов
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            {glossary.length} ключевых понятий античного мира — от архитектурных ордеров до
-            политических институтов. Используйте фильтр и поиск для быстрого
-            доступа.
-          </p>
-          <ReadingTime text={glossary.map((t) => t.definition)} className="justify-center mt-2" />
-        </motion.div>
+        <SectionHeader
+          icon={<BookMarked className="h-3.5 w-3.5 text-primary" />}
+          label="Справочный раздел"
+          title="Глоссарий ключевых терминов"
+          description={`${glossary.length} ключевых понятий античного мира — от архитектурных ордеров до политических институтов. Используйте фильтр и поиск для быстрого доступа.`}
+          readingTime={<ReadingTime text={glossary.map((t) => t.definition)} className="justify-center mt-2" />}
+        />
 
         {/* Search + filter */}
         <div className="mb-5 sm:mb-6 flex flex-col gap-2.5 sm:gap-3">

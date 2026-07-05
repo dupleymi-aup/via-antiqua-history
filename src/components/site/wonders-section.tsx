@@ -17,6 +17,7 @@ import { BookmarkButton } from '@/components/site/bookmarks'
 import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
 import { withAlpha } from '@/lib/utils'
+import { SectionHeader } from '@/components/site/section-header'
 
 export function WondersSection() {
   const [active, setActive] = React.useState<Wonder | null>(null)
@@ -31,28 +32,13 @@ export function WondersSection() {
       }}
     >
       <div className="container mx-auto max-w-7xl px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 sm:mb-8 md:mb-10 text-center"
-        >
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
-            <Sparkles className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-medium">
-              Семь чудес света
-            </span>
-          </div>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 sm:mb-4">
-            Семь чудес древнего мира
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Знаменитый список, составленный эллинистическими греками. Из семи
-            чудес до наших дней сохранилась только Пирамида Хеопса.
-          </p>
-          <ReadingTime text={wonders.map((w) => w.fullDesc)} className="justify-center mt-2" />
-        </motion.div>
+        <SectionHeader
+          icon={<Sparkles className="h-3.5 w-3.5 text-primary" />}
+          label="Семь чудес света"
+          title="Семь чудес древнего мира"
+          description="Знаменитый список, составленный эллинистическими греками. Из семи чудес до наших дней сохранилась только Пирамида Хеопса."
+          readingTime={<ReadingTime text={wonders.map((w) => w.fullDesc)} className="justify-center mt-2" />}
+        />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {wonders.map((w, idx) => {

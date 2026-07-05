@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Users } from 'lucide-react'
 import { persons, type Person } from '@/lib/history-data'
-import { cn, withAlpha } from '@/lib/utils'
+import { withAlpha } from '@/lib/utils'
 import {
   Dialog,
   DialogContent,
@@ -17,13 +17,15 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { BookmarkButton } from '@/components/site/bookmarks'
 import { ShareButton } from '@/components/site/share-button'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
+import { SectionHeader } from '@/components/site/section-header'
+import { FilterBar } from '@/components/site/filter-bar'
 
-const filters: { key: string; label: string }[] = [
+const personFilters = [
   { key: 'all', label: 'Все' },
-  { key: 'greece', label: 'Греция' },
-  { key: 'rome', label: 'Рим' },
-  { key: 'mesopotamia', label: 'Месопотамия' },
-  { key: 'kuban', label: 'Кубань' },
+  { key: 'greece', label: 'Греция', color: REGION_COLORS.greece },
+  { key: 'rome', label: 'Рим', color: REGION_COLORS.rome },
+  { key: 'mesopotamia', label: 'Месопотамия', color: REGION_COLORS.mesopotamia },
+  { key: 'kuban', label: 'Кубань', color: REGION_COLORS.kuban },
 ]
 
 export function PersonsSection() {
@@ -42,47 +44,19 @@ export function PersonsSection() {
       }}
     >
       <div className="container mx-auto max-w-7xl px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 sm:mb-8 md:mb-10 text-center"
-        >
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
-            <Users className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-medium">
-              Исторические деятели
-            </span>
-          </div>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 sm:mb-4">
-            Ключевые персоналии
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            {persons.length} исторических деятелей, определивших судьбы Греции,
-            Рима, Месопотамии и Кубани — от Саргона Древнего до князя Владимира.
-            Нажмите на карточку, чтобы прочитать подробную биографию.
-          </p>
-        </motion.div>
+        <SectionHeader
+          icon={<Users className="h-3.5 w-3.5 text-primary" />}
+          label="Исторические деятели"
+          title="Ключевые персоналии"
+          description={`${persons.length} исторических деятелей, определивших судьбы Греции, Рима, Месопотамии и Кубани — от Саргона Древнего до князя Владимира. Нажмите на карточку, чтобы прочитать подробную биографию.`}
+        />
 
-        {/* Фильтры */}
-        <div className="mb-5 sm:mb-6 flex flex-wrap gap-1.5 sm:gap-2 justify-center">
-          {filters.map((f) => (
-            <button
-              type="button"
-              key={f.key}
-              onClick={() => setFilter(f.key)}
-              className={cn(
-                'px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border transition-all',
-                filter === f.key
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'bg-card border-border hover:border-primary/40'
-              )}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
+        <FilterBar
+          options={personFilters}
+          active={filter}
+          onChange={setFilter}
+          className="justify-center mb-6"
+        />
 
         {/* Сетка персоналий */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

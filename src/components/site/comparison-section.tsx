@@ -7,6 +7,7 @@ import { comparisonRows } from '@/lib/history-data'
 import { cn } from '@/lib/utils'
 import { ReadingTime } from '@/components/site/reading-time'
 import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
+import { SectionHeader } from '@/components/site/section-header'
 
 const columns = [
   { key: 'greece', label: REGION_LABELS.greece, color: REGION_COLORS.greece },
@@ -24,28 +25,13 @@ export function ComparisonSection() {
       className="py-20 md:py-28 scroll-mt-20"
     >
       <div className="container mx-auto max-w-7xl px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 sm:mb-8 md:mb-10 text-center"
-        >
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-3 sm:mb-4">
-            <GitCompareArrows className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-medium">
-              Сравнительный анализ
-            </span>
-          </div>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 sm:mb-4">
-            Четыре цивилизации бок о бок
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Сопоставление Древней Греции, Рима, Месопотамии и Кубани по восьми
-            ключевым параметрам. Наведите на колонку, чтобы её подсветить.
-          </p>
-          <ReadingTime text={comparisonRows.map((r) => `${r.criterion} ${r.greece} ${r.rome} ${r.mesopotamia} ${r.kuban}`)} className="justify-center mt-2" />
-        </motion.div>
+        <SectionHeader
+          icon={<GitCompareArrows className="h-3.5 w-3.5 text-primary" />}
+          label="Сравнительный анализ"
+          title="Четыре цивилизации бок о бок"
+          description="Сопоставление Древней Греции, Рима, Месопотамии и Кубани по восьми ключевым параметрам. Наведите на колонку, чтобы её подсветить."
+          readingTime={<ReadingTime text={comparisonRows.map((r) => `${r.criterion} ${r.greece} ${r.rome} ${r.mesopotamia} ${r.kuban}`)} className="justify-center mt-2" />}
+        />
 
         <motion.div
           initial={{ opacity: 0 }}
