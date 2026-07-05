@@ -1,3 +1,4 @@
+# Reverse proxy (port 81 is non-standard; adjust if fronted by another proxy)
 :81 {
 	handle {
 		reverse_proxy localhost:3000 {

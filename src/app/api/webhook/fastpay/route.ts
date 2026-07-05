@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createHmac, timingSafeEqual } from 'crypto'
 import { getDb } from '@/lib/auth/db'
 
 /**
@@ -51,22 +52,30 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * Проверка подписи webhook
+ * Проверка подписи webhook (HMAC-SHA256)
  */
-function verifyWebhookSignature(_payload: unknown, _signature: string): boolean {
-  if (process.env.NODE_ENV === 'production') {
-    console.error('CRITICAL: Webhook signature verification is DISABLED. Configure proper HMAC verification before production use.')
+function verifyWebhookSignature(payload: unknown, signature: string): boolean {
+  const webhookSecret = process.env.FASTPAY_WEBHOOK_SECRET
+  if (!webhookSecret) {
+    console.error('FASTPAY_WEBHOOK_SECRET not configured — webhook verification disabled')
+    return process.env.NODE_ENV !== 'production'
   }
 
-  // TODO: Implement HMAC verification for production
-  // const webhookSecret = process.env.FASTPAY_WEBHOOK_SECRET || ''
-  // const expectedSignature = crypto
-  //   .createHmac('sha256', webhookSecret)
-  //   .update(JSON.stringify(payload))
-  //   .digest('hex')
-  // return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
+  try {
+    const expectedSignature = createHmac('sha256', webhookSecret)
+      .update(JSON.stringify(payload))
+      .digest('hex')
 
-  return true // DEMO ONLY
+    const received = Buffer.from(signature)
+    const expected = Buffer.from(expectedSignature)
+
+    if (received.length !== expected.length) return false
+
+    return timingSafeEqual(received, expected)
+  } catch (err) {
+    console.error('Webhook signature verification error:', err)
+    return false
+  }
 }
 
 /**

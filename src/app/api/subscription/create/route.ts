@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { getSession } from '@/lib/auth/utils'
+import { SUBSCRIPTION_PRICE } from '@/lib/constants'
 import { randomUUID } from 'crypto'
 
 export async function POST(_request: NextRequest) {
@@ -48,7 +49,7 @@ export async function POST(_request: NextRequest) {
 
     // Create payment record
     const paymentId = randomUUID()
-    const amount = Number(process.env.SUBSCRIPTION_PRICE) || 999.00
+    const amount = Number(process.env.SUBSCRIPTION_PRICE) || SUBSCRIPTION_PRICE
     const phone = process.env.FASTPAY_SBP_PHONE || ''
 
     // Generate SBP QR data (STUB format for SBP)

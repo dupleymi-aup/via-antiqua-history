@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getSession } from './utils'
 import { getDb } from './db'
+import { SUBSCRIPTION_PRICE } from '@/lib/constants'
 
 /**
  * Middleware для проверки активной подписки пользователя
@@ -45,7 +46,7 @@ export async function checkSubscription(): Promise<NextResponse | null> {
           ok: false, 
           error: 'Требуется активная подписка',
           upgradeUrl: '/profile',
-          price: 999
+          price: SUBSCRIPTION_PRICE
         },
         { status: 402 } // Payment Required
       )

@@ -4,6 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { Lock, BookOpen, CreditCard, Crown } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { SUBSCRIPTION_PRICE } from '@/lib/constants'
 
 interface ContentGateProps {
   title: string
@@ -110,7 +111,7 @@ export function ContentGate({
                     Оформить подписку
                   </Link>
                   <p className="text-xs text-center text-muted-foreground mt-2">
-                    Всего 999 ₽/мес • Полный доступ ко всем разделам
+                    Всего {SUBSCRIPTION_PRICE} ₽/мес • Полный доступ ко всем разделам
                   </p>
                 </>
               ) : (

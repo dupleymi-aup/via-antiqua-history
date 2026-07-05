@@ -5,7 +5,7 @@ const DATA_CACHE_NAME = 'via-antiqua-data-v1'
 const ASSETS_TO_CACHE = [
   '/',
   '/manifest.json',
-  '/logo.svg',
+  '/logo.svg'
 
 ]
 

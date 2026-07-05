@@ -101,6 +101,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  applicationName: "История Древнего Пути",
   openGraph: {
     title: "История Древнего Пути — Интерактивный исторический лабиринт",
     description:
@@ -110,9 +111,9 @@ export const metadata: Metadata = {
     siteName: "История Древнего Пути",
     images: [
       {
-        url: "/logo.svg",
-        width: 512,
-        height: 512,
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
         alt: "История Древнего Пути",
       },
     ],
@@ -122,7 +123,7 @@ export const metadata: Metadata = {
     title: "История Древнего Пути — Интерактивный исторический лабиринт",
     description:
       "Интерактивная энциклопедия античного мира — 18 городов, 32+ памятников, 12 персоналий, 7 чудес света.",
-    images: ["/logo.svg"],
+    images: ["/og-image.png"],
     creator: "@QuadDarv1ne",
     site: "@QuadDarv1ne",
   },

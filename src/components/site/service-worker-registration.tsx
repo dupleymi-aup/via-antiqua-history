@@ -8,9 +8,6 @@ export function ServiceWorkerRegistration() {
       window.addEventListener('load', () => {
         navigator.serviceWorker
           .register('/sw.js')
-          .then((registration) => {
-            console.warn('SW registered: ', registration)
-          })
           .catch((registrationError) => {
             console.error('SW registration failed: ', registrationError)
           })
