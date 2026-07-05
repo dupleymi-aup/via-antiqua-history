@@ -14,6 +14,7 @@ interface FilterBarProps {
   active: string
   onChange: (key: string) => void
   className?: string
+  label?: string
 }
 
 export const FilterBar = React.memo(function FilterBar({
@@ -21,13 +22,20 @@ export const FilterBar = React.memo(function FilterBar({
   active,
   onChange,
   className,
+  label,
 }: FilterBarProps) {
   return (
-    <div className={`flex flex-wrap gap-1.5 sm:gap-2 ${className ?? ''}`}>
+    <div
+      className={`flex flex-wrap gap-1.5 sm:gap-2 ${className ?? ''}`}
+      role="radiogroup"
+      aria-label={label || 'Фильтр'}
+    >
       {options.map((opt) => (
         <button
           type="button"
           key={opt.key}
+          role="radio"
+          aria-checked={active === opt.key}
           onClick={() => onChange(opt.key)}
           className={cn(
             'px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',

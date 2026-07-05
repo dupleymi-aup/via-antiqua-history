@@ -1,28 +1,15 @@
 import type { MetadataRoute } from 'next'
 import { DEFAULT_SITE_URL } from '@/lib/constants'
 
-const sections = [
-  'greece', 'rome', 'mesopotamia', 'kuban', 'persons',
-  'wonders', 'orders', 'epochs', 'timeline', 'map',
-  'comparison', 'analysis', 'glossary', 'quiz', 'sources',
-] as const
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL
-  const now = new Date()
 
   return [
     {
       url: baseUrl,
-      lastModified: now,
+      lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1,
     },
-    ...sections.map((id) => ({
-      url: `${baseUrl}/#${id}`,
-      lastModified: now,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    })),
   ]
 }

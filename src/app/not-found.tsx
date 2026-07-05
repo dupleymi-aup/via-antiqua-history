@@ -40,8 +40,6 @@ export default function NotFound() {
           404 — Путь не найден
         </motion.h1>
 
-
-
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}

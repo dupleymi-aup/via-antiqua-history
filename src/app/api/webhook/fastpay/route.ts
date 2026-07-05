@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     const isValidSignature = verifyWebhookSignature(payload, signature)
     
     if (!isValidSignature) {
-      console.error('Invalid webhook signature:', { payload, signature })
+      console.error('Invalid webhook signature') // Never log payload — contains payment data
       return NextResponse.json({ ok: false, error: 'Invalid signature' }, { status: 401 })
     }
 

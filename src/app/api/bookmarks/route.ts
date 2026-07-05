@@ -34,7 +34,7 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Некорректные данные' }, { status: 400 })
     }
 
-    const VALID_TYPES = ['city', 'landmark', 'term', 'person', 'map-city', 'order']
+    const VALID_TYPES = ['city', 'landmark', 'term', 'person', 'map-city', 'order', 'wonder', 'epoch', 'event']
     const sanitized = bookmarks.map((b: Record<string, unknown>) => ({
       id: String(b.id || '').slice(0, 100),
       type: VALID_TYPES.includes(String(b.type)) ? String(b.type) : 'term',

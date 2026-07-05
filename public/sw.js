@@ -40,8 +40,17 @@ self.addEventListener('fetch', (event) => {
   const { request } = event
   const url = new URL(request.url)
 
-  // Для API запросов — Network First
+  // Для API запросов — Network First, но не кэшируем авторизованные данные
   if (url.pathname.startsWith('/api/')) {
+    const isAuthEndpoint = url.pathname.startsWith('/api/auth/') ||
+      url.pathname.startsWith('/api/bookmarks') ||
+      url.pathname.startsWith('/api/subscription/')
+
+    if (isAuthEndpoint) {
+      // Never cache auth/bookmark/subscription endpoints
+      return
+    }
+
     event.respondWith(
       caches.open(DATA_CACHE_NAME).then(async (cache) => {
         try {

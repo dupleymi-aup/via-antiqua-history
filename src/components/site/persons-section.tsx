@@ -56,6 +56,7 @@ export function PersonsSection() {
           active={filter}
           onChange={setFilter}
           className="justify-center mb-6"
+          label="Фильтр по регионам"
         />
 
         {/* Сетка персоналий */}

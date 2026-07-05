@@ -61,6 +61,7 @@ export function MapSection() {
           active={filter}
           onChange={(key) => setFilter(key as FilterKey)}
           className="justify-center mb-6"
+          label="Фильтр по регионам"
         />
 
         <div className="grid lg:grid-cols-12 gap-4 sm:gap-6">
