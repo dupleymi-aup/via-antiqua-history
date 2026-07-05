@@ -249,6 +249,7 @@ export default function RegisterPage() {
                   placeholder="Повторите пароль"
                   required
                   autoComplete="new-password"
+                  aria-describedby={passwordsMismatch ? 'confirm-password-error' : undefined}
                   className={cn(
                     'w-full h-11 pl-10 pr-11 rounded-xl border bg-background/60 text-sm focus:outline-none focus:ring-2 transition-all placeholder:text-muted-foreground/40',
                     passwordsMismatch
@@ -269,7 +270,7 @@ export default function RegisterPage() {
                 )}
               </div>
               {passwordsMismatch && (
-                <p className="text-[11px] text-destructive/70 mt-1.5 flex items-center gap-1">
+                <p id="confirm-password-error" className="text-[11px] text-destructive/70 mt-1.5 flex items-center gap-1">
                   <XCircle className="h-3 w-3" /> Пароли не совпадают
                 </p>
               )}

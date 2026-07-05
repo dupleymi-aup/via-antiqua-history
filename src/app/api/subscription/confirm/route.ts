@@ -37,10 +37,12 @@ export async function POST(_request: NextRequest) {
 
     const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
 
-    db.prepare(`
-      UPDATE subscriptions SET status = 'active', updated_at = ?, expires_at = ?
-      WHERE id = ?
-    `).run(now, expiresAt, paidSub.id)
+    db.transaction(() => {
+      db.prepare(`
+        UPDATE subscriptions SET status = 'active', updated_at = ?, expires_at = ?
+        WHERE id = ?
+      `).run(now, expiresAt, paidSub.id)
+    })()
 
     return NextResponse.json({
       ok: true,

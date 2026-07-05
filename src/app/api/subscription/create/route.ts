@@ -2,13 +2,22 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { getSession } from '@/lib/auth/utils'
 import { SUBSCRIPTION_PRICE } from '@/lib/constants'
+import { checkRateLimit, rateLimitResponse } from '@/lib/auth/rate-limit'
 import { randomUUID } from 'crypto'
+
+const RATE_LIMIT = { windowMs: 15 * 60 * 1000, max: 5 }
 
 export async function POST(_request: NextRequest) {
   try {
     const session = await getSession()
     if (!session) {
       return NextResponse.json({ ok: false, error: 'Не авторизован' }, { status: 401 })
+    }
+
+    const ip = _request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const rl = checkRateLimit(`sub-create:${ip}:${session.userId}`, RATE_LIMIT)
+    if (!rl.allowed) {
+      return rateLimitResponse(rl.resetMs)
     }
 
     const db = getDb()

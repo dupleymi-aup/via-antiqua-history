@@ -108,24 +108,25 @@ async function handlePaymentCompleted(data: unknown) {
     return
   }
 
-  // Обновляем статус платежа
-  db.prepare(`
-    UPDATE payments 
-    SET status = 'paid', 
-        external_payment_id = ?, 
-        updated_at = ? 
-    WHERE id = ?
-  `).run(paymentData.paymentId, now, payment.id)
+  // Обновляем статус платежа и активируем подписку атомарно
+  db.transaction(() => {
+    db.prepare(`
+      UPDATE payments 
+      SET status = 'paid', 
+          external_payment_id = ?, 
+          updated_at = ? 
+      WHERE id = ?
+    `).run(paymentData.paymentId, now, payment.id)
 
-  // Активируем подписку
-  db.prepare(`
-    UPDATE subscriptions
-    SET status = 'active',
-        payment_id = ?,
-        updated_at = ?,
-        expires_at = ?
-    WHERE user_id = ? AND status = 'pending' AND payment_id = ?
-  `).run(payment.id, now, expiresAt, payment.user_id, payment.id)
+    db.prepare(`
+      UPDATE subscriptions
+      SET status = 'active',
+          payment_id = ?,
+          updated_at = ?,
+          expires_at = ?
+      WHERE user_id = ? AND status = 'pending' AND payment_id = ?
+    `).run(payment.id, now, expiresAt, payment.user_id, payment.id)
+  })()
 
   console.warn(`Subscription activated for user ${payment.user_id}`)
   
@@ -169,21 +170,22 @@ async function handlePaymentRefunded(data: unknown) {
     refundAmount?: number
   }
 
-  // Обновляем статус платежа
-  db.prepare(`
-    UPDATE payments 
-    SET status = 'refunded', 
-        updated_at = ? 
-    WHERE id = ? OR external_payment_id = ?
-  `).run(now, paymentData.externalPaymentId, paymentData.paymentId)
+  // Обновляем статус платежа и отменяем подписку атомарно
+  db.transaction(() => {
+    db.prepare(`
+      UPDATE payments 
+      SET status = 'refunded', 
+          updated_at = ? 
+      WHERE id = ? OR external_payment_id = ?
+    `).run(now, paymentData.externalPaymentId, paymentData.paymentId)
 
-  // Отменяем подписку
-  db.prepare(`
-    UPDATE subscriptions
-    SET status = 'cancelled',
-        updated_at = ?
-    WHERE payment_id = ? AND status = 'active'
-  `).run(now, paymentData.externalPaymentId)
+    db.prepare(`
+      UPDATE subscriptions
+      SET status = 'cancelled',
+          updated_at = ?
+      WHERE payment_id = ? AND status = 'active'
+    `).run(now, paymentData.externalPaymentId)
+  })()
 
   console.warn(`Payment refunded: ${paymentData.externalPaymentId} / ${paymentData.paymentId}`, { refundAmount: paymentData.refundAmount })
 }

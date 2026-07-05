@@ -180,6 +180,9 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
             exit={{ opacity: 0, y: 50, x: '-50%' }}
             transition={{ duration: 0.25 }}
             className="fixed bottom-6 left-1/2 z-[70] flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-3 shadow-lg"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
           >
             {toast.added ? (
               <Check className="h-4 w-4 text-primary shrink-0" />

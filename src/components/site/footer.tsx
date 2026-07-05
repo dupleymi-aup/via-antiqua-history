@@ -1,10 +1,10 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { Landmark, BookOpen, ExternalLink, Heart } from 'lucide-react'
 import Link from 'next/link'
 import { FOOTER_NAV, SOCIAL_LINKS } from '@/lib/constants'
 import { GitHubIcon, RutubeIcon, VKIcon, ORCIDIcon, SchoolIcon, StepikIcon, ChessIcon } from '@/lib/icons'
+import { useInView } from '@/hooks/use-in-view'
 
 const socialIcons: Record<string, React.ReactNode> = {
   'Rutube': <RutubeIcon />,
@@ -17,40 +17,23 @@ const socialIcons: Record<string, React.ReactNode> = {
   'Chess': <ChessIcon />,
 }
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
-}
-
-const colVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-}
-
-const socialVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    transition: { delay: i * 0.05, duration: 0.3 },
-  }),
-  hover: { scale: 1.15, transition: { duration: 0.2 } },
-}
-
 export function Footer() {
+  const { ref: gridRef, inView } = useInView({ threshold: 0.1, rootMargin: '-60px' })
+  const { ref: bottomRef, inView: bottomInView } = useInView({ threshold: 0.1 })
+
   return (
     <footer className="mt-auto border-t border-border bg-gradient-to-b from-card/30 via-card/50 to-card/30">
       <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-14">
         {/* Основная сетка */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
-          variants={containerVariants}
+        <div
+          ref={gridRef}
           className="grid sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10"
         >
           {/* Колонка 1: Лого + описание (lg:col-span-4) */}
-          <motion.div variants={colVariants} className="lg:col-span-4">
+          <div
+            className="lg:col-span-4 transition-all duration-500"
+            style={{ opacity: inView ? 1 : 0, transform: inView ? 'translateY(0)' : 'translateY(20px)', transitionDelay: '100ms' }}
+          >
             <div className="flex items-center gap-3 mb-4">
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
                 <Landmark className="h-6 w-6" />
@@ -89,10 +72,13 @@ export function Footer() {
                 </a>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Колонка 2: Разделы (lg:col-span-4) */}
-          <motion.div variants={colVariants} className="lg:col-span-4">
+          <div
+            className="lg:col-span-4 transition-all duration-500"
+            style={{ opacity: inView ? 1 : 0, transform: inView ? 'translateY(0)' : 'translateY(20px)', transitionDelay: '220ms' }}
+          >
             <h4 className="font-display text-sm font-semibold mb-4 flex items-center gap-2 text-foreground/90">
               <BookOpen className="h-4 w-4 text-primary" /> Разделы
             </h4>
@@ -110,10 +96,13 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
           {/* Колонка 3: Соцсети (lg:col-span-4) */}
-          <motion.div variants={colVariants} className="lg:col-span-4">
+          <div
+            className="lg:col-span-4 transition-all duration-500"
+            style={{ opacity: inView ? 1 : 0, transform: inView ? 'translateY(0)' : 'translateY(20px)', transitionDelay: '340ms' }}
+          >
             <h4 className="font-display text-sm font-semibold mb-4 flex items-center gap-2 text-foreground/90">
               <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
@@ -123,35 +112,31 @@ export function Footer() {
             </h4>
             <div className="grid grid-cols-2 gap-2">
               {SOCIAL_LINKS.map((link, i) => (
-                <motion.a
+                <a
                   key={link.href}
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  custom={i}
-                  variants={socialVariants}
-                  whileHover="hover"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-card/40 border border-border/40 hover:border-primary/30 hover:bg-card/70 transition-all duration-200 text-muted-foreground/70 hover:text-foreground group"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-card/40 border border-border/40 hover:border-primary/30 hover:bg-card/70 hover:scale-110 transition-all duration-200 text-muted-foreground/70 hover:text-foreground group"
                   title={link.title}
+                  style={{ transitionDelay: `${i * 50}ms` }}
                 >
                   <span className="transition-colors duration-200 group-hover:text-primary">
                     {socialIcons[link.label] || <ExternalLink className="h-4 w-4" />}
                   </span>
                   <span className="text-xs font-medium truncate">{link.label}</span>
                   <ExternalLink className="h-3 w-3 ml-auto opacity-0 group-hover:opacity-60 transition-opacity shrink-0" />
-                </motion.a>
+                </a>
               ))}
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Нижняя полоса */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-10 pt-6 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4"
+        <div
+          ref={bottomRef}
+          className="mt-10 pt-6 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-500"
+          style={{ opacity: bottomInView ? 1 : 0, transform: bottomInView ? 'translateY(0)' : 'translateY(12px)', transitionDelay: '500ms' }}
         >
           <p className="text-xs text-muted-foreground/60 text-center md:text-left">
             © {new Date().getFullYear()} «Исторический Лабиринт». Все права защищены.
@@ -159,7 +144,7 @@ export function Footer() {
           <p className="text-xs text-muted-foreground/50 flex items-center gap-1.5">
             Сделано с <Heart className="h-3 w-3 text-red-400 fill-red-400" /> для образования
           </p>
-        </motion.div>
+        </div>
       </div>
     </footer>
   )

@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { getSession } from '@/lib/auth/utils'
+import { checkRateLimit, rateLimitResponse } from '@/lib/auth/rate-limit'
 import type { ApiResponse, BookmarkRow } from '@/lib/auth/types'
+
+const RATE_LIMIT = { windowMs: 60 * 1000, max: 10 }
 
 export async function GET() {
   try {
@@ -27,6 +30,12 @@ export async function PUT(req: NextRequest) {
     const session = await getSession()
     if (!session) {
       return NextResponse.json<ApiResponse>({ ok: false, error: 'Не авторизован' }, { status: 401 })
+    }
+
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const rl = checkRateLimit(`bookmarks:${ip}:${session.userId}`, RATE_LIMIT)
+    if (!rl.allowed) {
+      return rateLimitResponse(rl.resetMs)
     }
 
     const { bookmarks } = await req.json()

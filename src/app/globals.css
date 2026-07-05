@@ -192,6 +192,19 @@ html {
 }
 
 /* ============================================
+   Reusable keyframe animations
+   ============================================ */
+@keyframes scale-in {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
    Print Styles
    ============================================ */
 @media print {
@@ -202,8 +215,6 @@ html {
   .bookmarks-floating-button,
   .reading-progress,
   [role="dialog"],
-  [role="button"],
-  button,
   nav,
   .no-print {
     display: none !important;

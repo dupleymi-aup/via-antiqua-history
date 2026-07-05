@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     const db = getDb()
     const user = db.prepare(
-      'SELECT id, email, password_hash, name, email_verified, totp_secret, totp_enabled, password_changed_at FROM users WHERE email = ?'
+      'SELECT id, email, password_hash, name, email_verified, totp_secret, totp_enabled, password_changed_at, created_at FROM users WHERE email = ?'
     ).get(email.toLowerCase()) as Record<string, unknown> | undefined
 
     if (!user) {
