@@ -21,7 +21,7 @@ export function ContentGate({
   restricted = false,
 }: ContentGateProps) {
   const { user, loading } = useAuth()
-  const { hasSubscription, subscriptionLoading } = useSubscription()
+  const { hasSubscription, subscriptionLoading } = useSubscription(restricted)
 
   const isLoading = loading || (user && restricted && subscriptionLoading)
 

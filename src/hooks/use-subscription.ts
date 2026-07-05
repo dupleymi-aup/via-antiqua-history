@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 
-export function useSubscription() {
+export function useSubscription(enabled = true) {
   const { user, loading } = useAuth()
   const [hasSubscription, setHasSubscription] = useState(false)
   const [subscriptionLoading, setSubscriptionLoading] = useState(true)
 
   useEffect(() => {
-    if (!user || loading) {
+    if (!enabled || !user || loading) {
       if (!loading) setSubscriptionLoading(false)
       return
     }
@@ -32,7 +32,7 @@ export function useSubscription() {
       })
 
     return () => { cancelled = true }
-  }, [user, loading])
+  }, [user, loading, enabled])
 
   return { hasSubscription, subscriptionLoading }
 }

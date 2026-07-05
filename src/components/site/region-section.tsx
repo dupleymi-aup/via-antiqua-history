@@ -34,7 +34,7 @@ export function RegionSection({ region, restricted }: { region: Region; restrict
   )
   const activeCity = region.cities.find((c) => c.id === activeCityId) ?? region.cities[0]
   const { user } = useAuth()
-  const { hasSubscription } = useSubscription()
+  const { hasSubscription } = useSubscription(!!restricted)
 
   if (!region.cities.length) {
     return null
