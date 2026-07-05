@@ -1,139 +1,146 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Brain, CheckCircle2, XCircle, RotateCcw, Trophy } from 'lucide-react'
-import { quizQuestions } from '@/lib/history-data'
-import { cn, withAlpha } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
-import { ReadingTime } from '@/components/site/reading-time'
-import { REGION_COLORS, REGION_LABELS } from '@/lib/constants'
-import { SectionHeader } from '@/components/site/section-header'
+import * as React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Brain, CheckCircle2, XCircle, RotateCcw, Trophy } from "lucide-react";
+import { quizQuestions } from "@/lib/history-data";
+import { cn, withAlpha } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { ReadingTime } from "@/components/site/reading-time";
+import { REGION_COLORS, REGION_LABELS } from "@/lib/constants";
+import { SectionHeader } from "@/components/site/section-header";
 
 export function QuizSection() {
-  const [current, setCurrent] = React.useState(0)
-  const [selected, setSelected] = React.useState<number | null>(null)
+  const [current, setCurrent] = React.useState(0);
+  const [selected, setSelected] = React.useState<number | null>(null);
   const [answers, setAnswers] = React.useState<(number | null)[]>(
-    Array(quizQuestions.length).fill(null)
-  )
-  const [finished, setFinished] = React.useState(false)
+    Array(quizQuestions.length).fill(null),
+  );
+  const [finished, setFinished] = React.useState(false);
 
   // Calculate correct answers count
   const correctCount = React.useMemo(() => {
     return answers.reduce<number>(
-      (acc, answer, index) => acc + (answer !== null && answer === quizQuestions[index].correct ? 1 : 0),
-      0
-    )
-  }, [answers])
+      (acc, answer, index) =>
+        acc +
+        (answer !== null && answer === quizQuestions[index].correct ? 1 : 0),
+      0,
+    );
+  }, [answers]);
 
   // Calculate total answered count (for progress bar)
   const answeredCount = React.useMemo(() => {
-    return answers.filter((a) => a !== null).length
-  }, [answers])
+    return answers.filter((a) => a !== null).length;
+  }, [answers]);
 
-  const q = quizQuestions[current]
-  const isAnswered = selected !== null
-  const isCorrect = selected === q.correct
+  const q = quizQuestions[current];
+  const isAnswered = selected !== null;
+  const isCorrect = selected === q.correct;
 
-  const select = React.useCallback((i: number) => {
-    if (selected !== null) return
-    setSelected(i)
-    setAnswers((prev) => {
-      const updated = [...prev]
-      updated[current] = i
-      return updated
-    })
-  }, [selected, current])
+  const select = React.useCallback(
+    (i: number) => {
+      if (selected !== null) return;
+      setSelected(i);
+      setAnswers((prev) => {
+        const updated = [...prev];
+        updated[current] = i;
+        return updated;
+      });
+    },
+    [selected, current],
+  );
 
   const goNext = React.useCallback(() => {
     if (current + 1 >= quizQuestions.length) {
-      setFinished(true)
+      setFinished(true);
     } else {
       setCurrent((c) => {
-        const next = c + 1
-        setAnswers((prev) => {
-          setSelected(prev[next] ?? null)
-          return prev
-        })
-        return next
-      })
+        const next = c + 1;
+        setSelected(answers[next] ?? null);
+        return next;
+      });
     }
-  }, [current])
+  }, [current, answers]);
 
   const goPrev = React.useCallback(() => {
     if (current > 0) {
       setCurrent((c) => {
-        const prev = c - 1
-        setAnswers((answers) => {
-          setSelected(answers[prev] ?? null)
-          return answers
-        })
-        return prev
-      })
+        const prev = c - 1;
+        setSelected(answers[prev] ?? null);
+        return prev;
+      });
     }
-  }, [current])
+  }, [current, answers]);
 
   // Keyboard navigation: 1-4 to answer, Enter/ArrowRight for next, ArrowLeft for prev
   React.useEffect(() => {
-    if (finished) return
+    if (finished) return;
     const onKey = (e: KeyboardEvent) => {
-      const active = document.activeElement
-      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return
-      if (e.key >= '1' && e.key <= '4') {
-        const idx = parseInt(e.key, 10) - 1
+      const active = document.activeElement;
+      if (
+        active &&
+        (active.tagName === "INPUT" || active.tagName === "TEXTAREA")
+      )
+        return;
+      if (e.key >= "1" && e.key <= "4") {
+        const idx = parseInt(e.key, 10) - 1;
         if (idx < q.options.length && !isAnswered) {
-          e.preventDefault()
-          select(idx)
+          e.preventDefault();
+          select(idx);
         }
-      } else if (e.key === 'Enter' || e.key === 'ArrowRight') {
+      } else if (e.key === "Enter" || e.key === "ArrowRight") {
         if (isAnswered) {
-          e.preventDefault()
-          goNext()
+          e.preventDefault();
+          goNext();
         }
-      } else if (e.key === 'ArrowLeft') {
+      } else if (e.key === "ArrowLeft") {
         if (current > 0) {
-          e.preventDefault()
-          goPrev()
+          e.preventDefault();
+          goPrev();
         }
       }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [current, isAnswered, finished, q.options.length, select, goNext, goPrev])
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [current, isAnswered, finished, q.options.length, select, goNext, goPrev]);
 
   const reset = () => {
-    setCurrent(0)
-    setSelected(null)
-    setAnswers(Array(quizQuestions.length).fill(null))
-    setFinished(false)
-  }
+    setCurrent(0);
+    setSelected(null);
+    setAnswers(Array(quizQuestions.length).fill(null));
+    setFinished(false);
+  };
 
-  const progress = (answeredCount / quizQuestions.length) * 100
+  const progress = (answeredCount / quizQuestions.length) * 100;
 
   if (finished) {
-    const percent = Math.round((correctCount / quizQuestions.length) * 100)
+    const percent = Math.round((correctCount / quizQuestions.length) * 100);
 
     const tier =
       percent === 100
-        ? { label: 'Идеально!', emoji: '🏛️', color: 'text-amber-500' }
+        ? { label: "Идеально!", emoji: "🏛️", color: "text-amber-500" }
         : percent >= 80
-          ? { label: 'Отлично!', emoji: '🌟', color: 'text-yellow-500' }
+          ? { label: "Отлично!", emoji: "🌟", color: "text-yellow-500" }
           : percent >= 60
-            ? { label: 'Хорошо!', emoji: '📖', color: 'text-sky-500' }
-            : { label: 'Попробуйте ещё', emoji: '🕯️', color: 'text-muted-foreground' }
+            ? { label: "Хорошо!", emoji: "📖", color: "text-sky-500" }
+            : {
+                label: "Попробуйте ещё",
+                emoji: "🕯️",
+                color: "text-muted-foreground",
+              };
 
     // Precompute region stats in a single pass
-    const regionStats: Record<string, { total: number; correct: number }> = {}
+    const regionStats: Record<string, { total: number; correct: number }> = {};
     quizQuestions.forEach((q, index) => {
       if (!regionStats[q.region]) {
-        regionStats[q.region] = { total: 0, correct: 0 }
+        regionStats[q.region] = { total: 0, correct: 0 };
       }
-      regionStats[q.region].total++
+      regionStats[q.region].total++;
       if (answers[index] !== null && answers[index] === q.correct) {
-        regionStats[q.region].correct++
+        regionStats[q.region].correct++;
       }
-    })
+    });
 
     return (
       <section
@@ -141,20 +148,25 @@ export function QuizSection() {
         className="py-20 md:py-28 scroll-mt-20"
         style={{
           background:
-            'linear-gradient(180deg, oklch(0.55 0.1 60 / 0.04) 0%, transparent 100%)',
+            "linear-gradient(180deg, oklch(0.55 0.1 60 / 0.04) 0%, transparent 100%)",
         }}
       >
         <div className="container mx-auto max-w-2xl px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
             className="rounded-xl border border-border bg-card p-6 sm:p-8 md:p-10 lg:p-12 text-center"
           >
             <motion.div
               initial={{ scale: 0, rotate: -20 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 12, delay: 0.1 }}
+              transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 12,
+                delay: 0.1,
+              }}
             >
               <Trophy className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 mx-auto mb-1 text-primary" />
             </motion.div>
@@ -185,7 +197,12 @@ export function QuizSection() {
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 150, damping: 14, delay: 0.5 }}
+              transition={{
+                type: "spring",
+                stiffness: 150,
+                damping: 14,
+                delay: 0.5,
+              }}
               className="font-display text-4xl sm:text-5xl md:text-6xl font-bold gold-text mb-1 sm:mb-2"
             >
               {correctCount} / {quizQuestions.length}
@@ -194,7 +211,10 @@ export function QuizSection() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className={cn('text-xl sm:text-2xl font-semibold mb-6 sm:mb-8', tier.color)}
+              className={cn(
+                "text-xl sm:text-2xl font-semibold mb-6 sm:mb-8",
+                tier.color,
+              )}
             >
               {percent}% — {tier.label}
             </motion.p>
@@ -204,14 +224,16 @@ export function QuizSection() {
               initial="hidden"
               animate="visible"
               variants={{
-                visible: { transition: { staggerChildren: 0.08, delayChildren: 0.7 } },
+                visible: {
+                  transition: { staggerChildren: 0.08, delayChildren: 0.7 },
+                },
               }}
               className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-6 sm:mb-8"
             >
-              {(['greece', 'rome', 'mesopotamia', 'kuban'] as const).map(
+              {(["greece", "rome", "mesopotamia", "kuban"] as const).map(
                 (key) => {
-                  const total = regionStats[key].total
-                  const correct = regionStats[key].correct
+                  const total = regionStats[key].total;
+                  const correct = regionStats[key].correct;
                   return (
                     <motion.div
                       key={key}
@@ -234,8 +256,8 @@ export function QuizSection() {
                         {correct}/{total}
                       </div>
                     </motion.div>
-                  )
-                }
+                  );
+                },
               )}
             </motion.div>
 
@@ -252,7 +274,7 @@ export function QuizSection() {
           </motion.div>
         </div>
       </section>
-    )
+    );
   }
 
   return (
@@ -261,7 +283,7 @@ export function QuizSection() {
       className="py-20 md:py-28 scroll-mt-20"
       style={{
         background:
-          'linear-gradient(180deg, oklch(0.55 0.1 60 / 0.04) 0%, transparent 100%)',
+          "linear-gradient(180deg, oklch(0.55 0.1 60 / 0.04) 0%, transparent 100%)",
       }}
     >
       <div className="container mx-auto max-w-3xl px-4">
@@ -270,7 +292,12 @@ export function QuizSection() {
           label="Проверка знаний"
           title="Исторический квиз"
           description={`${quizQuestions.length} вопросов о Греции, Риме, Месопотамии и Кубани. Проверьте, насколько хорошо вы усвоили материал.`}
-          readingTime={<ReadingTime text={quizQuestions.map((q) => `${q.question} ${q.explanation}`)} className="justify-center mt-2" />}
+          readingTime={
+            <ReadingTime
+              text={quizQuestions.map((q) => `${q.question} ${q.explanation}`)}
+              className="justify-center mt-2"
+            />
+          }
           className="mb-8"
         />
 
@@ -287,26 +314,30 @@ export function QuizSection() {
           <Progress value={progress} className="h-1.5 sm:h-2" />
           <div className="flex gap-1 mt-1.5 sm:mt-2 justify-center">
             {quizQuestions.map((_, i) => {
-              const a = answers[i]
-              const isCorrect_q = a !== null && a === quizQuestions[i].correct
+              const a = answers[i];
+              const isCorrect_q = a !== null && a === quizQuestions[i].correct;
               return (
                 <button
                   type="button"
                   key={i}
                   onClick={() => {
                     if (answers[i] !== null || i < current) {
-                      setCurrent(i)
-                      setSelected(answers[i] ?? null)
+                      setCurrent(i);
+                      setSelected(answers[i] ?? null);
                     }
                   }}
                   className={cn(
-                    'h-1.5 sm:h-2 rounded-full transition-all cursor-pointer',
-                    i === current ? 'w-5 sm:w-6 bg-primary' : 'w-1.5 sm:w-2',
-                    a === null ? 'bg-border' : isCorrect_q ? 'bg-green-500' : 'bg-red-400'
+                    "h-1.5 sm:h-2 rounded-full transition-all cursor-pointer",
+                    i === current ? "w-5 sm:w-6 bg-primary" : "w-1.5 sm:w-2",
+                    a === null
+                      ? "bg-border"
+                      : isCorrect_q
+                        ? "bg-green-500"
+                        : "bg-red-400",
                   )}
-                  aria-label={`Вопрос ${i + 1}${a !== null ? (isCorrect_q ? ', верно' : ', неверно') : ', не отвечен'}`}
+                  aria-label={`Вопрос ${i + 1}${a !== null ? (isCorrect_q ? ", верно" : ", неверно") : ", не отвечен"}`}
                 />
-              )
+              );
             })}
           </div>
         </div>
@@ -343,8 +374,9 @@ export function QuizSection() {
 
             <div className="space-y-2">
               {q.options.map((opt, i) => {
-                const showAsCorrect = isAnswered && i === q.correct
-                const showAsWrong = isAnswered && i === selected && i !== q.correct
+                const showAsCorrect = isAnswered && i === q.correct;
+                const showAsWrong =
+                  isAnswered && i === selected && i !== q.correct;
                 return (
                   <motion.button
                     key={i}
@@ -352,29 +384,30 @@ export function QuizSection() {
                     onClick={() => select(i)}
                     disabled={isAnswered}
                     className={cn(
-                      'w-full text-left p-3 sm:p-4 rounded-lg border transition-all flex items-center gap-2 sm:gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
+                      "w-full text-left p-3 sm:p-4 rounded-lg border transition-all flex items-center gap-2 sm:gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1",
                       !isAnswered &&
-                        'border-border hover:border-primary hover:bg-accent/5 hover:shadow-sm cursor-pointer',
+                        "border-border hover:border-primary hover:bg-accent/5 hover:shadow-sm cursor-pointer",
                       showAsCorrect &&
-                        'border-green-500 bg-green-50 dark:bg-green-950/30',
+                        "border-green-500 bg-green-50 dark:bg-green-950/30",
                       showAsWrong &&
-                        'border-red-500 bg-red-50 dark:bg-red-950/30',
+                        "border-red-500 bg-red-50 dark:bg-red-950/30",
                       isAnswered &&
                         !showAsCorrect &&
                         !showAsWrong &&
-                        'border-border opacity-50'
+                        "border-border opacity-50",
                     )}
                   >
                     <span
                       className={cn(
-                        'flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full text-[11px] sm:text-xs font-bold border-2',
-                        !isAnswered && 'border-border',
-                        showAsCorrect && 'border-green-500 bg-green-500 text-white',
-                        showAsWrong && 'border-red-500 bg-red-500 text-white',
+                        "flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full text-[11px] sm:text-xs font-bold border-2",
+                        !isAnswered && "border-border",
+                        showAsCorrect &&
+                          "border-green-500 bg-green-500 text-white",
+                        showAsWrong && "border-red-500 bg-red-500 text-white",
                         isAnswered &&
                           !showAsCorrect &&
                           !showAsWrong &&
-                          'border-border'
+                          "border-border",
                       )}
                     >
                       {showAsCorrect ? (
@@ -385,9 +418,11 @@ export function QuizSection() {
                         String.fromCharCode(65 + i)
                       )}
                     </span>
-                    <span className="text-xs sm:text-sm md:text-base flex-1 leading-relaxed">{opt}</span>
+                    <span className="text-xs sm:text-sm md:text-base flex-1 leading-relaxed">
+                      {opt}
+                    </span>
                   </motion.button>
-                )
+                );
               })}
             </div>
 
@@ -395,24 +430,26 @@ export function QuizSection() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-            className={cn(
-              'mt-3 sm:mt-4 p-3 sm:p-4 rounded-lg border',
-              isCorrect
-                ? 'border-green-500/40 bg-green-50 dark:bg-green-950/30'
-                : 'border-amber-500/40 bg-amber-50 dark:bg-amber-950/30'
-            )}
-          >
-            <p
-              className={cn(
-                'text-xs sm:text-sm font-semibold mb-1',
-                isCorrect ? 'text-green-700 dark:text-green-400' : 'text-amber-700 dark:text-amber-400'
-              )}
-            >
-              {isCorrect ? '✓ Верно!' : '✗ Не совсем так'}
-            </p>
-            <p className="text-xs sm:text-sm text-foreground/85 leading-relaxed">
-              {q.explanation}
-            </p>
+                className={cn(
+                  "mt-3 sm:mt-4 p-3 sm:p-4 rounded-lg border",
+                  isCorrect
+                    ? "border-green-500/40 bg-green-50 dark:bg-green-950/30"
+                    : "border-amber-500/40 bg-amber-50 dark:bg-amber-950/30",
+                )}
+              >
+                <p
+                  className={cn(
+                    "text-xs sm:text-sm font-semibold mb-1",
+                    isCorrect
+                      ? "text-green-700 dark:text-green-400"
+                      : "text-amber-700 dark:text-amber-400",
+                  )}
+                >
+                  {isCorrect ? "✓ Верно!" : "✗ Не совсем так"}
+                </p>
+                <p className="text-xs sm:text-sm text-foreground/85 leading-relaxed">
+                  {q.explanation}
+                </p>
               </motion.div>
             )}
 
@@ -426,15 +463,20 @@ export function QuizSection() {
               >
                 Назад
               </Button>
-              <Button onClick={goNext} disabled={!isAnswered} size="sm" className="flex-1 sm:flex-none">
+              <Button
+                onClick={goNext}
+                disabled={!isAnswered}
+                size="sm"
+                className="flex-1 sm:flex-none"
+              >
                 {current + 1 >= quizQuestions.length
-                  ? 'Завершить'
-                  : 'Следующий вопрос'}
+                  ? "Завершить"
+                  : "Следующий вопрос"}
               </Button>
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
     </section>
-  )
+  );
 }
