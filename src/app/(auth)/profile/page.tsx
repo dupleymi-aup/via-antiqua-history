@@ -92,10 +92,20 @@ export default function ProfilePage() {
     return () => { cancelled = true }
   }, [user])
 
-  // Poll for payment confirmation
+  // Poll for payment confirmation (stops after 15 min to match payment expiry)
   React.useEffect(() => {
     if (!paymentData) return
+    const startedAt = Date.now()
+    const POLL_INTERVAL = 5000
+    const MAX_DURATION = 15 * 60 * 1000
+
     const interval: ReturnType<typeof setInterval> = setInterval(async () => {
+      if (Date.now() - startedAt > MAX_DURATION) {
+        clearInterval(interval)
+        setPaymentData(null)
+        setErrorSub('Время оплаты истекло. Создайте новый платёж.')
+        return
+      }
       try {
         const res = await fetch('/api/subscription/status')
         const json = await res.json()
@@ -107,7 +117,7 @@ export default function ProfilePage() {
       } catch {
         // Ignore polling errors
       }
-    }, 5000)
+    }, POLL_INTERVAL)
 
     return () => clearInterval(interval)
   }, [paymentData])

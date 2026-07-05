@@ -136,6 +136,11 @@ export function SearchDialog({
     setActiveIdx(0)
   }, [query])
 
+  // Clear query when dialog closes
+  React.useEffect(() => {
+    if (!open) setQuery('')
+  }, [open])
+
   const handleSelect = (r: SearchResult) => {
     if (r.href) {
       const id = r.href.slice(1)
