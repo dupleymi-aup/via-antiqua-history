@@ -11,22 +11,22 @@ interface ReadingTimeProps {
   className?: string
 }
 
+const MINUTE_LABELS = ['минут', 'минута', 'минуты'] as const
+const WORD_LABELS = ['слов', 'слово', 'слова'] as const
+
+function pluralize(n: number, labels: readonly [string, string, string]): string {
+  return labels[n % 10 === 1 && n % 100 !== 11 ? 1 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 2 : 0]
+}
+
+export function computeReadingTime(raw: string) {
+  const wordCount = raw.trim() === '' ? 0 : raw.trim().split(/\s+/).length
+  const minutes = Math.max(1, Math.ceil(wordCount / (WORDS_PER_SECOND * SECONDS_PER_MINUTE)))
+  return { wordCount, minutes }
+}
+
 export function ReadingTime({ text, className }: ReadingTimeProps) {
   const raw = Array.isArray(text) ? text.join(' ') : text
-  const wordCount = raw === '' ? 0 : raw.split(/\s+/).length
-  const minutes = Math.max(1, Math.ceil(wordCount / (WORDS_PER_SECOND * SECONDS_PER_MINUTE)))
-
-  const minuteLabel = minutes % 10 === 1 && minutes % 100 !== 11
-    ? 'минута'
-    : minutes % 10 >= 2 && minutes % 10 <= 4 && (minutes % 100 < 10 || minutes % 100 >= 20)
-      ? 'минуты'
-      : 'минут'
-
-  const wordLabel = wordCount % 10 === 1 && wordCount % 100 !== 11
-    ? 'слово'
-    : wordCount % 10 >= 2 && wordCount % 10 <= 4 && (wordCount % 100 < 10 || wordCount % 100 >= 20)
-      ? 'слова'
-      : 'слов'
+  const { wordCount, minutes } = computeReadingTime(raw)
 
   return (
     <div
@@ -37,7 +37,7 @@ export function ReadingTime({ text, className }: ReadingTimeProps) {
     >
       <Clock className="h-3.5 w-3.5" />
       <span>
-        ~{minutes} {minuteLabel} · {wordCount} {wordLabel}
+        ~{minutes} {pluralize(minutes, MINUTE_LABELS)} · {wordCount} {pluralize(wordCount, WORD_LABELS)}
       </span>
     </div>
   )

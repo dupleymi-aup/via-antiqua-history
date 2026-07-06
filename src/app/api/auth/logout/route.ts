@@ -1,13 +1,12 @@
-import { NextResponse } from 'next/server'
 import { destroySession } from '@/lib/auth/utils'
-import type { ApiResponse } from '@/lib/auth/types'
+import { apiOk, apiError } from '@/lib/auth/api-response'
 
 export async function POST() {
   try {
     await destroySession()
-    return NextResponse.json<ApiResponse>({ ok: true })
+    return apiOk()
   } catch (err) {
     console.error('Logout error:', err)
-    return NextResponse.json<ApiResponse>({ ok: false, error: 'Внутренняя ошибка сервера' }, { status: 500 })
+    return apiError('Внутренняя ошибка сервера', 500)
   }
 }

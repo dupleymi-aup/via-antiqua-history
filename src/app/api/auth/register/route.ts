@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { hashPassword, generateToken, createSession } from '@/lib/auth/utils'
 import { validateEmail, validatePassword } from '@/lib/utils'
+import { apiOk, apiError } from '@/lib/auth/api-response'
 import { checkRateLimit, rateLimitResponse } from '@/lib/auth/rate-limit'
-import type { ApiResponse } from '@/lib/auth/types'
 
 const RATE_LIMIT = { windowMs: 60 * 60 * 1000, max: 5 }
 
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     const { email, password, name } = await req.json()
 
     if (!email || !password || !name) {
-      return NextResponse.json<ApiResponse>({ ok: false, error: 'Заполните все поля' }, { status: 400 })
+      return apiError('Заполните все поля', 400)
     }
 
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
@@ -23,23 +23,23 @@ export async function POST(req: NextRequest) {
 
     const trimmedName = name.trim()
     if (trimmedName.length < 1 || trimmedName.length > 100) {
-      return NextResponse.json<ApiResponse>({ ok: false, error: 'Имя должно содержать от 1 до 100 символов' }, { status: 400 })
+      return apiError('Имя должно содержать от 1 до 100 символов', 400)
     }
 
     const emailError = validateEmail(email)
     if (emailError) {
-      return NextResponse.json<ApiResponse>({ ok: false, error: emailError }, { status: 400 })
+      return apiError(emailError, 400)
     }
 
     const passwordError = validatePassword(password)
     if (passwordError) {
-      return NextResponse.json<ApiResponse>({ ok: false, error: passwordError }, { status: 400 })
+      return apiError(passwordError, 400)
     }
 
     const db = getDb()
     const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email.toLowerCase())
     if (existing) {
-      return NextResponse.json<ApiResponse>({ ok: false, error: 'Пользователь с таким email уже существует' }, { status: 409 })
+      return apiError('Пользователь с таким email уже существует', 409)
     }
 
     const id = generateToken(16)
@@ -51,19 +51,16 @@ export async function POST(req: NextRequest) {
 
     await createSession(id, email.toLowerCase())
 
-    return NextResponse.json<ApiResponse>({
-      ok: true,
-      data: {
-        id,
-        email: email.toLowerCase(),
-        name: trimmedName,
-        emailVerified: 0,
-        totpEnabled: 0,
-        createdAt: new Date().toISOString(),
-      },
+    return apiOk({
+      id,
+      email: email.toLowerCase(),
+      name: trimmedName,
+      emailVerified: 0,
+      totpEnabled: 0,
+      createdAt: new Date().toISOString(),
     })
   } catch (err) {
     console.error('Register error:', err)
-    return NextResponse.json<ApiResponse>({ ok: false, error: 'Внутренняя ошибка сервера' }, { status: 500 })
+    return apiError('Внутренняя ошибка сервера', 500)
   }
 }
