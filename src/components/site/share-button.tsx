@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 
+const COPIED_DURATION = 2000
+
 interface ShareButtonProps {
   title: string
   href?: string
@@ -37,9 +39,8 @@ export function ShareButton({ title, href, className }: ShareButtonProps) {
     try {
       await navigator.clipboard.writeText(shareUrl)
       setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      setTimeout(() => setCopied(false), COPIED_DURATION)
     } catch {
-      // Fallback
       const textarea = document.createElement('textarea')
       textarea.value = shareUrl
       textarea.style.position = 'fixed'
@@ -49,7 +50,7 @@ export function ShareButton({ title, href, className }: ShareButtonProps) {
       document.execCommand('copy')
       document.body.removeChild(textarea)
       setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      setTimeout(() => setCopied(false), COPIED_DURATION)
     }
   }, [shareUrl])
 

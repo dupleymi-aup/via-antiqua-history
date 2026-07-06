@@ -100,7 +100,7 @@ const accentColorMap: Record<string, string> = {
   corinthian: 'oklch(0.6 0.1 50)',
 }
 
-const capitalMap: Record<string, React.FC> = {
+const capitalMap: Record<string, React.ComponentType> = {
   doric: DoricCapital,
   ionic: IonicCapital,
   corinthian: CorinthianCapital,

@@ -24,6 +24,7 @@ export type BookmarkItem = {
 }
 
 const STORAGE_KEY = 'historical-labyrinth-bookmarks'
+const TOAST_DURATION = 2000
 
 type BookmarksContextType = {
   bookmarks: BookmarkItem[]
@@ -119,17 +120,14 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     if (!hydrated || syncRef.current || !user) return
-    const timer = setTimeout(async () => {
-      try {
-        const res = await fetch('/api/bookmarks', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ bookmarks }),
-        })
-        if (!res.ok) return
-      } catch {
+    const timer = setTimeout(() => {
+      fetch('/api/bookmarks', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookmarks }),
+      }).catch(() => {
         // Network error — silently ignore
-      }
+      })
     }, 1500)
     return () => clearTimeout(timer)
   }, [bookmarks, hydrated, user])
@@ -145,7 +143,7 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
   const showToast = React.useCallback((title: string, added: boolean) => {
     setToast({ show: true, title, added })
     clearTimeout(toastTimer.current)
-    toastTimer.current = setTimeout(() => setToast((prev) => ({ ...prev, show: false })), 2000)
+    toastTimer.current = setTimeout(() => setToast((prev) => ({ ...prev, show: false })), TOAST_DURATION)
   }, [])
 
   const toggle = React.useCallback((item: BookmarkItem) => {
