@@ -21,14 +21,13 @@ export function useSubscription(enabled = true) {
       .then(data => {
         if (!cancelled) {
           setHasSubscription(data.ok && data.data?.status === 'active')
-          setSubscriptionLoading(false)
         }
       })
       .catch(() => {
-        if (!cancelled) {
-          setHasSubscription(false)
-          setSubscriptionLoading(false)
-        }
+        if (!cancelled) setHasSubscription(false)
+      })
+      .finally(() => {
+        if (!cancelled) setSubscriptionLoading(false)
       })
 
     return () => { cancelled = true }

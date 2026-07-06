@@ -1,3 +1,5 @@
+import { apiError } from './api-response'
+
 type RateLimitEntry = {
   count: number
   resetAt: number
@@ -47,17 +49,9 @@ export function checkRateLimit(
 
 export function rateLimitResponse(resetMs: number): Response {
   const retryAfter = Math.ceil(resetMs / 1000)
-  return new Response(
-    JSON.stringify({
-      ok: false,
-      error: `Слишком много попыток. Попробуйте через ${retryAfter} сек.`,
-    }),
-    {
-      status: 429,
-      headers: {
-        'Content-Type': 'application/json',
-        'Retry-After': String(retryAfter),
-      },
-    }
+  return apiError(
+    `Слишком много попыток. Попробуйте через ${retryAfter} сек.`,
+    429,
+    { headers: { 'Retry-After': String(retryAfter) } },
   )
 }

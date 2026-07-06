@@ -11,6 +11,6 @@ export function apiOk<T>(data?: T, init?: ResponseInit) {
   return NextResponse.json<ApiResponse<T>>({ ok: true, data }, { ...init, status })
 }
 
-export function apiError(error: string, status: number) {
-  return NextResponse.json<ApiResponse>({ ok: false, error }, { status })
+export function apiError(error: string, status: number, init?: ResponseInit) {
+  return NextResponse.json<ApiResponse>({ ok: false, error }, { ...init, status })
 }
