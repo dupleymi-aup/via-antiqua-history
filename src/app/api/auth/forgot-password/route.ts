@@ -17,8 +17,9 @@ export async function POST(req: NextRequest) {
       return apiError("Укажите email", 400);
     }
 
-    if (validateEmail(email)) {
-      return apiError("Укажите корректный email", 400);
+    const emailError = validateEmail(email);
+    if (emailError) {
+      return apiError(emailError, 400);
     }
 
     const ip =

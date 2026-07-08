@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import { motion } from 'framer-motion'
 import { Hourglass } from 'lucide-react'
 import { epochs } from '@/lib/history-data'

@@ -2,12 +2,21 @@ import { NextRequest } from 'next/server'
 import { getDb } from '@/lib/auth/db'
 import { getSession } from '@/lib/auth/utils'
 import { apiOk, apiError } from '@/lib/auth/api-response'
+import { checkRateLimit, rateLimitResponse } from '@/lib/auth/rate-limit'
 
-export async function POST(_request: NextRequest) {
+const RATE_LIMIT = { windowMs: 15 * 60 * 1000, max: 5 }
+
+export async function POST(request: NextRequest) {
   try {
     const session = await getSession()
     if (!session) {
       return apiError('Не авторизован', 401)
+    }
+
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const rl = checkRateLimit(`sub-confirm:${ip}:${session.userId}`, RATE_LIMIT)
+    if (!rl.allowed) {
+      return rateLimitResponse(rl.resetMs)
     }
 
     const db = getDb()

@@ -38,11 +38,11 @@ export function checkRateLimit(
     return { allowed: true, remaining: config.max - 1, resetMs: config.windowMs }
   }
 
-  entry.count++
-
-  if (entry.count > config.max) {
+  if (entry.count >= config.max) {
     return { allowed: false, remaining: 0, resetMs: entry.resetAt - now }
   }
+
+  entry.count++
 
   return { allowed: true, remaining: config.max - entry.count, resetMs: entry.resetAt - now }
 }
