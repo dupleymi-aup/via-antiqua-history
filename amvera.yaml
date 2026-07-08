@@ -2,7 +2,6 @@ meta:
   environment: docker
 
 run:
-  command: HOST=0.0.0.0 node .next/standalone/server.js
   containerPort: 3000
   persistenceMount: /data
 
