@@ -8,12 +8,12 @@ build:
   additionalCommands: npm run build
 
 run:
-  command: npm run start
+  command: NODE_ENV=production npm run start
   containerPort: 3000
   persistenceMount: /data
 
 env:
-  NODE_ENV: production
+  HOST: 0.0.0.0
   DB_PATH: /data/app.db
   JWT_SECRET: ${JWT_SECRET}
   NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
