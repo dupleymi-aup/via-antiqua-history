@@ -7,18 +7,31 @@ export function ReadingProgress() {
   const lastPercentRef = React.useRef(0)
 
   React.useEffect(() => {
+    let rafId: number | null = null
+    let ticking = false
+
     const onScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
-      if (scrollHeight <= 0) return
-      const next = Math.round((window.scrollY / scrollHeight) * 100)
-      if (next !== lastPercentRef.current) {
-        lastPercentRef.current = next
-        setPercentage(next)
+      if (!ticking) {
+        rafId = requestAnimationFrame(() => {
+          const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
+          if (scrollHeight > 0) {
+            const next = Math.round((window.scrollY / scrollHeight) * 100)
+            if (next !== lastPercentRef.current) {
+              lastPercentRef.current = next
+              setPercentage(next)
+            }
+          }
+          ticking = false
+        })
+        ticking = true
       }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [])
 
   const isVisible = percentage > 5
