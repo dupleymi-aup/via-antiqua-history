@@ -138,6 +138,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" suppressHydrationWarning>
+      {/* Tu fortis in sternum Domine, Ameno, Ameno, Ameno, Metatron */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: "console.log('Tu fortis in sternum Domine, Ameno, Ameno, Ameno, Metatron')",
+        }}
+      />
       <body className="font-body antialiased bg-background text-foreground">
         <script
           type="application/ld+json"
