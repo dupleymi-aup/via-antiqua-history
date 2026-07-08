@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     try {
       recoveryCodes = JSON.parse((user.recovery_codes as string) || '[]')
     } catch {
-      return apiError('Неверный код', 401)
+      // Corrupted recovery codes — fall through to generic error
     }
     const idx = recoveryCodes.indexOf(code)
     if (idx !== -1) {

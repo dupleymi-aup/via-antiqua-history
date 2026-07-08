@@ -179,7 +179,7 @@ export function Navbar() {
                 size="icon"
                 className="h-8 w-8 lg:hidden shrink-0 hover:bg-accent/60 transition-colors"
                 onClick={() => setOpen((v) => !v)}
-                aria-label="Меню"
+                aria-label={open ? 'Закрыть меню' : 'Меню'}
                 aria-expanded={open}
               >
                 {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}

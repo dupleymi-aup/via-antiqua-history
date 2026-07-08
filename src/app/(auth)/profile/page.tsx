@@ -101,6 +101,9 @@ export default function ProfilePage() {
     const MAX_DURATION = 15 * 60 * 1000
 
     const interval: ReturnType<typeof setInterval> = setInterval(async () => {
+      // Skip polling when tab is not visible
+      if (document.hidden) return
+
       if (Date.now() - startedAt > MAX_DURATION) {
         clearInterval(interval)
         setPaymentData(null)

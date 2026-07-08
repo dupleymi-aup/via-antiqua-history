@@ -56,15 +56,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { ok: true, require2fa: true }
       }
 
-      if (json.data) {
-        setUser(json.data as User)
-      }
+      // Fetch canonical user data from /api/auth/me to ensure correct field mapping
+      await refresh()
 
       return { ok: true }
     } catch {
       return { ok: false, error: 'Ошибка сети. Проверьте подключение.' }
     }
-  }, [])
+  }, [refresh])
 
   const register = React.useCallback(async (email: string, password: string, name: string) => {
     try {

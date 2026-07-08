@@ -117,8 +117,14 @@ export function SearchDialog({
 }) {
   const [query, setQuery] = React.useState('')
   const [activeIdx, setActiveIdx] = React.useState(0)
+  const [index, setIndex] = React.useState<SearchResult[]>([])
 
-  const index = getSearchIndex()
+  // Build search index lazily when dialog first opens
+  React.useEffect(() => {
+    if (open && index.length === 0) {
+      setIndex(getSearchIndex())
+    }
+  }, [open, index.length])
 
   const results = React.useMemo(() => {
     if (!query.trim()) return []
@@ -135,6 +141,15 @@ export function SearchDialog({
   React.useEffect(() => {
     setActiveIdx(0)
   }, [query])
+
+  // Scroll active option into view
+  React.useEffect(() => {
+    if (results.length === 0) return
+    const el = document.getElementById(`search-result-${activeIdx}`)
+    if (el) {
+      el.scrollIntoView({ block: 'nearest' })
+    }
+  }, [activeIdx, results.length])
 
   // Clear query when dialog closes
   React.useEffect(() => {

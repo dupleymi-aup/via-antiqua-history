@@ -4,6 +4,7 @@ import { generateNumericCode, generateToken } from "@/lib/auth/utils";
 import { sendPasswordResetEmail } from "@/lib/auth/email";
 import { apiOk, apiError } from "@/lib/auth/api-response";
 import { checkRateLimit, rateLimitResponse } from "@/lib/auth/rate-limit";
+import { validateEmail } from "@/lib/utils";
 
 const RATE_LIMIT = { windowMs: 15 * 60 * 1000, max: 3 };
 const USER_RATE_LIMIT = { windowMs: 60 * 60 * 1000, max: 5 };
@@ -14,6 +15,10 @@ export async function POST(req: NextRequest) {
 
     if (!email) {
       return apiError("Укажите email", 400);
+    }
+
+    if (validateEmail(email)) {
+      return apiError("Укажите корректный email", 400);
     }
 
     const ip =
@@ -58,7 +63,7 @@ export async function POST(req: NextRequest) {
 
     await sendPasswordResetEmail(email.toLowerCase(), code);
 
-    const testMode = process.env.NODE_ENV !== "production";
+    const testMode = process.env.EMAIL_TEST_MODE === "true";
 
     return apiOk({
       message: "Если пользователь с таким email существует, код отправлен",

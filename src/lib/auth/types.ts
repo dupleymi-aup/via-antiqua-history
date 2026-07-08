@@ -9,12 +9,13 @@ export type User = {
 
 export type BookmarkRow = {
   id: string
+  user_id: string
   type: string
   title: string
   subtitle: string
   href: string
   region: string
-  createdAt: string
+  created_at: string
 }
 
 
