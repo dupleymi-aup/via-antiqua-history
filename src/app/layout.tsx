@@ -1,22 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, EB_Garamond } from "next/font/google";
 import "./globals.css";
-
-const Cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-cormorant",
-});
-
-const EB = EB_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-eb-garamond",
-});
 import { ThemeProvider } from "@/components/site/theme-provider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { BookmarksProvider } from "@/components/site/bookmarks";
@@ -155,7 +138,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className={`${Cormorant.variable} ${EB.variable} font-body antialiased bg-background text-foreground`}>
+      <body className="font-body antialiased bg-background text-foreground">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
