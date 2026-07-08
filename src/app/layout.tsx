@@ -16,10 +16,10 @@ const JSON_LD = {
   url: process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL,
   applicationCategory: "EducationalApplication",
   operatingSystem: "Web Browser",
-  author: {
-    "@type": "Person",
-    name: "Дуплей Максим Игоревич",
-  },
+  author: [
+    { "@type": "Person", name: "Дуплей Максим Игоревич" },
+    { "@type": "Person", name: "Дуплей Игорь Викторович" },
+  ],
   offers: {
     "@type": "Offer",
     price: "0",
@@ -70,7 +70,10 @@ export const metadata: Metadata = {
     "эллинизм",
     "Pax Romana",
   ],
-  authors: [{ name: "Дуплей Максим Игоревич" }],
+  authors: [
+    { name: "Дуплей Максим Игоревич" },
+    { name: "Дуплей Игорь Викторович" },
+  ],
   creator: "Дуплей Максим Игоревич",
   publisher: "Дуплей Максим Игоревич",
   robots: {
