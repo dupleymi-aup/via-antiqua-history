@@ -1,11 +1,12 @@
-FROM node:22-alpine AS deps
+FROM node:22-alpine AS base
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev && npm cache clean --force
 
-FROM node:22-alpine AS build
-WORKDIR /app
+FROM base AS deps
+COPY package.json package-lock.json ./
+RUN npm ci && npm cache clean --force
+
+FROM base AS build
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV DB_PATH=/data/app.db
@@ -14,9 +15,8 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
-FROM node:22-alpine AS runner
-RUN apk add --no-cache libc6-compat wget && addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs && mkdir -p /data && chown nextjs:nodejs /data
-WORKDIR /app
+FROM base AS runner
+RUN apk add --no-cache wget && addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs && mkdir -p /data && chown nextjs:nodejs /data
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV HOST=0.0.0.0
