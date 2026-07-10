@@ -1,57 +1,72 @@
-import { apiError } from './api-response'
+import { apiError } from "./api-response";
 
 type RateLimitEntry = {
-  count: number
-  resetAt: number
-}
+  count: number;
+  resetAt: number;
+};
 
-const store = new Map<string, RateLimitEntry>()
+const store = new Map<string, RateLimitEntry>();
 
-const CLEANUP_INTERVAL = 60_000
-let lastCleanup = Date.now()
+const CLEANUP_INTERVAL = 60_000;
+let lastCleanup = Date.now();
 
 function cleanup() {
-  const now = Date.now()
-  if (now - lastCleanup < CLEANUP_INTERVAL) return
-  lastCleanup = now
+  const now = Date.now();
+  if (now - lastCleanup < CLEANUP_INTERVAL) return;
+  lastCleanup = now;
   for (const [key, entry] of store) {
-    if (entry.resetAt <= now) store.delete(key)
+    if (entry.resetAt <= now) store.delete(key);
   }
 }
 
 export interface RateLimitConfig {
-  windowMs: number
-  max: number
+  windowMs: number;
+  max: number;
 }
 
 export function checkRateLimit(
   key: string,
-  config: RateLimitConfig
+  config: RateLimitConfig,
 ): { allowed: boolean; remaining: number; resetMs: number } {
-  cleanup()
+  cleanup();
 
-  const now = Date.now()
-  const entry = store.get(key)
+  const now = Date.now();
+  const entry = store.get(key);
 
   if (!entry || entry.resetAt <= now) {
-    store.set(key, { count: 1, resetAt: now + config.windowMs })
-    return { allowed: true, remaining: config.max - 1, resetMs: config.windowMs }
+    const resetAt = now + config.windowMs;
+    store.set(key, { count: 1, resetAt });
+    return {
+      allowed: true,
+      remaining: config.max - 1,
+      resetMs: config.windowMs,
+    };
   }
 
   if (entry.count >= config.max) {
-    return { allowed: false, remaining: 0, resetMs: entry.resetAt - now }
+    return { allowed: false, remaining: 0, resetMs: entry.resetAt - now };
   }
 
-  entry.count++
+  entry.count++;
 
-  return { allowed: true, remaining: config.max - entry.count, resetMs: entry.resetAt - now }
+  return {
+    allowed: true,
+    remaining: config.max - entry.count,
+    resetMs: entry.resetAt - now,
+  };
 }
 
 export function rateLimitResponse(resetMs: number): Response {
-  const retryAfter = Math.ceil(resetMs / 1000)
+  const retryAfter = Math.ceil(resetMs / 1000);
   return apiError(
     `Слишком много попыток. Попробуйте через ${retryAfter} сек.`,
     429,
-    { headers: { 'Retry-After': String(retryAfter) } },
-  )
+    { headers: { "Retry-After": String(retryAfter) } },
+  );
+}
+
+/** Очистить store rate limiter (для тестов) */
+export function clearRateLimitStore() {
+  store.clear();
+  lastCleanup = Date.now();
 }

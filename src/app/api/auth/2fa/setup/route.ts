@@ -17,10 +17,10 @@ export async function GET() {
 
     const db = getDb();
     const user = db
-      .prepare("SELECT totp_enabled FROM users WHERE id = ?")
+      .prepare("SELECT totp_enabled, totp_secret FROM users WHERE id = ?")
       .get(session.userId) as Record<string, unknown> | undefined;
 
-    if (user && user.totp_enabled) {
+    if (user?.totp_enabled) {
       return apiError("2FA уже включена. Сначала отключите её в профиле", 400);
     }
 
@@ -33,10 +33,11 @@ export async function GET() {
     const { toDataURL } = await import("qrcode");
     const qrCode = await toDataURL(uri);
 
-    db.prepare("UPDATE users SET totp_secret = ? WHERE id = ?").run(
-      secret,
-      session.userId,
-    );
+    // Сохраняем secret с меткой времени — удаляем через 15 минут если не подтверждён
+    const secretExpiresAt = Date.now() + 15 * 60 * 1000;
+    db.prepare(
+      "UPDATE users SET totp_secret = ?, totp_secret_expires_at = ? WHERE id = ?",
+    ).run(secret, String(secretExpiresAt), session.userId);
 
     return apiOk({ qrCode });
   } catch (err) {
@@ -70,11 +71,23 @@ export async function POST(req: NextRequest) {
 
     const db = getDb();
     const user = db
-      .prepare("SELECT totp_secret, password_hash FROM users WHERE id = ?")
+      .prepare(
+        "SELECT totp_secret, totp_secret_expires_at, password_hash FROM users WHERE id = ?",
+      )
       .get(session.userId) as Record<string, unknown> | undefined;
 
     if (!user || !user.totp_secret) {
       return apiError("2FA не настроен. Запросите setup сначала", 400);
+    }
+
+    // Проверяем что secret не истёк (15 минут на подтверждение)
+    const expiresAt = Number(user.totp_secret_expires_at || 0);
+    if (expiresAt && Date.now() > expiresAt) {
+      // Очищаем истёкший secret
+      db.prepare(
+        "UPDATE users SET totp_secret = NULL, totp_secret_expires_at = NULL WHERE id = ?",
+      ).run(session.userId);
+      return apiError("Код QR-кода истёк. Запросите настройку заново", 400);
     }
 
     const valid = await verifyPassword(password, user.password_hash as string);

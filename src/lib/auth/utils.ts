@@ -22,7 +22,7 @@ export function getJwtSecret(): string {
   return _jwtSecret;
 }
 
-const SESSION_COOKIE = "session";
+const SESSION_COOKIE = "via_antiqua_session";
 const SESSION_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
 
 export type SessionPayload = {

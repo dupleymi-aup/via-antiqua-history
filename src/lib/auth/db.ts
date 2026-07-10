@@ -35,6 +35,7 @@ function initSchema(db: Database.Database) {
       name TEXT NOT NULL DEFAULT '',
       email_verified INTEGER NOT NULL DEFAULT 0,
       totp_secret TEXT,
+      totp_secret_expires_at INTEGER,
       totp_enabled INTEGER NOT NULL DEFAULT 0,
       recovery_codes TEXT DEFAULT '[]',
       password_changed_at TEXT,

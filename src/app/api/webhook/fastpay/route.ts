@@ -59,9 +59,7 @@ export async function POST(request: NextRequest) {
 function verifyWebhookSignature(rawBody: string, signature: string): boolean {
   const webhookSecret = process.env.FASTPAY_WEBHOOK_SECRET;
   if (!webhookSecret) {
-    console.error(
-      "FASTPAY_WEBHOOK_SECRET not configured — webhook rejected",
-    );
+    console.error("FASTPAY_WEBHOOK_SECRET not configured — webhook rejected");
     return false;
   }
 
@@ -94,10 +92,10 @@ interface PaymentData {
 
 function isValidPaymentData(data: unknown): data is PaymentData {
   return (
-    typeof data === 'object' &&
+    typeof data === "object" &&
     data !== null &&
-    typeof (data as Record<string, unknown>).paymentId === 'string' &&
-    typeof (data as Record<string, unknown>).externalPaymentId === 'string'
+    typeof (data as Record<string, unknown>).paymentId === "string" &&
+    typeof (data as Record<string, unknown>).externalPaymentId === "string"
   );
 }
 
@@ -106,7 +104,7 @@ function isValidPaymentData(data: unknown): data is PaymentData {
  */
 async function handlePaymentCompleted(data: unknown) {
   if (!isValidPaymentData(data)) {
-    console.error('Invalid payment.completed payload:', data);
+    console.error("Invalid payment.completed payload:", data);
     return;
   }
 
@@ -175,7 +173,7 @@ async function handlePaymentCompleted(data: unknown) {
  */
 async function handlePaymentFailed(data: unknown) {
   if (!isValidPaymentData(data)) {
-    console.error('Invalid payment.failed payload:', data);
+    console.error("Invalid payment.failed payload:", data);
     return;
   }
 
@@ -204,7 +202,7 @@ async function handlePaymentFailed(data: unknown) {
  */
 async function handlePaymentRefunded(data: unknown) {
   if (!isValidPaymentData(data)) {
-    console.error('Invalid payment.refunded payload:', data);
+    console.error("Invalid payment.refunded payload:", data);
     return;
   }
 

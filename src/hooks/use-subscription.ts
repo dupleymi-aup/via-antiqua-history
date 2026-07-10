@@ -1,40 +1,47 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useState, useEffect, useRef } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function useSubscription(enabled = true) {
-  const { user, loading } = useAuth()
-  const [hasSubscription, setHasSubscription] = useState(false)
-  const [subscriptionLoading, setSubscriptionLoading] = useState(true)
+  const { user, loading } = useAuth();
+  const [hasSubscription, setHasSubscription] = useState(false);
+  const [subscriptionLoading, setSubscriptionLoading] = useState(true);
+  const cancelledRef = useRef(false);
 
   useEffect(() => {
     if (!enabled || !user || loading) {
-      if (!loading) setSubscriptionLoading(false)
-      return
+      if (!loading) setSubscriptionLoading(false);
+      return;
     }
 
-    let cancelled = false
+    cancelledRef.current = false;
 
-    fetch('/api/subscription/status')
-      .then(r => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`)
-        return r.json()
+    const controller = new AbortController();
+
+    fetch("/api/subscription/status", { signal: controller.signal })
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
       })
-      .then(data => {
-        if (!cancelled) {
-          setHasSubscription(data.ok && data.data?.status === 'active')
+      .then((data) => {
+        if (!cancelledRef.current) {
+          setHasSubscription(data.ok && data.data?.status === "active");
         }
       })
-      .catch(() => {
-        if (!cancelled) setHasSubscription(false)
+      .catch((err) => {
+        if (err.name === "AbortError") return;
+        if (!cancelledRef.current) setHasSubscription(false);
       })
       .finally(() => {
-        if (!cancelled) setSubscriptionLoading(false)
-      })
+        if (!cancelledRef.current) setSubscriptionLoading(false);
+      });
 
-    return () => { cancelled = true }
-  }, [user, loading, enabled])
+    return () => {
+      cancelledRef.current = true;
+      controller.abort();
+    };
+  }, [user, loading, enabled]);
 
-  return { hasSubscription, subscriptionLoading }
+  return { hasSubscription, subscriptionLoading };
 }
