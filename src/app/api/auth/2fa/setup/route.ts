@@ -74,11 +74,11 @@ export async function POST(req: NextRequest) {
     }
 
     const { code, password } = await req.json();
-    if (!code) {
+    if (!code || typeof code !== "string") {
       return apiError("Укажите код", 400);
     }
 
-    if (!password) {
+    if (!password || typeof password !== "string") {
       return apiError("Введите пароль для подтверждения", 400);
     }
 

@@ -39,7 +39,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
       }
 
       return (
-        <div className="min-h-[200px] flex items-center justify-center p-6 sm:p-8 rounded-xl border border-border bg-card">
+        <div role="alert" className="min-h-[200px] flex items-center justify-center p-6 sm:p-8 rounded-xl border border-border bg-card">
           <div className="text-center max-w-md">
             <div className="flex justify-center mb-4">
               <span className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">

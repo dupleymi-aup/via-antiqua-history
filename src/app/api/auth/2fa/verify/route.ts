@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     const { code } = await req.json()
 
-    if (!code) {
+    if (!code || typeof code !== 'string') {
       return apiError('Укажите код', 400)
     }
 
@@ -82,7 +82,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     const { password } = await req.json().catch(() => ({}))
-    if (!password) {
+    if (!password || typeof password !== 'string') {
       return apiError('Введите пароль для отключения 2FA', 400)
     }
 
