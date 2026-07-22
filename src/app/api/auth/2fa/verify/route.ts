@@ -75,6 +75,12 @@ export async function DELETE(req: NextRequest) {
     const csrfError = validateCsrf(req);
     if (csrfError) return csrfError;
 
+    const ip = getClientIp(req)
+    const rl = checkRateLimit(`2fa-disable:${ip}:${session.userId}`, RATE_LIMIT)
+    if (!rl.allowed) {
+      return rateLimitResponse(rl.resetMs)
+    }
+
     const { password } = await req.json().catch(() => ({}))
     if (!password) {
       return apiError('Введите пароль для отключения 2FA', 400)

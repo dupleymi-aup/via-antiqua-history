@@ -51,7 +51,6 @@ export function TimelineSection() {
     autoPlayRef.current = setInterval(() => {
       setActiveIdx((cur) => {
         if (cur >= allTimeline.length - 1) {
-          setAutoPlay(false)
           return cur
         }
         return cur + 1
@@ -61,6 +60,13 @@ export function TimelineSection() {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current)
     }
   }, [autoPlay, isInView])
+
+  // Stop auto-play when reaching the end
+  React.useEffect(() => {
+    if (activeIdx >= allTimeline.length - 1 && autoPlay) {
+      setAutoPlay(false)
+    }
+  }, [activeIdx, autoPlay])
 
   // Keyboard navigation когда секция в видимости
   React.useEffect(() => {

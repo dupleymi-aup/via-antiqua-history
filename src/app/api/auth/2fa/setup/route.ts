@@ -10,11 +10,20 @@ import { getClientIp } from "@/lib/auth/get-ip";
 
 const RATE_LIMIT = { windowMs: 15 * 60 * 1000, max: 3 };
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const session = await getSession();
     if (!session) {
       return apiError("Не авторизован", 401);
+    }
+
+    const csrfError = validateCsrf(req);
+    if (csrfError) return csrfError;
+
+    const ip = getClientIp(req);
+    const rl = checkRateLimit(`2fa-setup-get:${ip}:${session.userId}`, RATE_LIMIT);
+    if (!rl.allowed) {
+      return rateLimitResponse(rl.resetMs);
     }
 
     const db = getDb();

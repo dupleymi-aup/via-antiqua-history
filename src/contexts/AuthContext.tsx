@@ -26,9 +26,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = React.useState<User | null>(null);
   const [loading, setLoading] = React.useState(true);
 
-  const refresh = React.useCallback(async () => {
+  const refreshAbortRef = React.useRef<AbortController | null>(null);
+
+  const refresh = React.useCallback(async (signal?: AbortSignal) => {
     try {
-      const res = await fetch("/api/auth/me");
+      refreshAbortRef.current?.abort();
+      const controller = new AbortController();
+      refreshAbortRef.current = controller;
+      const effectiveSignal = signal ?? controller.signal;
+      const res = await fetch("/api/auth/me", { signal: effectiveSignal });
       if (res.status === 429) {
         setUser(null);
         return;
@@ -44,6 +50,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  React.useEffect(() => {
+    return () => { refreshAbortRef.current?.abort(); };
   }, []);
 
   React.useEffect(() => {
@@ -103,6 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = React.useCallback(async () => {
     try {
+      refreshAbortRef.current?.abort();
       await fetch("/api/auth/logout", { method: "POST" });
     } finally {
       setUser(null);
