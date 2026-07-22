@@ -108,12 +108,12 @@ export function QuizSection() {
     return () => window.removeEventListener('keydown', onKey)
   }, [current, isAnswered, finished, q.options.length, select, goNext, goPrev])
 
-  const reset = () => {
+  const reset = React.useCallback(() => {
     setCurrent(0)
     setSelected(null)
     setAnswers(Array(quizQuestions.length).fill(null))
     setFinished(false)
-  }
+  }, [])
 
   const progress = (answeredCount / quizQuestions.length) * 100
 

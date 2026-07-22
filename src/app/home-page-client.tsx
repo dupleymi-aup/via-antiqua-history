@@ -114,7 +114,7 @@ export default function HomePageClient({
       <div className="min-h-screen flex flex-col bg-background font-body">
         <ReadingProgress />
         <Navbar />
-        <main id="main-content" role="main" className="flex-1">
+        <main id="main-content" className="flex-1">
           <ErrorBoundary>
             <Hero stats={heroStats} />
           </ErrorBoundary>

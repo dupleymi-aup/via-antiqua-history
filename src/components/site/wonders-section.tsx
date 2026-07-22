@@ -52,6 +52,7 @@ export function WondersSection() {
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
                 whileHover={{ y: -4 }}
                 onClick={() => setActive(w)}
+                aria-label={`Подробнее о ${w.name}`}
                 className="text-left p-4 sm:p-5 md:p-6 rounded-lg border border-border bg-card hover:border-primary hover:shadow-md transition-all relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
               >
                 {/* Большая цифра-номер */}

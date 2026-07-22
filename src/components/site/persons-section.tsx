@@ -32,7 +32,10 @@ export function PersonsSection() {
   const [filter, setFilter] = React.useState('all')
   const [active, setActive] = React.useState<Person | null>(null)
 
-  const filtered = persons.filter((p) => filter === 'all' || p.region === filter)
+  const filtered = React.useMemo(
+    () => persons.filter((p) => filter === 'all' || p.region === filter),
+    [filter],
+  )
 
   return (
     <section
@@ -74,6 +77,7 @@ export function PersonsSection() {
                   transition={{ duration: 0.35, delay: idx * 0.04 }}
                   whileHover={{ y: -4 }}
                   onClick={() => setActive(p)}
+                  aria-label={`Подробнее о ${p.name}`}
                   className="text-left p-4 sm:p-5 rounded-lg border border-border bg-card hover:border-primary hover:shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
                 >
                   <div className="flex items-start justify-between gap-2 mb-2 sm:mb-3">

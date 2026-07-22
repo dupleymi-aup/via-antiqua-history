@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -24,7 +25,7 @@ export function computeReadingTime(raw: string) {
   return { wordCount, minutes }
 }
 
-export function ReadingTime({ text, className }: ReadingTimeProps) {
+export const ReadingTime = React.memo(function ReadingTime({ text, className }: ReadingTimeProps) {
   const raw = Array.isArray(text) ? text.join(' ') : text
   const { wordCount, minutes } = computeReadingTime(raw)
 
@@ -41,4 +42,4 @@ export function ReadingTime({ text, className }: ReadingTimeProps) {
       </span>
     </div>
   )
-}
+})
