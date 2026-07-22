@@ -108,13 +108,12 @@ export async function PUT(req: NextRequest) {
     const newIds = new Set(sanitized.map((b) => b.id));
 
     const toRemove = [...currentIds].filter((id) => !newIds.has(id));
-    const toAdd = sanitized.filter((b) => !currentIds.has(b.id));
 
     const tx = db.transaction(() => {
       for (const id of toRemove) {
         remove.run(session.userId, id);
       }
-      for (const b of toAdd) {
+      for (const b of sanitized) {
         upsert.run(
           b.id,
           session.userId,
@@ -128,7 +127,7 @@ export async function PUT(req: NextRequest) {
     });
     tx();
 
-    return apiOk({ added: toAdd.length, removed: toRemove.length });
+    return apiOk({ upserted: sanitized.length, removed: toRemove.length });
   } catch (err) {
     console.error("Bookmarks PUT error:", err);
     return apiError("Внутренняя ошибка сервера", 500);

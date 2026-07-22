@@ -37,7 +37,7 @@ export function ReadingProgress() {
   const isVisible = percentage > 5
 
   return (
-    <>
+    <div className="reading-progress">
       <div
         className="fixed top-0 left-0 right-0 h-1 z-[40] origin-left bg-primary transition-[transform] duration-150 ease-out"
         style={{ transform: `scaleX(${percentage / 100})` }}
@@ -51,6 +51,6 @@ export function ReadingProgress() {
           {percentage}%
         </div>
       )}
-    </>
+    </div>
   )
 }

@@ -13,11 +13,12 @@ import { SectionHeader } from '@/components/site/section-header'
 
 export function QuizSection() {
   const [current, setCurrent] = React.useState(0)
-  const [selected, setSelected] = React.useState<number | null>(null)
   const [answers, setAnswers] = React.useState<(number | null)[]>(
     Array(quizQuestions.length).fill(null),
   )
   const [finished, setFinished] = React.useState(false)
+
+  const selected = answers[current]
 
   const correctCount = React.useMemo(() => {
     return answers.reduce<number>(
@@ -39,7 +40,6 @@ export function QuizSection() {
   const select = React.useCallback(
     (i: number) => {
       if (selected !== null) return
-      setSelected(i)
       setAnswers((prev) => {
         const updated = [...prev]
         updated[current] = i
@@ -53,27 +53,13 @@ export function QuizSection() {
     if (current + 1 >= quizQuestions.length) {
       setFinished(true)
     } else {
-      setCurrent((c) => {
-        const next = c + 1
-        setAnswers((prev) => {
-          setSelected(prev[next] ?? null)
-          return prev
-        })
-        return next
-      })
+      setCurrent((c) => c + 1)
     }
   }, [current])
 
   const goPrev = React.useCallback(() => {
     if (current > 0) {
-      setCurrent((c) => {
-        const prev = c - 1
-        setAnswers((a) => {
-          setSelected(a[prev] ?? null)
-          return a
-        })
-        return prev
-      })
+      setCurrent((c) => c - 1)
     }
   }, [current])
 
@@ -110,7 +96,6 @@ export function QuizSection() {
 
   const reset = React.useCallback(() => {
     setCurrent(0)
-    setSelected(null)
     setAnswers(Array(quizQuestions.length).fill(null))
     setFinished(false)
   }, [])
@@ -324,7 +309,6 @@ export function QuizSection() {
                   onClick={() => {
                     if (answers[i] !== null || i < current) {
                       setCurrent(i)
-                      setSelected(answers[i] ?? null)
                     }
                   }}
                   className={cn(

@@ -153,12 +153,12 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const toggle = React.useCallback((item: BookmarkItem) => {
-    const exists = bookmarks.some((b) => b.id === item.id)
-    setBookmarks((cur) =>
-      exists ? cur.filter((b) => b.id !== item.id) : [item, ...cur]
-    )
-    showToast(item.title, !exists)
-  }, [bookmarks, showToast])
+    setBookmarks((cur) => {
+      const exists = cur.some((b) => b.id === item.id)
+      showToast(item.title, !exists)
+      return exists ? cur.filter((b) => b.id !== item.id) : [item, ...cur]
+    })
+  }, [showToast])
 
   const remove = React.useCallback((id: string) => {
     setBookmarks((cur) => cur.filter((b) => b.id !== id))
@@ -262,7 +262,7 @@ export function BookmarksFloatingButton({
       transition={{ delay: 1, duration: 0.3 }}
       onClick={onClick}
       aria-label="Закладки"
-      className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-card border border-border text-foreground shadow-lg hover:shadow-xl hover:bg-accent/10 transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+      className="bookmarks-floating-button fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-card border border-border text-foreground shadow-lg hover:shadow-xl hover:bg-accent/10 transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
     >
       <Bookmark className="h-5 w-5" />
       {count > 0 && (

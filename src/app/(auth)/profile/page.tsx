@@ -265,9 +265,11 @@ export default function ProfilePage() {
     setLoggingOut(true)
     try {
       await logout()
+      router.push('/login')
+    } catch {
+      // logout failed — stay on page
     } finally {
       setLoggingOut(false)
-      router.push('/login')
     }
   }
 
