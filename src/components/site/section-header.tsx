@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useInView } from "@/hooks/use-in-view";
 
 interface SectionHeaderProps {
   icon: React.ReactNode;
@@ -19,26 +20,7 @@ export const SectionHeader = React.memo(function SectionHeader({
   readingTime,
   className,
 }: SectionHeaderProps) {
-  const ref = React.useRef<HTMLDivElement | null>(null);
-  const [inView, setInView] = React.useState(false);
-
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2, rootMargin: "-100px" },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const { ref, inView } = useInView({ threshold: 0.2, rootMargin: "-100px" });
 
   return (
     <div

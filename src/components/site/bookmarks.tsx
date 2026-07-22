@@ -16,7 +16,7 @@ import { useAuth } from '@/contexts/AuthContext'
 
 export type BookmarkItem = {
   id: string
-  type: 'city' | 'landmark' | 'person' | 'term' | 'wonder' | 'epoch' | 'event'
+  type: 'city' | 'landmark' | 'person' | 'term' | 'wonder' | 'epoch' | 'event' | 'map-city' | 'order'
   title: string
   subtitle: string
   href: string
@@ -209,6 +209,8 @@ const typeLabels: Record<BookmarkItem['type'], string> = {
   wonder: 'Чудо света',
   epoch: 'Эпоха',
   event: 'Событие',
+  'map-city': 'Город на карте',
+  order: 'Архитектурный ордер',
 }
 
 const getRegionColor = (region: string) => REGION_COLORS[region] || REGION_COLORS.general

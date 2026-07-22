@@ -1,28 +1,10 @@
 "use client";
 
 import * as React from "react";
+import { useInView } from "@/hooks/use-in-view";
 
 export const SectionDivider = React.memo(function SectionDivider() {
-  const ref = React.useRef<HTMLDivElement | null>(null);
-  const [inView, setInView] = React.useState(false);
-
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.3 },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const { ref, inView } = useInView({ threshold: 0.3 });
 
   return (
     <div
