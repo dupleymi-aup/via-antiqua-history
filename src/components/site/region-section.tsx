@@ -232,140 +232,140 @@ export function RegionSection({
               </div>
               </div>
 
-          {/* Правая колонка: контент активного города */}
-          <div
-            role="tabpanel"
-            id={`tabpanel-${region.id}-${activeCityId}`}
-            aria-labelledby={`tab-${region.id}-${activeCityId}`}
-            className="lg:col-span-9"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeCityId}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35 }}
+              {/* Правая колонка: контент активного города */}
+              <div
+                role="tabpanel"
+                id={`tabpanel-${region.id}-${activeCityId}`}
+                aria-labelledby={`tab-${region.id}-${activeCityId}`}
+                className="lg:col-span-9"
               >
-                <div className="rounded-xl border border-border bg-card p-4 sm:p-5 md:p-6 lg:p-8">
-                  <div className="flex flex-wrap items-start justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-semibold leading-tight">
-                        {activeCity.name}
-                      </h3>
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <MapPin className="h-3.5 w-3.5" />
-                          {activeCity.region}
-                        </span>
-                        {activeCity.modernName && (
-                          <span className="flex items-center gap-1">
-                            <Info className="h-3.5 w-3.5" />
-                            Совр. {activeCity.modernName}
-                          </span>
-                        )}
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5" />
-                          {activeCity.era}
-                        </span>
-                      </div>
-                    </div>
-                    <BookmarkButton
-                      item={{
-                        id: `city:${activeCity.id}`,
-                        type: "city",
-                        title: activeCity.name,
-                        subtitle: `${activeCity.region} — ${activeCity.era}`,
-                        href: `#${region.id}`,
-                        region: region.id,
-                      }}
-                    />
-                  </div>
-
-                      <div className="relative mb-5 sm:mb-7">
-                        <span
-                          className="absolute -top-1 -left-1 text-3xl sm:text-4xl leading-none select-none"
-                          style={{ color: withAlpha(region.color, 0.2) }}
-                        >
-                          &ldquo;
-                        </span>
-                        <p
-                          className="text-sm sm:text-base md:text-lg leading-relaxed text-foreground/90 italic border-l-[3px] sm:border-l-4 pl-4 sm:pl-5 ml-0.5"
-                          style={{ borderColor: region.color }}
-                        >
-                          {activeCity.summary}
-                        </p>
-                      </div>
-
-                      <div className="space-y-3 sm:space-y-4">
-                        {activeCity.description.map((para, i) => (
-                          <p
-                            key={i}
-                            className="text-sm sm:text-base leading-relaxed text-foreground/85"
-                          >
-                            {para}
-                          </p>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Достопримечательности */}
-                    <div className="mt-10 sm:mt-12">
-                      <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-                        <span
-                          className="inline-block h-[3px] w-6 sm:w-8 rounded-full"
-                          style={{ backgroundColor: region.color }}
-                        />
-                        <h4 className="font-display text-lg sm:text-xl md:text-2xl font-semibold">
-                          Главные достопримечательности
-                        </h4>
-                      </div>
-
-                      <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
-                        {activeCity.landmarks.map((lm, i) => (
-                          <motion.button
-                            key={lm.id}
-                            initial={{ opacity: 0, y: 12 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-30px" }}
-                            transition={{ duration: 0.35, delay: i * 0.06 }}
-                            whileHover={{ y: -3, scale: 1.01 }}
-                            onClick={() => setActiveLandmark(lm)}
-                            aria-label={`Подробнее о ${lm.name}`}
-                            className="group text-left p-4 sm:p-5 rounded-lg border border-border/70 bg-card hover:border-primary/40 hover:shadow-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
-                          >
-                            <div className="flex items-start justify-between gap-2 sm:gap-3 mb-2">
-                              <h5 className="font-display text-base sm:text-lg font-semibold leading-tight group-hover:text-primary transition-colors duration-200">
-                                {lm.name}
-                              </h5>
-                              <Badge
-                                variant="secondary"
-                                className="shrink-0 text-[10px] sm:text-xs transition-colors duration-200"
-                                style={{
-                                  backgroundColor: withAlpha(
-                                    region.color,
-                                    0.15,
-                                  ),
-                                  color: region.color,
-                                }}
-                              >
-                                {lm.period}
-                              </Badge>
-                            </div>
-                            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                              {lm.shortDesc}
-                            </p>
-                            <span className="mt-2 sm:mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary opacity-70 group-hover:opacity-100 transition-opacity duration-200">
-                              Подробнее →
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeCityId}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.35 }}
+                  >
+                    <div className="rounded-xl border border-border bg-card p-4 sm:p-5 md:p-6 lg:p-8">
+                      <div className="flex flex-wrap items-start justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-semibold leading-tight">
+                            {activeCity.name}
+                          </h3>
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-3.5 w-3.5" />
+                              {activeCity.region}
                             </span>
-                          </motion.button>
-                        ))}
+                            {activeCity.modernName && (
+                              <span className="flex items-center gap-1">
+                                <Info className="h-3.5 w-3.5" />
+                                Совр. {activeCity.modernName}
+                              </span>
+                            )}
+                            <span className="flex items-center gap-1">
+                              <Calendar className="h-3.5 w-3.5" />
+                              {activeCity.era}
+                            </span>
+                          </div>
+                        </div>
+                        <BookmarkButton
+                          item={{
+                            id: `city:${activeCity.id}`,
+                            type: "city",
+                            title: activeCity.name,
+                            subtitle: `${activeCity.region} — ${activeCity.era}`,
+                            href: `#${region.id}`,
+                            region: region.id,
+                          }}
+                        />
                       </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
+
+                          <div className="relative mb-5 sm:mb-7">
+                            <span
+                              className="absolute -top-1 -left-1 text-3xl sm:text-4xl leading-none select-none"
+                              style={{ color: withAlpha(region.color, 0.2) }}
+                            >
+                              &ldquo;
+                            </span>
+                            <p
+                              className="text-sm sm:text-base md:text-lg leading-relaxed text-foreground/90 italic border-l-[3px] sm:border-l-4 pl-4 sm:pl-5 ml-0.5"
+                              style={{ borderColor: region.color }}
+                            >
+                              {activeCity.summary}
+                            </p>
+                          </div>
+
+                          <div className="space-y-3 sm:space-y-4">
+                            {activeCity.description.map((para, i) => (
+                              <p
+                                key={i}
+                                className="text-sm sm:text-base leading-relaxed text-foreground/85"
+                              >
+                                {para}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Достопримечательности */}
+                        <div className="mt-10 sm:mt-12">
+                          <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
+                            <span
+                              className="inline-block h-[3px] w-6 sm:w-8 rounded-full"
+                              style={{ backgroundColor: region.color }}
+                            />
+                            <h4 className="font-display text-lg sm:text-xl md:text-2xl font-semibold">
+                              Главные достопримечательности
+                            </h4>
+                          </div>
+
+                          <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+                            {activeCity.landmarks.map((lm, i) => (
+                              <motion.button
+                                key={lm.id}
+                                initial={{ opacity: 0, y: 12 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-30px" }}
+                                transition={{ duration: 0.35, delay: i * 0.06 }}
+                                whileHover={{ y: -3, scale: 1.01 }}
+                                onClick={() => setActiveLandmark(lm)}
+                                aria-label={`Подробнее о ${lm.name}`}
+                                className="group text-left p-4 sm:p-5 rounded-lg border border-border/70 bg-card hover:border-primary/40 hover:shadow-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+                              >
+                                <div className="flex items-start justify-between gap-2 sm:gap-3 mb-2">
+                                  <h5 className="font-display text-base sm:text-lg font-semibold leading-tight group-hover:text-primary transition-colors duration-200">
+                                    {lm.name}
+                                  </h5>
+                                  <Badge
+                                    variant="secondary"
+                                    className="shrink-0 text-[10px] sm:text-xs transition-colors duration-200"
+                                    style={{
+                                      backgroundColor: withAlpha(
+                                        region.color,
+                                        0.15,
+                                      ),
+                                      color: region.color,
+                                    }}
+                                  >
+                                    {lm.period}
+                                  </Badge>
+                                </div>
+                                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                                  {lm.shortDesc}
+                                </p>
+                                <span className="mt-2 sm:mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary opacity-70 group-hover:opacity-100 transition-opacity duration-200">
+                                  Подробнее →
+                                </span>
+                              </motion.button>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                </div>
 
             {/* Описание региона в конце */}
             <motion.div
