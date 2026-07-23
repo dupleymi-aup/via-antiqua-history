@@ -77,14 +77,16 @@ export async function PUT(req: NextRequest) {
       "epoch",
       "event",
     ];
-    const sanitized = bookmarks.map((b: Record<string, unknown>) => ({
-      id: String(b.id || "").slice(0, 100),
-      type: VALID_TYPES.includes(String(b.type)) ? String(b.type) : "term",
-      title: String(b.title || "").slice(0, 200),
-      subtitle: String(b.subtitle || "").slice(0, 500),
-      href: String(b.href || "").slice(0, 100),
-      region: String(b.region || "").slice(0, 50),
-    }));
+    const sanitized = bookmarks
+      .map((b: Record<string, unknown>) => ({
+        id: String(b.id || "").slice(0, 100),
+        type: VALID_TYPES.includes(String(b.type)) ? String(b.type) : "term",
+        title: String(b.title || "").slice(0, 200),
+        subtitle: String(b.subtitle || "").slice(0, 500),
+        href: String(b.href || "").slice(0, 100),
+        region: String(b.region || "").slice(0, 50),
+      }))
+      .filter((b) => b.id.length > 0);
 
     const db = getDb();
     const upsert = db.prepare(`

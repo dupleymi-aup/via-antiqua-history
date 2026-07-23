@@ -27,8 +27,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = React.useState(true);
 
   const refreshAbortRef = React.useRef<AbortController | null>(null);
+  const refreshVersionRef = React.useRef(0);
 
   const refresh = React.useCallback(async (signal?: AbortSignal) => {
+    const version = ++refreshVersionRef.current;
     try {
       refreshAbortRef.current?.abort();
       const controller = new AbortController();
@@ -36,19 +38,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const effectiveSignal = signal ?? controller.signal;
       const res = await fetch("/api/auth/me", { signal: effectiveSignal });
       if (res.status === 429) {
-        setUser(null);
+        if (refreshVersionRef.current === version) setUser(null);
         return;
       }
       const json = await res.json();
+      if (refreshVersionRef.current !== version) return;
       if (json.ok && json.data) {
         setUser(json.data);
       } else {
         setUser(null);
       }
     } catch {
-      setUser(null);
+      if (refreshVersionRef.current === version) setUser(null);
     } finally {
-      setLoading(false);
+      if (refreshVersionRef.current === version) setLoading(false);
     }
   }, []);
 
