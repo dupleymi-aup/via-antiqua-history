@@ -9,13 +9,17 @@ export function ReadingProgress() {
   React.useEffect(() => {
     let rafId: number | null = null
     let ticking = false
+    let cachedScrollHeight = document.documentElement.scrollHeight - window.innerHeight
+
+    const recalcScrollHeight = () => {
+      cachedScrollHeight = document.documentElement.scrollHeight - window.innerHeight
+    }
 
     const onScroll = () => {
       if (!ticking) {
         rafId = requestAnimationFrame(() => {
-          const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
-          if (scrollHeight > 0) {
-            const next = Math.round((window.scrollY / scrollHeight) * 100)
+          if (cachedScrollHeight > 0) {
+            const next = Math.round((window.scrollY / cachedScrollHeight) * 100)
             if (next !== lastPercentRef.current) {
               lastPercentRef.current = next
               setPercentage(next)
@@ -27,9 +31,11 @@ export function ReadingProgress() {
       }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', recalcScrollHeight, { passive: true })
     onScroll()
     return () => {
       window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', recalcScrollHeight)
       if (rafId) cancelAnimationFrame(rafId)
     }
   }, [])
