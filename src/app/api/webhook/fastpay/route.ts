@@ -15,7 +15,12 @@ import { apiOk, apiError } from "@/lib/auth/api-response";
 export async function POST(request: NextRequest) {
   try {
     const rawBody = await request.text();
-    const payload = JSON.parse(rawBody);
+    let payload: { event: string; data: Record<string, unknown> };
+    try {
+      payload = JSON.parse(rawBody);
+    } catch {
+      return apiError("Invalid JSON body", 400);
+    }
     const signature = request.headers.get("X-FastPay-Signature") || "";
 
     // Проверка подписи webhook (защита от поддельных запросов)

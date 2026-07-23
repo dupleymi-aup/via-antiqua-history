@@ -62,7 +62,8 @@ export async function POST(_request: NextRequest) {
     }
 
     const paymentId = randomUUID();
-    const amount = Number(process.env.SUBSCRIPTION_PRICE) || SUBSCRIPTION_PRICE;
+    const rawPrice = Number(process.env.SUBSCRIPTION_PRICE);
+    const amount = Number.isFinite(rawPrice) && rawPrice > 0 ? rawPrice : SUBSCRIPTION_PRICE;
     const phone = process.env.FASTPAY_SBP_PHONE || "";
 
     const sbpQrData = JSON.stringify({

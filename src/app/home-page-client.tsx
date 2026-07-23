@@ -33,7 +33,7 @@ interface HomePageClientProps {
   heroStats: HeroStats;
 }
 
-function DynamicSectionSkeleton({
+const DynamicSectionSkeleton = React.memo(function DynamicSectionSkeleton({
   variant = "card",
 }: {
   variant?: "card" | "grid" | "full";
@@ -46,7 +46,7 @@ function DynamicSectionSkeleton({
       </div>
     );
   return <CardSkeleton lines={4} />;
-}
+})
 
 const PersonsSection = dynamic(
   () =>
@@ -150,6 +150,7 @@ export default function HomePageClient({
               <PersonsSection />
             </Suspense>
           </ErrorBoundary>
+          <SectionDivider />
 
           {/* Семь чудес света */}
           <ErrorBoundary>
@@ -157,6 +158,7 @@ export default function HomePageClient({
               <WondersSection />
             </Suspense>
           </ErrorBoundary>
+          <SectionDivider />
 
           {/* Архитектурные ордера */}
           <ErrorBoundary>
@@ -170,6 +172,7 @@ export default function HomePageClient({
               </Suspense>
             </ContentGate>
           </ErrorBoundary>
+          <SectionDivider />
 
           {/* Исторические эпохи */}
           <ErrorBoundary>
@@ -183,6 +186,7 @@ export default function HomePageClient({
               </Suspense>
             </ContentGate>
           </ErrorBoundary>
+          <SectionDivider />
 
           {/* Интерактивная лента времени */}
           <ErrorBoundary>
@@ -196,6 +200,7 @@ export default function HomePageClient({
               </Suspense>
             </ContentGate>
           </ErrorBoundary>
+          <SectionDivider />
 
           {/* Интерактивная карта */}
           <ErrorBoundary>
@@ -209,6 +214,7 @@ export default function HomePageClient({
               </Suspense>
             </ContentGate>
           </ErrorBoundary>
+          <SectionDivider />
 
           {/* Сравнительная таблица цивилизаций */}
           <ErrorBoundary>
@@ -222,6 +228,7 @@ export default function HomePageClient({
               </Suspense>
             </ContentGate>
           </ErrorBoundary>
+          <SectionDivider />
 
           {/* Авторский раздел: исторический анализ */}
           <ErrorBoundary>
@@ -235,6 +242,7 @@ export default function HomePageClient({
               </Suspense>
             </ContentGate>
           </ErrorBoundary>
+          <SectionDivider />
 
           {/* Глоссарий ключевых терминов */}
           <ErrorBoundary>
@@ -242,6 +250,7 @@ export default function HomePageClient({
               <GlossarySection />
             </Suspense>
           </ErrorBoundary>
+          <SectionDivider />
 
           {/* Интерактивный квиз */}
           <ErrorBoundary>
@@ -249,6 +258,7 @@ export default function HomePageClient({
               <QuizSection />
             </Suspense>
           </ErrorBoundary>
+          <SectionDivider />
 
           {/* Источники и ссылки */}
           <ErrorBoundary>

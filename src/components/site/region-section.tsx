@@ -278,32 +278,32 @@ export function RegionSection({
                         />
                       </div>
 
-                          <div className="relative mb-5 sm:mb-7">
-                            <span
-                              className="absolute -top-1 -left-1 text-3xl sm:text-4xl leading-none select-none"
-                              style={{ color: withAlpha(region.color, 0.2) }}
-                            >
-                              &ldquo;
-                            </span>
-                            <p
-                              className="text-sm sm:text-base md:text-lg leading-relaxed text-foreground/90 italic border-l-[3px] sm:border-l-4 pl-4 sm:pl-5 ml-0.5"
-                              style={{ borderColor: region.color }}
-                            >
-                              {activeCity.summary}
-                            </p>
-                          </div>
+                      <div className="relative mb-5 sm:mb-7">
+                        <span
+                          className="absolute -top-1 -left-1 text-3xl sm:text-4xl leading-none select-none"
+                          style={{ color: withAlpha(region.color, 0.2) }}
+                        >
+                          &ldquo;
+                        </span>
+                        <p
+                          className="text-sm sm:text-base md:text-lg leading-relaxed text-foreground/90 italic border-l-[3px] sm:border-l-4 pl-4 sm:pl-5 ml-0.5"
+                          style={{ borderColor: region.color }}
+                        >
+                          {activeCity.summary}
+                        </p>
+                      </div>
 
-                          <div className="space-y-3 sm:space-y-4">
-                            {activeCity.description.map((para, i) => (
-                              <p
-                                key={i}
-                                className="text-sm sm:text-base leading-relaxed text-foreground/85"
-                              >
-                                {para}
-                              </p>
-                            ))}
-                          </div>
-                        </div>
+                      <div className="space-y-3 sm:space-y-4">
+                        {activeCity.description.map((para, i) => (
+                          <p
+                            key={i}
+                            className="text-sm sm:text-base leading-relaxed text-foreground/85"
+                          >
+                            {para}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
 
                         {/* Достопримечательности */}
                         <div className="mt-10 sm:mt-12">
