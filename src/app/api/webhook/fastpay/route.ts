@@ -162,10 +162,7 @@ async function handlePaymentCompleted(data: unknown) {
     ).run(payment.id, now, expiresAt, payment.user_id, payment.id);
   })();
 
-  console.info(`Subscription activated for user ${payment.user_id}`);
-
-  // Здесь можно добавить отправку email уведомления
-  // или другие действия после успешной оплаты
+  // Subscription activated — extend or add webhook notifications here
 }
 
 /**

@@ -259,7 +259,7 @@ export function MapSection() {
                     <button
                       type="button"
                       onClick={() => setSelected(null)}
-                      className="mt-3 sm:mt-4 inline-flex items-center gap-1 text-[11px] sm:text-xs text-muted-foreground hover:text-foreground"
+                      className="mt-3 sm:mt-4 inline-flex items-center gap-1 text-[11px] sm:text-xs text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 rounded"
                     >
                       <X className="h-3 w-3" /> Сбросить
                     </button>
